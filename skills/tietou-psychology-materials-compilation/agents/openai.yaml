@@ -1,0 +1,4 @@
+interface:
+  display_name: "铁头心理学资料编制"
+  short_description: "心理学考研资料的一本通与速背手册编制规范流程和质量审核要求"
+  default_prompt: "Use $tietou-psychology-materials-compilation to compile or rewrite psychology 考研 materials for 一本通 or 速背手册."
