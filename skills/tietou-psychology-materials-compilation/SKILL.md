@@ -16,6 +16,7 @@ Treat the user as the leader. If project-specific instructions, supplied example
 - `347应用心理学`: school-specific self命题. Each target school may have its own reference textbooks; confirm the school, year, subject, and textbook set when these affect the output.
 - `312心理学`: national unified exam. Follow the unified exam scope and the user's supplied source materials.
 - `一本通`: adapt from official/reference textbooks. Stay close to the textbook, extract keywords and key sentences, reduce redundant prose, and split long paragraphs into layered, exam-friendly points.
+- For school-specific textbook-based 一本通, keep the textbook chapter order but compile as an exam-facing 考点筛选稿. Official outlines and true questions guide importance levels; they do not replace the textbook structure.
 - `速背手册`: adapt from an already compiled 一本通. Keep keywords, key sentences, and answer logic, then compress and reorganize the wording into natural, easy-to-recite Chinese.
 
 ## Workflow
@@ -33,7 +34,7 @@ For `一本通`:
 
 - Stay close to the official textbook's concepts, keywords, and key sentences.
 - Prefer concise formal Chinese over casual paraphrase.
-- Split large paragraphs into clear layers, with each point carrying one main idea.
+- Screen before rewriting: delete or compress low-yield narration, background, repeated explanation, and non-examinable detail; then split retained content into clear layers, with each point carrying one main answer idea.
 - Keep answer-worthy phrases visible; do not over-simplify technical definitions.
 - For detailed 一本通 rules, load `tietou-yibentong-compilation`, read its `references/requirements.md` first, and consult `docs/yibentong/一本通编制要求及细则.pdf` only when exact details are needed.
 

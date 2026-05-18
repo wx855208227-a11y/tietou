@@ -30,6 +30,49 @@ Source PDF: `docs/yibentong/一本通编制要求及细则.pdf` in the `agiamaso
    - All true-question knowledge points are 一级.
 5. Final format and typo pass.
 
+## Textbook-Based 347 一本通 Compilation Standard
+
+When no existing 一本通 is available and the official textbook is the主体材料, compile according to the textbook's chapter order. Do not reorganize the document by official exam outline headings. Official outlines are usually broad and may span multiple textbook chapters; use them to judge importance only.
+
+The target is an exam-facing考点筛选稿. 一本通 should stay close to textbook concepts and scoring language, but it should not preserve all textbook narration. A chapter output that is close to the length and narrative density of a textbook summary is too verbose.
+
+### Screening Before Rewriting
+
+For each textbook section, first decide whether the material is a testable knowledge point:
+
+- Keep: definitions, classifications, core elements, processes, theories, representative figures, years, named tests/scales, key findings, advantages/disadvantages, applications, limitations, and points touched by true questions or official outlines.
+- Compress: historical background, development context, author evaluation, transitional prose, long case descriptions, repeated explanations, and broad social/policy discussion.
+- Delete: decorative narration, duplicated examples, low-yield lists with no exam value, details that do not help answer a likely question, and textbook paragraphs that only connect ideas without adding a scoring point.
+- Keep as brief examples only: named examples that identify a category or make an abstract concept understandable.
+
+### Structure Standard
+
+After screening, rebuild the section around answerable layers rather than textbook paragraphs:
+
+- Use `人物/事件/概念 -> 核心贡献/定义 -> 必要细节/例子` for history and development sections.
+- Use `定义 -> 要素/分类 -> 特点/适用范围 -> 例子/评价` for concepts and theories.
+- Use `步骤 -> 操作要点 -> 注意事项/评价` for procedures.
+- Use tables or comparison structures when the textbook contrasts types, theories, tests, or indexes.
+
+Each numbered point should carry one memorisable scoring point. If a paragraph contains several answer points, split it into `1.` / `（1）` / `①` layers. If a paragraph only explains background, compress it to one short sentence or remove it.
+
+### Compression Benchmark
+
+Use supplied high-quality 一本通 samples as the benchmark. For textbook history/development chapters, aggressive compression is expected: preserve people, years, named works/tests, and contributions; remove most story-like narration. If a compiled section is more than about twice the density of the human sample for the same source, review for over-retention.
+
+### Example: History Chapter Screening
+
+For a textbook chapter such as `心理测量和测验的历史回顾`, the expected output is not a full historical summary. Keep points like:
+
+- 中国古代心理测量的三个前提;
+- 孔子、孟子、刘劭、《学记》《礼记·本命》、科举、周岁试儿、七巧板、九连环 and their testable contributions;
+- 艾斯克罗、塞甘、冯特、高尔顿、卡特尔、克雷丕林、艾宾浩斯 and their core contributions;
+- 比奈—西蒙量表、1905年量表、斯坦福—比奈量表;
+- 个别测验 vs 团体测验, 陆军甲种/乙种测验;
+- 我国发展概述 only as high-level examinable features unless specific events are likely or真题-covered.
+
+Remove or heavily compress long accounts of social context, institutional history, broad reflections, and policy discussion unless the user explicitly asks for a detailed history version.
+
 ## Importance Levels
 
 - Prefer marking importance on second-level titles.
@@ -38,12 +81,25 @@ Source PDF: `docs/yibentong/一本通编制要求及细则.pdf` in the `agiamaso
 - True-question knowledge points must be 一级.
 - Summary principle: only mark exceptions when lower-level importance differs from the parent.
 
+### Importance Evidence For 347 School-Specific Work
+
+- 一级: directly tested in target-school true questions; or a concrete core knowledge point inside the official outline scope, especially definitions, core classifications, major theories, representative scales/tests, procedures, formulas, reliability/validity indexes, and high-yield comparisons.
+- 二级: important textbook content that supports 一级 clusters or is reasonably examinable, but is not directly true-question-covered and is less central than core definitions/classifications/theories.
+- 三级: background, low-frequency history, broad development overview, minor scale descriptions, or content mainly for understanding.
+- Official outline evidence identifies important clusters. Do not automatically mark every subpoint under an outline-covered chapter as 一级.
+- True-question evidence must be substantive. Only mark `【xx年真题】` when that exact knowledge point or its answer substance was tested; do not mark because the same person, school, or general topic appeared in another context.
+- A lower-level title can be more important than its parent. For example, a parent history section may be 三级 while a specific figure/test inside it is 二级 or 一级.
+
 ## Content Rewriting
 
 - Avoid large unbroken paragraphs. Each paragraph should be no more than two lines; split and layer anything longer.
 - Preserve textbook keywords and key sentences while reorganizing the expression into concise points.
 - For textbook adaptation, reduce verbosity, keep the core meaning, and avoid adding unsupported claims.
 - Do not treat external materials as authoritative when they conflict with the textbook.
+- Rewrite after screening, not before screening. First remove low-yield material, then polish the retained points.
+- Prefer concise formal answer language over continuous exposition. Good 一本通 paragraphs often look like answer outlines.
+- Preserve exact names, years, works, scale names, theory names, and textbook judgments when they are likely scoring points.
+- Do not add Tips, examples, or explanations merely to fill space. Add them only when they improve understanding or prevent common mistakes.
 
 ## Bold And Underline
 
