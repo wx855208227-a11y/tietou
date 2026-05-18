@@ -30,7 +30,7 @@ The original source PDF is stored in the `agiamason/tietou` project repository a
 
 - 一本通 is not 速背, but it must still be much shorter than the textbook. If the result reads like a cleaned textbook summary, cut harder.
 - The default unit is a testable point, not a paragraph. Prefer numbered and nested points over prose.
-- Level annotations are local to the specific knowledge point. A broad outline item may make a cluster important, but it does not automatically make every subtopic 一级.
+- Level annotations are local to the specific knowledge point and describe estimated exam frequency/probability: 一级 is high-frequency and very likely, 二级 is medium-frequency and reasonably likely, and 三级 is low-frequency but still testable if the paper asks a偏、怪、难, or edge-scope question. A broad outline item may make a cluster important, but it does not automatically make every subtopic 一级.
 - Lower-level titles may be more important than their parent when a specific subtopic is high-yield or真题-covered. Mark the exception at the lower title.
 - Tips are optional. Use them for abstract concepts, confusing comparisons, calculations,量表, or examples that aid understanding; do not force Tips into historical or straightforward factual sections.
 

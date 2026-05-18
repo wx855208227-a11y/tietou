@@ -75,6 +75,7 @@ Remove or heavily compress long accounts of social context, institutional histor
 
 ## Importance Levels
 
+- Importance levels describe estimated exam frequency and probability, not whether a point is absolutely testable. 一级 means a high-frequency point that is very likely to appear in real exams; 二级 means a medium-frequency point that is reasonably likely to appear; 三级 means a low-frequency point that can still be tested, but would usually feel偏、怪、难, or beyond the normal core scope.
 - Prefer marking importance on second-level titles.
 - Determine an upper-level item's importance from its lower-level content. For example, if most lower items are 一级, the parent should be 一级.
 - If a third-level title has the same importance as its second-level parent, omit the repeated third-level mark.
@@ -83,9 +84,9 @@ Remove or heavily compress long accounts of social context, institutional histor
 
 ### Importance Evidence For 347 School-Specific Work
 
-- 一级: directly tested in target-school true questions; or a concrete core knowledge point inside the official outline scope, especially definitions, core classifications, major theories, representative scales/tests, procedures, formulas, reliability/validity indexes, and high-yield comparisons.
-- 二级: important textbook content that supports 一级 clusters or is reasonably examinable, but is not directly true-question-covered and is less central than core definitions/classifications/theories.
-- 三级: background, low-frequency history, broad development overview, minor scale descriptions, or content mainly for understanding.
+- 一级: high-frequency points that are very likely to appear in real exams, including points directly tested in target-school true questions and concrete core knowledge points inside the official outline scope, especially definitions, core classifications, major theories, representative scales/tests, procedures, formulas, reliability/validity indexes, and high-yield comparisons.
+- 二级: medium-frequency points that are reasonably likely to appear in real exams, including important textbook content that supports 一级 clusters or has clear examinability, but is not directly true-question-covered and is less central than core definitions/classifications/theories.
+- 三级: low-frequency points that can still be tested but would usually be偏、怪、难, or near the edge of the normal scope, including background, low-frequency history, broad development overview, minor scale descriptions, or content mainly for understanding.
 - Official outline evidence identifies important clusters. Do not automatically mark every subpoint under an outline-covered chapter as 一级.
 - True-question evidence must be substantive. Only mark `【xx年真题】` when that exact knowledge point or its answer substance was tested; do not mark because the same person, school, or general topic appeared in another context.
 - A lower-level title can be more important than its parent. For example, a parent history section may be 三级 while a specific figure/test inside it is 二级 or 一级.
