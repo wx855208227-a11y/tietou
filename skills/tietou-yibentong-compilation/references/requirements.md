@@ -86,10 +86,12 @@ Remove or heavily compress long accounts of social context, institutional histor
 
 - 一级: high-frequency points that are very likely to appear in real exams, including points directly tested in target-school true questions and concrete core knowledge points inside the official outline scope, especially definitions, core classifications, major theories, representative scales/tests, procedures, formulas, reliability/validity indexes, and high-yield comparisons.
 - 二级: medium-frequency points that are reasonably likely to appear in real exams, including important textbook content that supports 一级 clusters or has clear examinability, but is not directly true-question-covered and is less central than core definitions/classifications/theories.
+- 强二级: a manual-review subset inside 二级. Use this label in compilation notes, not necessarily in the正文 title, for points that are close to 一级 but lack decisive evidence. Typical cases include: official-outline-covered points with a stable question form but no direct true-question hit; textbook major subpoints that strongly support a 一级 cluster; points adjacent to repeated true-question themes; and points that could plausibly be upgraded to 一级 based on the leader's school-specific judgment.
 - 三级: low-frequency points that can still be tested but would usually be偏、怪、难, or near the edge of the normal scope, including background, low-frequency history, broad development overview, minor scale descriptions, or content mainly for understanding.
 - Official outline evidence identifies important clusters. Do not automatically mark every subpoint under an outline-covered chapter as 一级.
 - True-question evidence must be substantive. Only mark `【xx年真题】` when that exact knowledge point or its answer substance was tested; do not mark because the same person, school, or general topic appeared in another context.
 - A lower-level title can be more important than its parent. For example, a parent history section may be 三级 while a specific figure/test inside it is 二级 or 一级.
+- Every compilation delivery should separately list all 强二级 points for leader review. The list should include: knowledge point, textbook page/chapter location, current suggested level, reason for 强二级, possible question type, and whether it is a candidate for upgrade to 一级.
 
 ## Content Rewriting
 
