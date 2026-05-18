@@ -7,8 +7,9 @@ Source PDF: `docs/yibentong/一本通编制要求及细则.pdf` in the `agiamaso
 ## Materials
 
 - 主体材料: 铁头一本通. If the subject has no existing 一本通, use the electronic textbook as the主体材料.
-- 辅助材料: official/electronic reference textbook, strong external materials such as 高分秘籍 or 大纲解析, and target院校历年真题.
+- 辅助材料: official/electronic reference textbook, target院校官方考纲, target院校历年真题, optional 312历年真题, optional 泛347历年真题库, and strong external materials such as 高分秘籍 or 大纲解析 when the leader provides them.
 - Use external material for comparison, not blind copying. Use the textbook as the authority for wording, definitions, structure, and source verification.
+- Evidence priority for 347 school-specific work: target-school true questions > target-school official outline > assigned textbook structure and wording > auxiliary 312/泛347 true-question evidence > other external materials.
 
 ## Compilation Process
 
@@ -24,10 +25,13 @@ Source PDF: `docs/yibentong/一本通编制要求及细则.pdf` in the `agiamaso
    - Bold keywords and underline key sentences.
    - Check typos.
 4. Check past-exam questions.
+   - If a target-school paper contains multiple subjects, first classify questions by subject and keep only the relevant subject questions for this 一本通 chapter. Use the answer substance, not surface keywords, to decide the subject.
    - Find all knowledge points touched by target院校历年真题.
+   - Record each relevant question's year, type, score if available, subject, textbook chapter, and tested knowledge point.
    - Add true-question markers at the matching title or location.
    - If a true-question point is missing, locate it in the textbook, add it as正文, and mark it 一级.
    - All true-question knowledge points are 一级.
+   - Use 312 and 泛347真题 only as auxiliary evidence for examability, common question forms, and 强二级 review; they do not create target-school真题 markers.
 5. Final format and typo pass.
 
 ## Textbook-Based 347 一本通 Compilation Standard
@@ -92,6 +96,48 @@ Remove or heavily compress long accounts of social context, institutional histor
 - True-question evidence must be substantive. Only mark `【xx年真题】` when that exact knowledge point or its answer substance was tested; do not mark because the same person, school, or general topic appeared in another context.
 - A lower-level title can be more important than its parent. For example, a parent history section may be 三级 while a specific figure/test inside it is 二级 or 一级.
 - Every compilation delivery should separately list all 强二级 points for leader review. The list should include: knowledge point, textbook page/chapter location, current suggested level, reason for 强二级, possible question type, and whether it is a candidate for upgrade to 一级.
+
+### Official Outline Three-Ring Rule
+
+Official outline coverage means the knowledge cluster is important, but the outline is usually broad and does not make every subpoint 一级. For each outline-covered cluster, split textbook content into three rings before assigning levels:
+
+- Core ring -> usually 一级: the cluster's definitions, core classifications, basic principles, important theories, formulas/indexes, procedures, representative tests/scales, high-yield comparisons, and any point that can independently form a stable exam question.
+- Support ring -> 二级 or 强二级: important textbook subpoints that support the core ring, can appear as smaller short-answer/choice/judgment points, or sit close to repeated true-question themes but lack direct target-school evidence.
+- Background ring -> 三级 or compressed/deleted: historical context, social background, author evaluation, transition paragraphs, minor details, long examples, and content that only helps understanding but has weak normal exam value.
+
+Use this rule together with target-school preference. If the target school repeatedly tests history, application, calculation, or case analysis, upgrade matching support-ring points to 强二级 or 一级 when evidence is strong enough.
+
+### True-Question Profiling And Subject Filtering
+
+Before judging importance for a school-specific 一本通, build a compact question profile from the provided true questions:
+
+- Classify each question by subject. For a mixed 347 paper, include only questions whose answer substance belongs to the current subject. For 心理测量, include items such as psychological tests, measurement levels, reliability, validity, norms, item analysis, test construction, test ethics, classical test theory, modern measurement theory, and representative scales/tests.
+- Mark cross-subject questions by dominant answer source. For example, a question using statistics to evaluate reliability can belong to 心理测量 if the scoring focus is reliability interpretation; a general hypothesis-testing calculation belongs to 统计心理学.
+- Record question type: choice, judgment, term explanation, short answer, essay, case/material analysis, experiment design, calculation/application, or other observed forms.
+- Map each relevant question to the smallest textbook knowledge point that supplies the answer. Use substantive match, not shared words.
+- Use target-school true-question hits as decisive 一级 evidence and true-question markers. Do not create target-school true-question markers from 312 or other-school 347 questions.
+
+### Question-Type Fit And Examability
+
+When a point is not directly tested by the target school, judge examability by the question forms it can naturally support:
+
+- Term explanation: named concepts, theories, scales, indexes, effects, methods, and representative tests.
+- Choice/judgment: concept boundaries, category membership, people/years, key features, advantages/disadvantages, and common misconceptions.
+- Short answer: definitions plus elements, classifications, characteristics, influencing factors, functions, steps, applications, and contributions.
+- Essay: theory comparisons, development logic, relationship辨析, integrated evaluation, and multi-part frameworks.
+- Case/material analysis: test use, reliability/validity interpretation, norm interpretation, test construction decisions, ethics, and applied judgment.
+- Calculation/application: score transformation, norms, item difficulty/discrimination, reliability coefficients, validity evidence, and measurement-level/statistical-method matching.
+
+A knowledge point's level rises when it has stable question forms, clear scoring points, textbook emphasis, outline coverage, and target-school style fit. It falls when it is mostly narrative, lacks independent scoring points, or only appears as a remote background detail.
+
+### Auxiliary 312 And 泛347 True-Question Evidence
+
+Use 312 and 泛347真题库 to improve examability and question-type judgment, especially when the target school has few years of data:
+
+- 312真题: good evidence for common psychology exam core concepts, standardized question forms, measurement/statistics/experiment applications, and stable high-yield definitions or comparisons.
+- 泛347真题: good evidence for self命题院校 preferences, common applied/case/essay forms, and knowledge points repeatedly tested across schools.
+- Auxiliary evidence can upgrade a point from ordinary 二级 to 强二级, or support a recommendation to upgrade to 一级 when it is also outline-covered and textbook-core.
+- Auxiliary evidence should not override the target school's own true questions, should not reorganize the textbook, and should not be marked as target-school真题 evidence.
 
 ## Content Rewriting
 

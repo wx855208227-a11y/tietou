@@ -16,7 +16,7 @@ Treat the user as the leader. If project-specific instructions, supplied example
 - `347应用心理学`: school-specific self命题. Each target school may have its own reference textbooks; confirm the school, year, subject, and textbook set when these affect the output.
 - `312心理学`: national unified exam. Follow the unified exam scope and the user's supplied source materials.
 - `一本通`: adapt from official/reference textbooks. Stay close to the textbook, extract keywords and key sentences, reduce redundant prose, and split long paragraphs into layered, exam-friendly points.
-- For school-specific textbook-based 一本通, keep the textbook chapter order but compile as an exam-facing 考点筛选稿. Official outlines and true questions guide importance levels; they do not replace the textbook structure.
+- For school-specific textbook-based 一本通, keep the textbook chapter order but compile as an exam-facing 考点筛选稿. Target-school true questions, official outlines, and optional 312/泛347 true-question banks guide importance and question-type judgment; they do not replace the textbook structure.
 - `速背手册`: adapt from an already compiled 一本通. Keep keywords, key sentences, and answer logic, then compress and reorganize the wording into natural, easy-to-recite Chinese.
 
 ## Workflow
@@ -24,9 +24,10 @@ Treat the user as the leader. If project-specific instructions, supplied example
 1. Confirm the task type: 一本通编制, 速背手册改写, review, format cleanup, style unification, or sample learning.
 2. Confirm the source hierarchy: official textbook or e-textbook, existing 一本通, supplied examples, target-school requirements, true-question evidence, and any external comparison materials.
 3. Preserve the authoritative meaning. Use textbook wording and established psychological terms for definitions, mechanisms, classifications, and key judgments.
-4. Remove study noise. Delete or compress material that is repetitive, overly narrative, weakly examinable, or not needed for the target material type.
-5. Rebuild structure. Convert long prose into headings, numbered points, cause-effect chains, comparison tables, or concise examples when those structures improve exam use.
-6. Mark uncertainty. Do not invent textbook sources, true-question markers, importance levels, or school requirements. Flag missing or conflicting evidence for leader confirmation.
+4. For school-specific work, separate target-school evidence from auxiliary evidence: target-school true questions are decisive, official outlines identify important clusters, and 312/泛347 true questions only support examability and possible question-type judgment.
+5. Remove study noise. Delete or compress material that is repetitive, overly narrative, weakly examinable, or not needed for the target material type.
+6. Rebuild structure. Convert long prose into headings, numbered points, cause-effect chains, comparison tables, or concise examples when those structures improve exam use.
+7. Mark uncertainty. Do not invent textbook sources, true-question markers, importance levels, or school requirements. Flag missing or conflicting evidence for leader confirmation.
 
 ## Writing Standards
 

@@ -15,23 +15,26 @@ The original source PDF is stored in the `agiamason/tietou` project repository a
 
 ## Non-Negotiable Workflow
 
-1. Confirm the source set: 铁头一本通 draft or textbook as 主体材料, official/e-textbook reference, strong external materials, and target院校历年真题.
+1. Confirm the source set: 铁头一本通 draft or textbook as 主体材料, official/e-textbook reference, target院校官方考纲, target院校历年真题, and optional 312/泛347真题库.
 2. Separate source types in notes and outputs: textbook/source rules, external-material comparison, past-exam evidence, tips/examples, supplementary content, and formatting requirements.
 3. For a new textbook-based 一本通, keep the textbook chapter order, but compile as an exam-facing 考点筛选稿, not a full textbook compression. Delete or heavily compress background narration, transitions, low-yield examples, policy discussion, and long descriptive history unless they are directly examinable.
 4. Preserve textbook keywords and key sentences after screening. Rebuild them into answer-like layers: category/person/event -> core contribution/definition -> necessary examples/details. Each layer should be a memorisable scoring point.
-5. Mark all past-exam knowledge points as 一级. If past-exam content is missing, locate it in the textbook, add it as正文, and mark it 一级. Do not mark a title as true-question evidence merely because the same person or word appears in an unrelated true question.
-6. Use official exam outlines for importance, not chapter ordering. Outline items are usually broad and may cover multiple textbook chapters; they identify important knowledge clusters, while the 一本通 structure still follows the textbook.
-7. Treat screenshot examples as formatting examples, not as new正文规则 unless the leader confirms.
-8. For PDF/OCR/image-heavy materials, also use `intern-agent-pdf-ocr-batch`: process screenshots in small batches and keep durable local notes.
-9. When turning a new project PDF into reusable agent knowledge, create or update a dedicated skill: keep the operational workflow in `SKILL.md`, put detailed extracted rules in `references/`, and record the source PDF path so future agents read the skill first and consult the PDF only for detail checks.
-10. Before finalizing, check: title levels, page references, importance levels, true-question markers, tips, supplement boxes, punctuation, line spacing, page numbers, catalog, chapter page breaks, typos, and cross-page tips/supplements.
+5. Before assigning importance, build an exam evidence profile: split mixed target-school papers by subject, identify the relevant subject questions, record question types, map questions to textbook knowledge points, and separate direct target-school evidence from auxiliary 312/泛347 evidence.
+6. Mark all target-school past-exam knowledge points as 一级. If past-exam content is missing, locate it in the textbook, add it as正文, and mark it 一级. Do not mark a title as true-question evidence merely because the same person or word appears in an unrelated true question.
+7. Use official exam outlines for importance, not chapter ordering. Outline items are usually broad and may cover multiple textbook chapters; split each outline-covered cluster into core points, supporting points, and background points before assigning 一级/二级/三级.
+8. Treat screenshot examples as formatting examples, not as new正文规则 unless the leader confirms.
+9. For PDF/OCR/image-heavy materials, also use `intern-agent-pdf-ocr-batch`: process screenshots in small batches and keep durable local notes.
+10. When turning a new project PDF into reusable agent knowledge, create or update a dedicated skill: keep the operational workflow in `SKILL.md`, put detailed extracted rules in `references/`, and record the source PDF path so future agents read the skill first and consult the PDF only for detail checks.
+11. Before finalizing, check: title levels, page references, importance levels, true-question markers, tips, supplement boxes, punctuation, line spacing, page numbers, catalog, chapter page breaks, typos, and cross-page tips/supplements.
 
 ## Exam-Facing Compilation Guardrails
 
 - 一本通 is not 速背, but it must still be much shorter than the textbook. If the result reads like a cleaned textbook summary, cut harder.
 - The default unit is a testable point, not a paragraph. Prefer numbered and nested points over prose.
 - Level annotations are local to the specific knowledge point and describe estimated exam frequency/probability: 一级 is high-frequency and very likely, 二级 is medium-frequency and reasonably likely, and 三级 is low-frequency but still testable if the paper asks a偏、怪、难, or edge-scope question. A broad outline item may make a cluster important, but it does not automatically make every subtopic 一级.
+- Treat official-outline coverage as cluster-level evidence. A covered cluster is important, but only its core definitions, classifications, theories, formulas, procedures, representative tests/scales, and high-yield comparisons should usually become 一级; supporting points become 二级/强二级; background details usually stay 三级 or are compressed.
 - Treat 强二级 as a manual-review subset of 二级: points close to 一级 but lacking decisive evidence. Keep them as 二级 in正文 unless instructed otherwise, and list them separately in the delivery notes with the upgrade reason and possible question type.
+- Use 312 and 泛347真题 as auxiliary examability evidence. They can reveal common question forms and raise a point to 强二级, but they do not override target-school true questions, official outline, or textbook structure.
 - Lower-level titles may be more important than their parent when a specific subtopic is high-yield or真题-covered. Mark the exception at the lower title.
 - Tips are optional. Use them for abstract concepts, confusing comparisons, calculations,量表, or examples that aid understanding; do not force Tips into historical or straightforward factual sections.
 
@@ -40,7 +43,9 @@ The original source PDF is stored in the `agiamason/tietou` project repository a
 When reporting to a manager or the user, include:
 
 - Materials checked and any missing inputs.
+- Target-school exam profile: relevant subject questions, question types, and mapped knowledge points.
 - Changes made by category: add/delete/degrade/upgrade/rewrite/format.
 - Strong 二级 review list: knowledge point, location/page, reason, likely question type, and whether it is a candidate for 一级.
+- Auxiliary evidence used: 312 or 泛347真题 evidence, if provided, and how it affected examability or question-type judgment.
 - Uncertainties and conflicts requiring leader confirmation.
 - Validation performed against the requirements reference.
