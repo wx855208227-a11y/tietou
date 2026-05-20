@@ -156,9 +156,14 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 ## Active Comparison And Visual Learning
 
 - During compilation, actively scan for同类概念、相似概念、易混概念, not only concepts explicitly compared by the textbook.
+- Apply an importance gate before adding any table or visual: the table/visual should normally contain and serve at least one 一级 knowledge point. 二级 points can be included when they help compare, support, or distinguish the 一级 point. 三级 points should only appear as necessary contrast labels/details; never create a standalone table, chart, or visual for pure 三级 content.
+- If a candidate table/visual has no 一级 point, default to not making it. Keep ordinary 二级 material in concise正文; only consider a pure 二级 table/visual when it is 强二级, clearly compresses repeated prose, and the leader has reason to emphasize it. List such cases for manual review when unsure.
 - Add comparison tables, flowcharts, or simple visual summaries when they help students compare and remember. Use tables for conceptual distinctions; use flowcharts for development sequences, procedures, and causal chains; use images only when they clarify spatial, process, or structure relations better than text.
 - Good comparison candidates include: similar definitions, paired methods, scale/test variants, adjacent theories, people with overlapping historical contributions, formulas/indexes with similar uses, and concepts that target-school or auxiliary true questions often confuse.
 - A comparison table should include stable comparison dimensions such as `核心含义`, `关键词`, `适用对象/场景`, `代表人物/量表`, `易混点`, and `记忆抓手`. Keep cells short and exam-facing.
+- Prefer a table when the content is parallel and comparable across stable dimensions, such as concept distinctions, theory/person/scale comparisons, method advantages and disadvantages, applicable scenes, representative examples, formulas, indexes, or likely compare-and-contrast exam questions.
+- Prefer a visual, flowchart, timeline, tree diagram, or model diagram when the content is sequential, hierarchical, causal, procedural, structural, or spatial, such as development stages, scale/test编制流程, classification systems, theory mechanisms, decision paths, or multi-step application procedures.
+- Do not make a table or visual for a single standalone point, a simple one-dimensional list, a linear paragraph that is already clear, too many low-yield rows, or any format that would visually overemphasize low-frequency details.
 - Do not add decorative tables. A comparison must reduce confusion, compress repeated prose, or improve answer organization.
 
 ## Bold And Underline
