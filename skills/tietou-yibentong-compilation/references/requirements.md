@@ -121,6 +121,21 @@ Before judging importance for a school-specific 一本通, build a compact quest
 - Map each relevant question to the smallest textbook knowledge point that supplies the answer. Use substantive match, not shared words.
 - Use target-school true-question hits as decisive 一级 evidence and true-question markers. Do not create target-school true-question markers from 312 or other-school 347 questions.
 
+### Chapter Evidence Table Before Drafting
+
+Before writing the chapter正文, create an internal chapter evidence table. Use it to make level decisions visible and to reduce unsupported guessing. Include these fields when available:
+
+- Knowledge point and textbook page/chapter location.
+- Whether the point is in the official outline, and which outline cluster it belongs to.
+- Target-school true-question evidence: year, question type, and answer substance.
+- Auxiliary 312/泛347 evidence: source, frequency clue, and whether it only supports 强二级.
+- Likely question type: choice, judgment, term explanation, short answer, essay, material/case analysis, experiment design, or calculation/application.
+- Suggested level: 一级, 二级, 强二级 candidate, or 三级, with one short reason.
+- Treatment decision: expand, keep concise, compress, delete, supplement, table, visual, or Tips.
+- Uncertainty: source gap, ambiguous outline mapping, possible cross-subject point, or leader-confirmation need.
+
+Use this table as the basis for the manager review file. The student-facing finished DOCX should not expose internal uncertainty notes.
+
 ### Question-Type Fit And Examability
 
 When a point is not directly tested by the target school, judge examability by the question forms it can naturally support:
@@ -133,6 +148,14 @@ When a point is not directly tested by the target school, judge examability by t
 - Calculation/application: score transformation, norms, item difficulty/discrimination, reliability coefficients, validity evidence, and measurement-level/statistical-method matching.
 
 A knowledge point's level rises when it has stable question forms, clear scoring points, textbook emphasis, outline coverage, and target-school style fit. It falls when it is mostly narrative, lacks independent scoring points, or only appears as a remote background detail.
+
+Use the likely question type to shape the正文 unit:
+
+- Term explanations should include definition, core features, and one boundary/representative example only when useful.
+- Short-answer points should be written as numbered scoring points, usually 3-5 points when the textbook supports them.
+- Essay/material-analysis points should include logic chains, conditions, applications, advantages/disadvantages, or interpretation steps.
+- Choice/judgment points should preserve exact people, years, scale names, first/representative status, category boundaries, and common misconceptions.
+- Calculation/application points should preserve formulas, interpretation rules, prerequisites, and common error traps.
 
 ### Auxiliary 312 And 泛347 True-Question Evidence
 
@@ -254,6 +277,50 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - Catalog body: 宋体11号; first-level catalog entries bold; leave one blank line between chapters.
 - Tips and supplementary content should avoid crossing pages. If only a short fragment spills over, move the whole block to the next page or adjust spacing if it does not hurt readability.
 
+## Self-Check And Two-File Delivery
+
+Every delivery should go through self-check first, then provide two files unless the leader asks for a different format.
+
+### File 1: Self-Checked Finished Product
+
+Default format: DOCX. This is the student-facing 一本通成品 and should be clean enough for direct review or later排版合稿.
+
+- Keep only student-facing content: title levels,正文, importance levels, true-question markers, Tips, tables/visuals, supplement blocks, and page references.
+- Do not include internal notes such as `待确认`, `我判断`, `可能`, evidence scoring, or review comments inside正文 unless they are meant to appear in the final material.
+- Before delivery, check source fidelity, no unsupported content, concise layering, keyword/key-phrase marking, Tips priority, table/visual placement, A4 print layout, and cross-page risks.
+
+### File 2: Manager Review File
+
+Default format: XLSX when the evidence table is substantial; DOCX/MD is acceptable for very short chapters. The review file exists to let the leader audit quickly without rereading the whole textbook.
+
+Include these sections:
+
+- Materials used and missing materials.
+- Chapter evidence table: knowledge point, page, outline mapping, target-school true-question evidence, auxiliary evidence, likely question type, suggested level, and treatment decision.
+- 一级依据表: all 一级 points and whether the basis is target-school true question, outline core, textbook core, or leader-confirmed rule.
+- 强二级复核表: all strong 二级 candidates, upgrade reason, likely question type, and whether they are candidates for 一级.
+- Tips/visual/supplement decision log: type, location, reason, source/page, and skipped borderline candidates.
+- Deletion/compression/downgrade notes: especially long background, 中国背景类 content, and low-yield historical details.
+- Self-check results: pass/fail or short notes for evidence mapping, level logic, wording concision, bold/underline extraction, Tips, visual/table rules, supplement sources, formatting, and unresolved assumptions.
+- Open confirmations: only issues that cannot be resolved from provided materials or HF sources.
+
+### Self-Check Procedure
+
+Run these checks before sending files:
+
+- Source check: every retained substantive point can be traced to the target textbook, target-school true question, official outline, or cited supplementary source.
+- Evidence check: target-school true-question points are 一级 and accurately marked; official-outline-covered content is at least 二级 except eligible 中国背景类 content.
+- Subject check: mixed-paper true questions are assigned by answer substance, not superficial keywords.
+- Level check: 一级/二级/三级 reflect exam probability; all 强二级 points are listed for leader review.
+- Structure check: textbook chapter order is preserved, but low-yield prose is compressed or deleted.
+- Writing check: paragraphs are short, layered, answer-like, and not simply cleaned textbook prose.
+- Bold/underline check: reading only bold keywords plus underlined key phrases can recover the core answer logic.
+- Tips check: Tips follow priority order and are not added merely to fill space; ordinary 三级 points usually have no Tips.
+- Visual/table check: tables and visuals serve at least one 一级 point unless listed for review; diagrams are actual diagrams, readable in black-and-white, and placed inside Tips.
+- Supplement check: missing but important/tested points are added as `补充内容：xxxx`, with source textbook/page when available.
+- Format check: title levels, page references, true-question markers, line spacing, page numbers, catalog needs, Tips label/box grouping, and cross-page risks are checked.
+- Assumption check: any nontrivial guess is moved into the manager review file instead of silently entering the finished product.
+
 ## Review Checklist
 
 - Source materials are identified and missing inputs are listed.
@@ -262,6 +329,9 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - Long paragraphs are split into layered points.
 - True-question knowledge points are present, marked, and 一级.
 - Importance levels follow parent/child rules and repeated lower-level marks are omitted when appropriate.
+- Official-outline-covered content is at least 二级 unless it is eligible 中国背景类 content without target-school true-question support.
+- All 强二级 candidates are separately listed for leader review.
+- The manager review file includes evidence, level, Tips/visual/supplement, and uncertainty logs.
 - Tips are relevant, concise, and page-marked when based on textbook experiments.
 - Supplementary content uses the required box and label.
 - Title levels, numbering, punctuation, page references, true-question markers, page numbers, catalog, chapter page breaks, and cross-page tips/supplements are checked.
