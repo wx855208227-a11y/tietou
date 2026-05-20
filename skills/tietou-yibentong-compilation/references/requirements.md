@@ -77,7 +77,7 @@ For a textbook chapter such as `心理测量和测验的历史回顾`, the expec
 
 Remove or heavily compress long accounts of social context, institutional history, broad reflections, and policy discussion unless the user explicitly asks for a detailed history version.
 
-For psychology考研 materials, `中国/中国古代/我国历史发展` content is non-core by default when there is no target-school true-question evidence. Process it conservatively: mark as 二级/三级, compress to high-level clues, or delete low-yield details according to examability. If the target school has tested the exact point, mark that point 一级 and add the true-question marker.
+For psychology考研 materials, `中国/中国古代/我国历史发展` content is non-core by default when there is no target-school true-question evidence. Process it conservatively: mark as 二级/三级, compress to high-level clues, or delete low-yield details according to examability. In student-facing wording, use expressions such as `了解即可`; avoid wording like `不展开背诵` or other process-oriented editorial notes. If the target school has tested the exact point, mark that point 一级 and add the true-question marker.
 
 ## Importance Levels
 
@@ -94,7 +94,7 @@ For psychology考研 materials, `中国/中国古代/我国历史发展` content
 - 二级: medium-frequency points that are reasonably likely to appear in real exams, including important textbook content that supports 一级 clusters or has clear examinability, but is not directly true-question-covered and is less central than core definitions/classifications/theories.
 - 强二级: a manual-review subset inside 二级. Use this label in compilation notes, not necessarily in the正文 title, for points that are close to 一级 but lack decisive evidence. Typical cases include: official-outline-covered points with a stable question form but no direct true-question hit; textbook major subpoints that strongly support a 一级 cluster; points adjacent to repeated true-question themes; and points that could plausibly be upgraded to 一级 based on the leader's school-specific judgment.
 - 三级: low-frequency points that can still be tested but would usually be偏、怪、难, or near the edge of the normal scope, including background, low-frequency history, broad development overview, minor scale descriptions, or content mainly for understanding.
-- 中国/中国古代/我国历史发展类内容在没有目标院校真题支撑时，默认不作为重点。可按教材地位和可考性压缩为二级或三级；弱可考的细节可删除。只有被目标院校真题实质考过的具体点才升为一级。
+- 中国/中国古代/我国历史发展类内容在没有目标院校真题支撑时，默认不作为重点。可按教材地位和可考性压缩为二级或三级；弱可考的细节可删除。正文表述用“了解即可”等学生视角措辞，不写“不展开背诵”等编制过程话术。只有被目标院校真题实质考过的具体点才升为一级。
 - Official outline evidence identifies important clusters. Do not automatically mark every subpoint under an outline-covered chapter as 一级.
 - True-question evidence must be substantive. Only mark `【xx年真题】` when that exact knowledge point or its answer substance was tested; do not mark because the same person, school, or general topic appeared in another context.
 - A lower-level title can be more important than its parent. For example, a parent history section may be 三级 while a specific figure/test inside it is 二级 or 一级.
@@ -152,6 +152,14 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - Prefer concise formal answer language over continuous exposition. Good 一本通 paragraphs often look like answer outlines.
 - Preserve exact names, years, works, scale names, theory names, and textbook judgments when they are likely scoring points.
 - Do not add Tips, examples, or explanations merely to fill space. Add them only when they improve understanding or prevent common mistakes.
+
+## Active Comparison And Visual Learning
+
+- During compilation, actively scan for同类概念、相似概念、易混概念, not only concepts explicitly compared by the textbook.
+- Add comparison tables, flowcharts, or simple visual summaries when they help students compare and remember. Use tables for conceptual distinctions; use flowcharts for development sequences, procedures, and causal chains; use images only when they clarify spatial, process, or structure relations better than text.
+- Good comparison candidates include: similar definitions, paired methods, scale/test variants, adjacent theories, people with overlapping historical contributions, formulas/indexes with similar uses, and concepts that target-school or auxiliary true questions often confuse.
+- A comparison table should include stable comparison dimensions such as `核心含义`, `关键词`, `适用对象/场景`, `代表人物/量表`, `易混点`, and `记忆抓手`. Keep cells short and exam-facing.
+- Do not add decorative tables. A comparison must reduce confusion, compress repeated prose, or improve answer organization.
 
 ## Bold And Underline
 
