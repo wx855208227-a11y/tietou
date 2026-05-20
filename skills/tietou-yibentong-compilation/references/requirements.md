@@ -96,6 +96,7 @@ For psychology考研 materials, `中国/中国古代/我国历史发展` content
 - 三级: low-frequency points that can still be tested but would usually be偏、怪、难, or near the edge of the normal scope, including background, low-frequency history, broad development overview, minor scale descriptions, or content mainly for understanding.
 - 中国/中国古代/我国历史发展类内容在没有目标院校真题支撑时，默认不作为重点。可按教材地位和可考性压缩为二级或三级；弱可考的细节可删除。正文表述用“了解即可”等学生视角措辞，不写“不展开背诵”等编制过程话术。只有被目标院校真题实质考过的具体点才升为一级。
 - Official outline evidence identifies important clusters. Do not automatically mark every subpoint under an outline-covered chapter as 一级.
+- Official-outline-covered content should be at least 二级 by default. The main exception is 中国/中国古代/我国发展史等中国背景类内容: when there is no target-school true-question evidence, these can be marked 三级 or compressed according to examability.
 - True-question evidence must be substantive. Only mark `【xx年真题】` when that exact knowledge point or its answer substance was tested; do not mark because the same person, school, or general topic appeared in another context.
 - A lower-level title can be more important than its parent. For example, a parent history section may be 三级 while a specific figure/test inside it is 二级 or 一级.
 - Every compilation delivery should separately list all 强二级 points for leader review. The list should include: knowledge point, textbook page/chapter location, current suggested level, reason for 强二级, possible question type, and whether it is a candidate for upgrade to 一级.
@@ -106,7 +107,7 @@ Official outline coverage means the knowledge cluster is important, but the outl
 
 - Core ring -> usually 一级: the cluster's definitions, core classifications, basic principles, important theories, formulas/indexes, procedures, representative tests/scales, high-yield comparisons, and any point that can independently form a stable exam question.
 - Support ring -> 二级 or 强二级: important textbook subpoints that support the core ring, can appear as smaller short-answer/choice/judgment points, or sit close to repeated true-question themes but lack direct target-school evidence.
-- Background ring -> 三级 or compressed/deleted: historical context, social background, author evaluation, transition paragraphs, minor details, long examples, and content that only helps understanding but has weak normal exam value.
+- Background ring -> usually 二级 if it is clearly inside the official outline, but heavily compressed. Mark 三级 only for 中国/中国古代/我国发展史等中国背景类内容 without target-school true-question support, or for content that is not truly covered by the outline after substantive mapping.
 
 Use this rule together with target-school preference. If the target school repeatedly tests history, application, calculation, or case analysis, upgrade matching support-ring points to 强二级 or 一级 when evidence is strong enough.
 
