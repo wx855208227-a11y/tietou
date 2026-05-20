@@ -163,6 +163,7 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - A comparison table should include stable comparison dimensions such as `核心含义`, `关键词`, `适用对象/场景`, `代表人物/量表`, `易混点`, and `记忆抓手`. Keep cells short and exam-facing.
 - Prefer a table when the content is parallel and comparable across stable dimensions, such as concept distinctions, theory/person/scale comparisons, method advantages and disadvantages, applicable scenes, representative examples, formulas, indexes, or likely compare-and-contrast exam questions.
 - Prefer a visual, flowchart, timeline, tree diagram, or model diagram when the content is sequential, hierarchical, causal, procedural, structural, or spatial, such as development stages, scale/test编制流程, classification systems, theory mechanisms, decision paths, or multi-step application procedures.
+- If a section is labeled `图示`, `流程图`, `时间线`, or `图片`, render it as an actual image, Word drawing, or diagram-style object. Do not use a normal table under a `图示` heading. If the content is best rendered as a table, label it as `易混辨析`, `对比表`, or another table-appropriate heading instead.
 - Do not make a table or visual for a single standalone point, a simple one-dimensional list, a linear paragraph that is already clear, too many low-yield rows, or any format that would visually overemphasize low-frequency details.
 - Do not add decorative tables. A comparison must reduce confusion, compress repeated prose, or improve answer organization.
 
