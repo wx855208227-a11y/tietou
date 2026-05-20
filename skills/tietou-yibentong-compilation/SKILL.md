@@ -38,7 +38,8 @@ The original source PDF is stored in the `agiamason/tietou` project repository a
 - Use 312 and 泛347真题 as auxiliary examability evidence. They can reveal common question forms and raise a point to 强二级, but they do not override target-school true questions, official outline, or textbook structure.
 - Lower-level titles may be more important than their parent when a specific subtopic is high-yield or真题-covered. Mark the exception at the lower title.
 - Keywords and key phrases must be deliberately separated: bold isolated terms, names, theories, scales, methods, indexes, years, and fixed expressions; underline answer-bearing phrases, clauses, or short sentences. The underlined unit can be a sentence fragment, not necessarily a complete sentence. The selected bold/underline text should be enough to reconstruct the paragraph's core content.
-- Tips must be standard: adapt textbook experiments first; otherwise give concrete, life-close examples beginning with `例如` when useful. Do not use Tips for真题提醒, answer strategy, broad summaries, or generic chapter comments; do not force Tips into historical or straightforward factual sections.
+- Tips must be standard and should accompany each knowledge point: adapt textbook experiments first; otherwise give concrete, life-close examples beginning with `例如`. Use vivid, life-close, memorable examples when no experiment exists. Do not use Tips for真题提醒, answer strategy, broad summaries, or generic chapter comments.
+- Supplementary content should also be presented through a Tips-style block when the leader requests this style. Start with `补充内容：xxxx`, then edit the supplementary content according to 一本通 rules: layered structure, concise wording, bold keywords, and underlined key phrases.
 
 ## Reporting
 

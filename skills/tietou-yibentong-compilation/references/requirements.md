@@ -165,14 +165,16 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 
 ## Tips
 
-- For every knowledge point, if the textbook includes relevant experiments, adapt the experiment into a `Tips` block and mark the page number.
+- For every knowledge point, create a `铁头tips` expansion block. If the textbook includes relevant experiments, adapt the experiment into the Tips block and mark the page number.
 - Experiment tips should be concise, ideally no more than half a page. Include an image if genuinely useful and available.
-- If no experiment applies, create a `Tips` example that fits the knowledge point and is easy to understand in daily life.
+- If no experiment applies, create a Tips example that fits the knowledge point and is easy to understand in daily life. The example may use vivid, slightly exaggerated phrasing when it improves memory, but it must still accurately illustrate the concept.
 - Avoid obscure examples, irrelevant examples, or explaining one unfamiliar concept with another unfamiliar concept.
-- Tips should be either `textbook experiment adaptation` or `concrete example for understanding`. Do not use Tips for true-question reminders, answer strategies, broad summaries, motivational notes, or loose chapter-level comments. Put those in正文, 易混点, or delivery notes when needed.
-- For history/factual points, do not force a generic Tips block if it cannot produce a concrete, useful example. Forced Tips lowers quality.
+- Tips should be either `textbook experiment adaptation`, `concrete example for understanding`, or `supplementary content in Tips form`. Do not use Tips for true-question reminders, answer strategies, broad summaries, motivational notes, or loose chapter-level comments. Put those in正文, 易混点, or delivery notes when needed.
+- Supplementary content can be presented through a Tips-style block. Start with `补充内容：xxxx`, then compile the supplementary content with the same 一本通 standards: layered structure, concise wording, bold keywords, underlined key phrases, and only necessary examples.
+- For history/factual points, use a short example or analogy that clarifies the fact or distinction; do not write a generic reminder.
 - Tips spacing and style:
   - Leave one blank line before and after a Tips block.
+  - The sample uses a visual `铁头tips` label, often implemented with a small textbox/shape; when generating DOCX programmatically, use a consistent visible `铁头tips` label and keep the content immediately below it.
   - If Tips has a title, bold and center it; if not, no title treatment is needed.
   - Examples should use `例如` and leave two spaces after it when the final document style requires it.
   - If two Tips blocks are adjacent, leave two blank lines between them.
