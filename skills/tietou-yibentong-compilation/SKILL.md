@@ -33,10 +33,12 @@ The original source PDF is stored in the `agiamason/tietou` project repository a
 - The default unit is a testable point, not a paragraph. Prefer numbered and nested points over prose.
 - Level annotations are local to the specific knowledge point and describe estimated exam frequency/probability: 一级 is high-frequency and very likely, 二级 is medium-frequency and reasonably likely, and 三级 is low-frequency but still testable if the paper asks a偏、怪、难, or edge-scope question. A broad outline item may make a cluster important, but it does not automatically make every subtopic 一级.
 - Treat official-outline coverage as cluster-level evidence. A covered cluster is important, but only its core definitions, classifications, theories, formulas, procedures, representative tests/scales, and high-yield comparisons should usually become 一级; supporting points become 二级/强二级; background details usually stay 三级 or are compressed.
+- Treat 中国/中国古代/我国历史发展 content as non-core when there is no target-school true-question evidence. Compress, downgrade, or delete by examability; upgrade only exact true-question points to 一级.
 - Treat 强二级 as a manual-review subset of 二级: points close to 一级 but lacking decisive evidence. Keep them as 二级 in正文 unless instructed otherwise, and list them separately in the delivery notes with the upgrade reason and possible question type.
 - Use 312 and 泛347真题 as auxiliary examability evidence. They can reveal common question forms and raise a point to 强二级, but they do not override target-school true questions, official outline, or textbook structure.
 - Lower-level titles may be more important than their parent when a specific subtopic is high-yield or真题-covered. Mark the exception at the lower title.
-- Tips are optional. Use them for abstract concepts, confusing comparisons, calculations,量表, or examples that aid understanding; do not force Tips into historical or straightforward factual sections.
+- Keywords and key phrases must be deliberately separated: bold isolated terms, names, theories, scales, methods, indexes, years, and fixed expressions; underline answer-bearing phrases, clauses, or short sentences. The underlined unit can be a sentence fragment, not necessarily a complete sentence. The selected bold/underline text should be enough to reconstruct the paragraph's core content.
+- Tips must be standard: adapt textbook experiments first; otherwise give concrete, life-close examples beginning with `例如` when useful. Do not use Tips for真题提醒, answer strategy, broad summaries, or generic chapter comments; do not force Tips into historical or straightforward factual sections.
 
 ## Reporting
 

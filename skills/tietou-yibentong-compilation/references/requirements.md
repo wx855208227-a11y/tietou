@@ -77,6 +77,8 @@ For a textbook chapter such as `心理测量和测验的历史回顾`, the expec
 
 Remove or heavily compress long accounts of social context, institutional history, broad reflections, and policy discussion unless the user explicitly asks for a detailed history version.
 
+For psychology考研 materials, `中国/中国古代/我国历史发展` content is non-core by default when there is no target-school true-question evidence. Process it conservatively: mark as 二级/三级, compress to high-level clues, or delete low-yield details according to examability. If the target school has tested the exact point, mark that point 一级 and add the true-question marker.
+
 ## Importance Levels
 
 - Importance levels describe estimated exam frequency and probability, not whether a point is absolutely testable. 一级 means a high-frequency point that is very likely to appear in real exams; 二级 means a medium-frequency point that is reasonably likely to appear; 三级 means a low-frequency point that can still be tested, but would usually feel偏、怪、难, or beyond the normal core scope.
@@ -92,6 +94,7 @@ Remove or heavily compress long accounts of social context, institutional histor
 - 二级: medium-frequency points that are reasonably likely to appear in real exams, including important textbook content that supports 一级 clusters or has clear examinability, but is not directly true-question-covered and is less central than core definitions/classifications/theories.
 - 强二级: a manual-review subset inside 二级. Use this label in compilation notes, not necessarily in the正文 title, for points that are close to 一级 but lack decisive evidence. Typical cases include: official-outline-covered points with a stable question form but no direct true-question hit; textbook major subpoints that strongly support a 一级 cluster; points adjacent to repeated true-question themes; and points that could plausibly be upgraded to 一级 based on the leader's school-specific judgment.
 - 三级: low-frequency points that can still be tested but would usually be偏、怪、难, or near the edge of the normal scope, including background, low-frequency history, broad development overview, minor scale descriptions, or content mainly for understanding.
+- 中国/中国古代/我国历史发展类内容在没有目标院校真题支撑时，默认不作为重点。可按教材地位和可考性压缩为二级或三级；弱可考的细节可删除。只有被目标院校真题实质考过的具体点才升为一级。
 - Official outline evidence identifies important clusters. Do not automatically mark every subpoint under an outline-covered chapter as 一级.
 - True-question evidence must be substantive. Only mark `【xx年真题】` when that exact knowledge point or its answer substance was tested; do not mark because the same person, school, or general topic appeared in another context.
 - A lower-level title can be more important than its parent. For example, a parent history section may be 三级 while a specific figure/test inside it is 二级 or 一级.
@@ -152,11 +155,13 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 
 ## Bold And Underline
 
-- Underline phrases or key sentences.
-- Bold keywords.
+- Bold `keywords`: word-level or term-level scoring points, such as concepts, names, theories, scale names, methods, indexes, years, and fixed expressions.
+- Underline `key sentences/key phrases`: answer-bearing sentence parts, clauses, or short sentences. A key sentence does not have to be a complete grammatical sentence; it can be the most important half sentence or phrase group inside a sentence.
+- The practical test is extraction: if only the bolded keywords and underlined key phrases are read together, they should basically recover the paragraph's core content and answer logic.
 - Do not include adjacent punctuation in bold or underline marks.
-- If keywords are too dense in one sentence, do not bold every keyword; underline the key sentence instead.
-- Underlines should not be too long; keep each underline within about 1.5 lines.
+- If keywords are too dense in one sentence, do not bold every keyword; underline the key phrase/sentence segment that carries the complete point instead.
+- Underlines should not be too long; keep each underline within about 1.5 lines. Avoid reflexively underlining whole sentences when a shorter clause is enough.
+- Do not mix bold and underline randomly. Use bold for isolated terms; use underline for relational judgments, definitions, causal links, contribution statements, steps, or comparison conclusions.
 
 ## Tips
 
@@ -164,10 +169,12 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - Experiment tips should be concise, ideally no more than half a page. Include an image if genuinely useful and available.
 - If no experiment applies, create a `Tips` example that fits the knowledge point and is easy to understand in daily life.
 - Avoid obscure examples, irrelevant examples, or explaining one unfamiliar concept with another unfamiliar concept.
+- Tips should be either `textbook experiment adaptation` or `concrete example for understanding`. Do not use Tips for true-question reminders, answer strategies, broad summaries, motivational notes, or loose chapter-level comments. Put those in正文, 易混点, or delivery notes when needed.
+- For history/factual points, do not force a generic Tips block if it cannot produce a concrete, useful example. Forced Tips lowers quality.
 - Tips spacing and style:
   - Leave one blank line before and after a Tips block.
   - If Tips has a title, bold and center it; if not, no title treatment is needed.
-  - Examples should use `例如` and appropriate spacing.
+  - Examples should use `例如` and leave two spaces after it when the final document style requires it.
   - If two Tips blocks are adjacent, leave two blank lines between them.
   - If a Tips block is based on a textbook experiment, mark the lower-right page reference as `【科目+Pxx】`.
   - Leave two blank lines between tables and Tips.
