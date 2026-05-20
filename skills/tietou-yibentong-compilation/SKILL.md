@@ -27,12 +27,13 @@ For cover, catalog, and page-number formatting, follow the user-provided human s
 8. Treat screenshot examples as formatting examples, not as new正文规则 unless the leader confirms.
 9. For PDF/OCR/image-heavy materials, also use `intern-agent-pdf-ocr-batch`: process screenshots in small batches and keep durable local notes.
 10. When turning a new project PDF into reusable agent knowledge, create or update a dedicated skill: keep the operational workflow in `SKILL.md`, put detailed extracted rules in `references/`, and record the source PDF path so future agents read the skill first and consult the PDF only for detail checks.
-11. Run a self-check before delivery: source fidelity, evidence mapping, level logic, wording concision, bold/underline extraction, Tips priority, visual/table gate, supplement sources, A4 print layout, and unresolved assumptions.
+11. Run a self-check before delivery: source fidelity, evidence mapping, level logic, core正文 compilation quality, wording concision, bold/underline extraction, Tips priority, visual/table gate, supplement sources, A4 print layout, and unresolved assumptions.
 12. Deliver two files by default: a self-checked student-facing finished DOCX, and a manager review XLSX that makes the leader's audit fast. The review file should list evidence mapping, level decisions, 强二级 candidates, Tips/visual/supplement decisions, deletions/compressions, self-check results, and open confirmations.
 
 ## Exam-Facing Compilation Guardrails
 
 - 一本通 is not 速背, but it must still be much shorter than the textbook. If the result reads like a cleaned textbook summary, cut harder.
+- The正文 is the core product. Self-check whether the compiled正文 is genuinely the best attainable version under the current materials and rules, not merely a minimally compliant draft: content selection, hierarchy, wording, memorisability, answer usability, and exam-facing compression should all be deliberately optimized.
 - The default unit is a testable point, not a paragraph. Prefer numbered and nested points over prose.
 - Level annotations are local to the specific knowledge point and describe estimated exam frequency/probability: 一级 is high-frequency and very likely, 二级 is medium-frequency and reasonably likely, and 三级 is low-frequency but still testable if the paper asks a偏、怪、难, or edge-scope question. A broad outline item may make a cluster important, but it does not automatically make every subtopic 一级.
 - Treat official-outline coverage as cluster-level evidence. A covered cluster is important, but only its core definitions, classifications, theories, formulas, procedures, representative tests/scales, and high-yield comparisons should usually become 一级. Other outline-covered points should be at least 二级/强二级, except 中国/中国古代/我国发展史等中国背景类内容 can be 三级 when no target-school true-question evidence supports them.

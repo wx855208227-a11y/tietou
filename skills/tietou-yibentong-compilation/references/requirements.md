@@ -306,7 +306,7 @@ Include these sections:
 - 强二级复核表: all strong 二级 candidates, upgrade reason, likely question type, and whether they are candidates for 一级.
 - Tips/visual/supplement decision log: type, location, reason, source/page, and skipped borderline candidates.
 - Deletion/compression/downgrade notes: especially long background, 中国背景类 content, and low-yield historical details.
-- Self-check results: pass/fail or short notes for evidence mapping, level logic, wording concision, bold/underline extraction, Tips, visual/table rules, supplement sources, formatting, and unresolved assumptions.
+- Self-check results: pass/fail or short notes for evidence mapping, level logic, core正文 compilation quality, wording concision, bold/underline extraction, Tips, visual/table rules, supplement sources, formatting, and unresolved assumptions.
 - Open confirmations: only issues that cannot be resolved from provided materials or HF sources.
 
 ### Self-Check Procedure
@@ -318,6 +318,7 @@ Run these checks before sending files:
 - Subject check: mixed-paper true questions are assigned by answer substance, not superficial keywords.
 - Level check: 一级/二级/三级 reflect exam probability; all 强二级 points are listed for leader review.
 - Structure check: textbook chapter order is preserved, but low-yield prose is compressed or deleted.
+- Core正文 quality check: confirm the正文 has been compiled to the best attainable quality under the current materials and rules, not merely made compliant. Re-read each section for four failure modes: deletable content left in, splittable content not layered, awkward textbook language not rewritten, and answerable scoring points not made clear enough. Also check whether any 一级/二级 point would benefit from a better comparison, Tips, table, or visual, and whether any current expansion overstates a low-yield point.
 - Writing check: paragraphs are short, layered, answer-like, and not simply cleaned textbook prose.
 - Bold/underline check: reading only bold keywords plus underlined key phrases can recover the core answer logic.
 - Tips check: Tips follow priority order and are not added merely to fill space; ordinary 三级 points usually have no Tips.
@@ -331,6 +332,7 @@ Run these checks before sending files:
 - Source materials are identified and missing inputs are listed.
 - Each external-only item is located in the textbook or explicitly marked as supplementary with source status.
 - Textbook keywords and key sentences are preserved.
+- The正文 is judged as the best attainable compiled version under current materials: screening, hierarchy, rewrite quality, memorisability, answer usability, and compression have all been actively optimized.
 - Long paragraphs are split into layered points.
 - True-question knowledge points are present, marked, and 一级.
 - Importance levels follow parent/child rules and repeated lower-level marks are omitted when appropriate.
