@@ -260,11 +260,12 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 
 ## Title Annotations
 
-- Title annotation order: title + textbook page reference + importance level + true-question marker + question-type hint when retained.
+- Title annotation order: title + textbook page reference + importance level + true-question marker if any + question-type hint for 一级 points.
 - Mark second- and third-level title page references to the textbook where applicable.
 - True-question marker format: `【xx年真题】`.
-- Do not include question type inside the true-question marker. Write the question type plainly after the marker, such as `【20年真题】选择/名词解释` or `【20年真题】简答/论述`.
-- Finished products may retain question-type hints. For target-school true-question points, use the actual true-question type. For non-true-question points, keep likely question types in the manager review file unless the leader wants high-confidence likely types shown in the finished product.
+- Put question-type hints in separate brackets after the true-question marker or after the level marker when there is no true-question marker. Example: `【20、23年真题】【选择/名词解释】`.
+- Finished products should retain question-type hints for all 一级 knowledge points. If the point has target-school true-question evidence, use the actual true-question type. If the 一级 point has no target-school true-question evidence, use the judged likely question type according to examability and school style.
+- 二级/三级 likely question types should not appear in the finished正文 by default; keep them in the manager review file.
 - If the same knowledge point appears in multiple years, list the years in order.
 
 ## Overall Formatting
