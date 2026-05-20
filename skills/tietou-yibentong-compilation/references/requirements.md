@@ -7,7 +7,7 @@ Source PDF: `docs/yibentong/一本通编制要求及细则.pdf` in the `agiamaso
 ## Materials
 
 - 主体材料: 铁头一本通. If the subject has no existing 一本通, use the electronic textbook as the主体材料.
-- 辅助材料: official/electronic reference textbook, target院校官方考纲, target院校历年真题, optional 312历年真题, optional 泛347历年真题库, and strong external materials such as 高分秘籍 or 大纲解析 when the leader provides them.
+- 辅助材料: official/electronic reference textbook, target院校官方考纲, target院校历年真题, optional 312历年真题, optional 泛347历年真题库, and leader-provided published textbook/academic literature sources. Online文库、咨询号、无出处网络总结, and unsourced notes cannot be used as authoritative supplementary sources.
 - Use external material for comparison, not blind copying. Use the textbook as the authority for wording, definitions, structure, and source verification.
 - Evidence priority for 347 school-specific work: target-school true questions > target-school official outline > assigned textbook structure and wording > auxiliary 312/泛347 true-question evidence > other external materials.
 
@@ -16,7 +16,7 @@ Source PDF: `docs/yibentong/一本通编制要求及细则.pdf` in the `agiamaso
 1. Compare主体材料 with external materials and classify importance.
    - 条目一致: keep主体材料 content and its existing importance level.
    - 主体材料 has an item but external material does not: if 一级, keep but downgrade to 二级; if 二级, keep but downgrade to 三级; if 三级, delete. If no level is marked, judge from the parent item.
-   - External material has an item but主体材料 does not: locate it in the textbook. If present, rewrite the textbook content by these content rules and add it. If not present, add it as `补充内容`, verify its source against mainstream textbooks, cite the source if found, or mark that no source was found.
+   - External material has an item but主体材料 does not: locate it in the textbook. If present, rewrite the textbook content by these content rules and add it. If not present, add it as `补充内容` only after verifying it in published textbooks or academic literature. Cite the source textbook/literature and page when available, or mark that no traceable source was found.
 2. Compare the revised主体材料 with the textbook.
    - For every item, check whether points, terms, keywords, and meaning match the textbook.
    - If inconsistent, replace with a rewritten version based on textbook content and these content rules.
@@ -92,7 +92,7 @@ For psychology考研 materials, `中国/中国古代/我国历史发展` content
 
 - 一级: high-frequency points that are very likely to appear in real exams, including points directly tested in target-school true questions and concrete core knowledge points inside the official outline scope, especially definitions, core classifications, major theories, representative scales/tests, procedures, formulas, reliability/validity indexes, and high-yield comparisons.
 - 二级: medium-frequency points that are reasonably likely to appear in real exams, including important textbook content that supports 一级 clusters or has clear examinability, but is not directly true-question-covered and is less central than core definitions/classifications/theories.
-- 强二级: a manual-review subset inside 二级. Use this label in compilation notes, not necessarily in the正文 title, for points that are close to 一级 but lack decisive evidence. Typical cases include: official-outline-covered points with a stable question form but no direct true-question hit; textbook major subpoints that strongly support a 一级 cluster; points adjacent to repeated true-question themes; and points that could plausibly be upgraded to 一级 based on the leader's school-specific judgment.
+- 强二级: a manual-review subset inside 二级. Use this label in the manager review file, not in the finished正文 title; in the finished product it remains marked 二级 unless the leader confirms upgrade. Typical cases include: official-outline-covered points with a stable question form but no direct true-question hit; textbook major subpoints that strongly support a 一级 cluster; points adjacent to repeated true-question themes; and points that could plausibly be upgraded to 一级 based on the leader's school-specific judgment.
 - 三级: low-frequency points that can still be tested but would usually be偏、怪、难, or near the edge of the normal scope, including background, low-frequency history, broad development overview, minor scale descriptions, or content mainly for understanding.
 - 中国/中国古代/我国历史发展类内容在没有目标院校真题支撑时，默认不作为重点。可按教材地位和可考性压缩为二级或三级；弱可考的细节可删除。正文表述用“了解即可”等学生视角措辞，不写“不展开背诵”等编制过程话术。只有被目标院校真题实质考过的具体点才升为一级。
 - Official outline evidence identifies important clusters. Do not automatically mark every subpoint under an outline-covered chapter as 一级.
@@ -233,6 +233,9 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 ## Supplementary Content
 
 - Content not from the current textbook should be placed in a supplement box.
+- Supplementary sources must be traceable, authoritative, and preferably published textbooks. Academic journal articles can be used when they are the best source for a tested or important point.
+- Do not use online文库、咨询号、unverified web summaries, or unsourced notes as supplement sources.
+- For common course areas, use same-domain textbook families when possible. For example, 普通心理学类 supplements should come from published textbooks such as `普通心理学`, `心理学导论`, or `心理学与生活`-type sources, rather than loose online explanations.
 - Use a double-line box around supplementary content.
 - Mark the upper-left label `补充内容：`.
 - Supplementary content also needs key-point marking.
@@ -257,17 +260,18 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 
 ## Title Annotations
 
-- Title annotation order: title + textbook page reference + importance level + true-question marker.
+- Title annotation order: title + textbook page reference + importance level + true-question marker + question-type hint when retained.
 - Mark second- and third-level title page references to the textbook where applicable.
 - True-question marker format: `【xx年真题】`.
-- Do not include question type in the true-question marker.
+- Do not include question type inside the true-question marker. Write the question type plainly after the marker, such as `【20年真题】选择/名词解释` or `【20年真题】简答/论述`.
+- Finished products may retain question-type hints. For target-school true-question points, use the actual true-question type. For non-true-question points, keep likely question types in the manager review file unless the leader wants high-confidence likely types shown in the finished product.
 - If the same knowledge point appears in multiple years, list the years in order.
 
 ## Overall Formatting
 
 - After compiling正文, Tips, and supplementary content, adjust format and apply title levels before final review.
 - Recommended final order: apply title levels, mark second/third-level page references, mark true-question markers, mark importance levels, add page numbers, generate catalog, add cover.
-- Cover should follow previous-year materials; verify school, year, subject, and reference textbooks.
+- Cover, catalog, and page-number standards should follow the user-provided human sample `27深大普心一本通（最新版）(1).docx` when available; verify school, year, subject, and reference textbooks for the current project.
 - Full document line spacing: 1.5.
 - Body font: 宋体小四.
 - Follow Chinese line-breaking habits and use proper first-line indentation.
@@ -285,13 +289,13 @@ Every delivery should go through self-check first, then provide two files unless
 
 Default format: DOCX. This is the student-facing 一本通成品 and should be clean enough for direct review or later排版合稿.
 
-- Keep only student-facing content: title levels,正文, importance levels, true-question markers, Tips, tables/visuals, supplement blocks, and page references.
+- Keep only student-facing content: title levels,正文, importance levels, true-question markers, retained question-type hints, Tips, tables/visuals, supplement blocks, and page references.
 - Do not include internal notes such as `待确认`, `我判断`, `可能`, evidence scoring, or review comments inside正文 unless they are meant to appear in the final material.
 - Before delivery, check source fidelity, no unsupported content, concise layering, keyword/key-phrase marking, Tips priority, table/visual placement, A4 print layout, and cross-page risks.
 
 ### File 2: Manager Review File
 
-Default format: XLSX when the evidence table is substantial; DOCX/MD is acceptable for very short chapters. The review file exists to let the leader audit quickly without rereading the whole textbook.
+Default format: XLSX. Use DOCX/MD only when the leader requests it or when the chapter is too small to justify a spreadsheet. The review file exists to let the leader audit quickly without rereading the whole textbook.
 
 Include these sections:
 
@@ -317,8 +321,8 @@ Run these checks before sending files:
 - Bold/underline check: reading only bold keywords plus underlined key phrases can recover the core answer logic.
 - Tips check: Tips follow priority order and are not added merely to fill space; ordinary 三级 points usually have no Tips.
 - Visual/table check: tables and visuals serve at least one 一级 point unless listed for review; diagrams are actual diagrams, readable in black-and-white, and placed inside Tips.
-- Supplement check: missing but important/tested points are added as `补充内容：xxxx`, with source textbook/page when available.
-- Format check: title levels, page references, true-question markers, line spacing, page numbers, catalog needs, Tips label/box grouping, and cross-page risks are checked.
+- Supplement check: missing but important/tested points are added as `补充内容：xxxx`, with traceable published textbook or academic literature source and page when available.
+- Format check: title levels, page references, true-question markers, retained question-type hints, line spacing, cover/catalog/page-number sample standards, Tips label/box grouping, and cross-page risks are checked.
 - Assumption check: any nontrivial guess is moved into the manager review file instead of silently entering the finished product.
 
 ## Review Checklist
@@ -333,5 +337,5 @@ Run these checks before sending files:
 - All 强二级 candidates are separately listed for leader review.
 - The manager review file includes evidence, level, Tips/visual/supplement, and uncertainty logs.
 - Tips are relevant, concise, and page-marked when based on textbook experiments.
-- Supplementary content uses the required box and label.
-- Title levels, numbering, punctuation, page references, true-question markers, page numbers, catalog, chapter page breaks, and cross-page tips/supplements are checked.
+- Supplementary content uses the required box and label, and the source is a traceable published textbook or academic literature source.
+- Title levels, numbering, punctuation, page references, true-question markers, retained question-type hints, cover/catalog/page-number standards, chapter page breaks, and cross-page tips/supplements are checked.
