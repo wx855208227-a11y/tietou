@@ -159,12 +159,14 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - Apply an importance gate before adding any table or visual: the table/visual should normally contain and serve at least one 一级 knowledge point. 二级 points can be included when they help compare, support, or distinguish the 一级 point. 三级 points should only appear as necessary contrast labels/details; never create a standalone table, chart, or visual for pure 三级 content.
 - If a candidate table/visual has no 一级 point, default to not making it. Keep ordinary 二级 material in concise正文; only consider a pure 二级 table/visual when it is 强二级, clearly compresses repeated prose, and the leader has reason to emphasize it. List such cases for manual review when unsure.
 - Add comparison tables, flowcharts, or simple visual summaries when they help students compare and remember. Use tables for conceptual distinctions; use flowcharts for development sequences, procedures, and causal chains; use images only when they clarify spatial, process, or structure relations better than text.
+- Present summary visuals, flowcharts, timelines, and comparison tables as `铁头tips` extensions placed directly after the relevant knowledge point. They are learning aids for梳理 and辨析, not standalone正文 sections.
 - Good comparison candidates include: similar definitions, paired methods, scale/test variants, adjacent theories, people with overlapping historical contributions, formulas/indexes with similar uses, and concepts that target-school or auxiliary true questions often confuse.
 - A comparison table should include stable comparison dimensions such as `核心含义`, `关键词`, `适用对象/场景`, `代表人物/量表`, `易混点`, and `记忆抓手`. Keep cells short and exam-facing.
 - Prefer a table when the content is parallel and comparable across stable dimensions, such as concept distinctions, theory/person/scale comparisons, method advantages and disadvantages, applicable scenes, representative examples, formulas, indexes, or likely compare-and-contrast exam questions.
 - Prefer a visual, flowchart, timeline, tree diagram, or model diagram when the content is sequential, hierarchical, causal, procedural, structural, or spatial, such as development stages, scale/test编制流程, classification systems, theory mechanisms, decision paths, or multi-step application procedures.
 - If a section is labeled `图示`, `流程图`, `时间线`, or `图片`, render it as an actual image, Word drawing, or diagram-style object. Do not use a normal table under a `图示` heading. If the content is best rendered as a table, label it as `易混辨析`, `对比表`, or another table-appropriate heading instead.
 - Design every visual for final black-and-white printing. Use grayscale or pure black/white, large readable type at the final inserted Word size, thick borders/arrows, clear numbering, and sufficient spacing. Do not rely on color differences alone. Before delivery, inspect the visual itself and confirm it remains legible when scaled to the document width.
+- Do not add a separate image caption below inserted visuals unless the leader explicitly requests one. The Tips title should carry the function of the visual.
 - Do not make a table or visual for a single standalone point, a simple one-dimensional list, a linear paragraph that is already clear, too many low-yield rows, or any format that would visually overemphasize low-frequency details.
 - Do not add decorative tables. A comparison must reduce confusion, compress repeated prose, or improve answer organization.
 
@@ -195,6 +197,13 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
   - If two Tips blocks are adjacent, leave two blank lines between them.
   - If a Tips block is based on a textbook experiment, mark the lower-right page reference as `【科目+Pxx】`.
   - Leave two blank lines between tables and Tips.
+
+## A4 Print Layout
+
+- 一本通 final delivery is assumed to be A4 black-and-white double-sided printing unless the leader says otherwise.
+- Avoid orphan headings: do not leave a title at the bottom of one page with its正文 starting on the next page.
+- Keep each image, comparison table, Tips block, and supplement box together on one page when feasible. If it cannot fit, move the whole block to the next page rather than splitting it across pages.
+- Anchor image text size to正文 readability after insertion into Word, not to the original PNG canvas size. If the image is hard to read at document width, simplify the text, enlarge the type, or change the layout before delivery.
 
 ## Supplementary Content
 
