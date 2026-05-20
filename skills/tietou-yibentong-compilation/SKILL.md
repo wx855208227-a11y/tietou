@@ -43,8 +43,8 @@ The original source PDF is stored in the `agiamason/tietou` project repository a
 - Design visuals for black-and-white printing: use high contrast, larger type, thick lines/arrows, and do not rely on color to encode meaning.
 - Lay out for A4 black-and-white double-sided printing: avoid orphan headings at page bottoms and avoid splitting images, tables, tips, or supplement boxes across pages when generating DOCX/PDF.
 - Keywords and key phrases must be deliberately separated: bold isolated terms, names, theories, scales, methods, indexes, years, and fixed expressions; underline answer-bearing phrases, clauses, or short sentences. The underlined unit can be a sentence fragment, not necessarily a complete sentence. The selected bold/underline text should be enough to reconstruct the paragraph's core content.
-- Tips must be standard and should accompany each knowledge point: adapt textbook experiments first; otherwise give concrete, life-close examples beginning with `例如`. Use vivid, life-close, memorable examples when no experiment exists. Do not use Tips for真题提醒, answer strategy, broad summaries, or generic chapter comments.
-- Supplementary content should also be presented through a Tips-style block when the leader requests this style. Start with `补充内容：xxxx`, then edit the supplementary content according to 一本通 rules: layered structure, concise wording, bold keywords, and underlined key phrases.
+- Tips are selective, not mandatory for every knowledge point. Priority order: textbook experiments/small demonstrations first and required when present; then supplementary content for important or target-school-tested points absent from the main textbook, with source textbook/page; then life-close examples only for genuinely hard-to-understand 一级/二级 points. Avoid tips for ordinary 三级 points and skip examples that would be forced or harder than the concept.
+- Supplementary content should be presented through a Tips-style block. Start with `补充内容：xxxx`, cite the source textbook and page when available, then edit according to 一本通 rules: layered structure, concise wording, bold keywords, and underlined key phrases.
 
 ## Reporting
 

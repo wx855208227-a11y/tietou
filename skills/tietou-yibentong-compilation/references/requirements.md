@@ -182,13 +182,14 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 
 ## Tips
 
-- For every knowledge point, create a `铁头tips` expansion block. If the textbook includes relevant experiments, adapt the experiment into the Tips block and mark the page number.
-- Experiment tips should be concise, ideally no more than half a page. Include an image if genuinely useful and available.
-- If no experiment applies, create a Tips example that fits the knowledge point and is easy to understand in daily life. The example may use vivid, slightly exaggerated phrasing when it improves memory, but it must still accurately illustrate the concept.
-- Avoid obscure examples, irrelevant examples, or explaining one unfamiliar concept with another unfamiliar concept.
-- Tips should be either `textbook experiment adaptation`, `concrete example for understanding`, or `supplementary content in Tips form`. Do not use Tips for true-question reminders, answer strategies, broad summaries, motivational notes, or loose chapter-level comments. Put those in正文, 易混点, or delivery notes when needed.
-- Supplementary content can be presented through a Tips-style block. Start with `补充内容：xxxx`, then compile the supplementary content with the same 一本通 standards: layered structure, concise wording, bold keywords, underlined key phrases, and only necessary examples.
-- For history/factual points, use a short example or analogy that clarifies the fact or distinction; do not write a generic reminder.
+- Tips are selective learning aids, not mandatory blocks for every knowledge point. Do not add Tips merely to fill space.
+- Tips priority 1: textbook experiments, small experiments, demonstrations, cases, or concrete research descriptions. If the relevant knowledge point has such content in the textbook, adapt it into a Tips block and mark the textbook page. This is the strongest and normally required Tips type.
+- Tips priority 2: supplementary content. Use this when the target school has tested a knowledge point that is absent from the current reference textbook, or when a missing point is judged highly important. Check available HF/reference textbooks, cite the source textbook and page when available, and start the block with `补充内容：xxxx`. Compile the supplement with the same 一本通 standards: layered structure, concise wording, bold keywords, underlined key phrases, and only necessary examples.
+- Tips priority 3: life-close examples. Add examples only when the concept is genuinely hard for normal Chinese undergraduate-level students without psychology background. Prefer 一级 points, then 二级 points; avoid tips for ordinary 三级 points unless the point is clearly difficult to understand.
+- Life-close examples should use experiences most Chinese students have lived through, such as school exams, class ranking, choosing courses, family communication, shopping, social media, commuting, job interviews, or everyday interpersonal situations. Use exaggeration, metaphor, or contrast when it strengthens memory, but keep the psychological meaning accurate.
+- Avoid obscure examples, irrelevant examples, forced analogies, or explaining one unfamiliar concept with another unfamiliar concept. If a knowledge point does not suit a clear example, skip the example.
+- Tips should be `textbook experiment adaptation`, `supplementary content in Tips form`, `summary visual/comparison aid`, or `concrete example for understanding`. Do not use Tips for true-question reminders, answer strategies, broad summaries, motivational notes, or loose chapter-level comments. Put those in正文, 易混点, or delivery notes when needed.
+- For history/factual 三级 points, usually do not create Tips. Keep the正文 concise and use `了解即可` when appropriate.
 - Tips spacing and style:
   - Leave one blank line before and after a Tips block.
   - The sample uses a visual `铁头tips` label, often implemented with a small textbox/shape; when generating DOCX programmatically, use a consistent visible `铁头tips` label and keep the content immediately below it.
