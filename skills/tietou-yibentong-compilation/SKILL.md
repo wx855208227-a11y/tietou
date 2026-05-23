@@ -30,6 +30,42 @@ For cover, catalog, and page-number formatting, follow the user-provided human s
 11. Run a self-check before delivery: source fidelity, evidence mapping, level logic, core正文 compilation quality, wording concision, bold/underline extraction, Tips priority, visual/table gate, supplement sources, A4 print layout, and unresolved assumptions.
 12. Deliver two files by default: a self-checked student-facing finished DOCX, and a manager review XLSX that makes the leader's audit fast. The review file should list evidence mapping, level decisions, 强二级 candidates, Tips/visual/supplement decisions, deletions/compressions, self-check results, and open confirmations.
 
+## Manager-Worker-Reviewer Collaboration
+
+Use this workflow whenever the project has `tietou_manager`, `tietou_worker1`, `tietou_worker2`, and `tietou_reviewer` available for 一本通 or other 铁头资料 tasks.
+
+### Communication Rules
+
+- `tietou_manager` is the only agent that communicates with the leader/user. Workers and reviewer report only to `tietou_manager` and follow manager assignments.
+- Workers must not ask the leader directly for clarification. They should report blockers, assumptions, and missing inputs to `tietou_manager`.
+- `tietou_reviewer` does not command workers directly. It reports findings and verdicts to `tietou_manager`; the manager decides and assigns rework.
+
+### Role Responsibilities
+
+- `tietou_manager`: understand the leader's request, clarify missing inputs when truly needed, split work into concrete subtasks, assign ownership to workers, route each meaningful worker output through reviewer, decide rework, integrate branches/artifacts, run final checks, push to GitHub, and report to the leader.
+- `tietou_worker1` / `tietou_worker2`: execute assigned bounded tasks only, read this skill and `references/requirements.md` before working, respect the assigned branch/file scope, produce the requested artifact, self-check against the task brief, commit changes on the assigned branch when code/file work is requested, and report deliverables plus assumptions/risks to the manager.
+- `tietou_reviewer`: independently check worker outputs and the final integrated result against this skill, `references/requirements.md`, the manager's assignment, source materials, and produced artifacts. Report findings first, with evidence and a verdict: `PASS`, `PASS WITH RISKS`, `NEEDS REWORK`, or `BLOCKED`.
+
+### Task Flow
+
+1. Manager creates a work plan: source materials, target deliverables, chapter/section scope, expected output files, branch plan, file ownership, review checkpoints, and acceptance criteria.
+2. Manager splits work so worker branches have disjoint or clearly bounded write sets. Typical split examples: source extraction/evidence table, separate chapter sections, Tips/visual assets, DOCX generation, review XLSX, or formatting pass.
+3. Manager assigns tasks to `tietou_worker1` and/or `tietou_worker2` with explicit instructions: branch name, files/modules owned, materials to read, required skills, output format, self-check checklist, and reporting format. Remind workers they are not alone in the repo and must not revert others' work.
+4. Each worker works on its assigned branch when file edits are required. Use clear branch names such as `worker1/<task-slug>` and `worker2/<task-slug>` unless the manager specifies another convention.
+5. After each meaningful worker milestone, manager asks `tietou_reviewer` to review that worker's branch/artifacts before integration. For 一本通, checkpoints should normally include at least: evidence/level table, first compiled draft, Tips/visual/supplement decisions, generated DOCX/XLSX, and final self-check.
+6. Reviewer returns findings with evidence and a verdict. If the verdict is `NEEDS REWORK` or `BLOCKED`, manager sends precise rework instructions to the responsible worker and repeats review after revision. Do not merge work with unresolved blocker/high findings.
+7. Once reviewed worker branches pass, manager integrates them in the manager repo, resolves conflicts conservatively, and preserves each worker's accepted changes.
+8. Manager sends the integrated result to `tietou_reviewer` for final review before pushing. The final review must cover the combined artifact, not only individual worker outputs.
+9. If final review passes, manager pushes to GitHub and reports to the leader with: pushed commit/branch, deliverables, review status, 强二级/待确认 items, and any residual risks. If final review fails, manager assigns rework before reporting completion.
+
+### Review Gates For 一本通
+
+- Evidence gate: relevant true questions are subject-filtered and mapped, official outline coverage is interpreted correctly, and 强二级 candidates are listed.
+- Content gate: the正文 is the best attainable compiled version under current materials, not just a compliant draft.
+- Annotation gate: importance levels, true-question markers, 一级题型提示, bold keywords, and underlined key phrases follow the rules.
+- Tips/visual gate: Tips follow priority, visuals/tables serve appropriate importance levels, and supplement sources are traceable published textbooks or academic literature.
+- Delivery gate: finished DOCX and manager review XLSX exist, self-check is complete, A4 black-and-white layout risks are checked, and unresolved assumptions are visible in the review file.
+
 ## Exam-Facing Compilation Guardrails
 
 - 一本通 is not 速背, but it must still be much shorter than the textbook. If the result reads like a cleaned textbook summary, cut harder.

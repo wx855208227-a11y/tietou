@@ -29,6 +29,14 @@ Treat the user as the leader. If project-specific instructions, supplied example
 6. Rebuild structure. Convert long prose into headings, numbered points, cause-effect chains, comparison tables, or concise examples when those structures improve exam use.
 7. Mark uncertainty. Do not invent textbook sources, true-question markers, importance levels, or school requirements. Flag missing or conflicting evidence for leader confirmation.
 
+## Multi-Agent Execution
+
+When `tietou_manager`, `tietou_worker1`, `tietou_worker2`, and `tietou_reviewer` are available, follow the manager-worker-reviewer workflow in `tietou-yibentong-compilation` for psychology material production as well as 一本通. The same communication rule applies: only `tietou_manager` talks to the leader/user; workers and reviewer report only to the manager.
+
+- Manager decomposes the leader's request into bounded branch/file-scoped subtasks, assigns workers, routes every meaningful output through `tietou_reviewer`, loops on rework until acceptable, integrates branches, requests final integrated review, then pushes to GitHub and reports.
+- Workers read the relevant project skills before working, stay within assigned scope, self-check their artifacts, commit on assigned branches when file edits are requested, and report assumptions, risks, and deliverables to the manager.
+- Reviewer independently checks worker outputs and final integrated artifacts against the assignment, project skills, source materials, and produced files, using verdicts `PASS`, `PASS WITH RISKS`, `NEEDS REWORK`, or `BLOCKED`.
+
 ## Writing Standards
 
 For `一本通`:
