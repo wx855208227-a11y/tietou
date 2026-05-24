@@ -55,6 +55,7 @@ User uploaded psychology考研 materials to HuggingFace dataset wx855208227/tiet
 - `outputs/hf-organization/hf_validation_report.md`: validation summary and workflow issues.
 - Validation: `.DS_Store` count is 0; unique LFS object ids before/after are both 98; missing unique LFS object ids 0; new unique LFS object ids 0.
 - Workflow issue: `python` unavailable, use `python3`; `lite-agent` not on default PATH, use `/home/yileiyang/multi_agent/.venv/bin/lite-agent`; worker1/worker2 did not produce usable artifacts in time and worker1 left `outputs/hf-organization/test.tmp`, so manager completed a documented fallback pending reviewer review.
+- Reviewer surfaced branch pollution from old generated `outputs/ecnu-347/` and `outputs/yibentong-requirements/` files being captured by `commit_step.py`'s `git add -A`; cleanup removes them from the branch index and updates `.gitignore`/skill so future commits do not repeat it.
 
 ## Steps
 - 2026-05-24T15:17:57Z: task created
@@ -63,3 +64,5 @@ User uploaded psychology考研 materials to HuggingFace dataset wx855208227/tiet
 - 2026-05-24T15:45:00Z: Reorganized HF dataset locally, added HF index docs, generated audit artifacts, and updated project/local skill with process fixes.
 - 2026-05-24T15:30:58Z: Document HF material library reorganization
   - pushed_commit: d8a3029
+- 2026-05-24T15:58:00Z: Cleanup after reviewer finding: removed unrelated historical output artifacts from the branch index, ignored them locally, and documented `commit_step.py` `git add -A` risk in the skill.
+- 2026-05-24T15:34:14Z: Remove unrelated historical outputs from HF task branch

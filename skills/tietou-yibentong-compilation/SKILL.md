@@ -64,6 +64,7 @@ Use this workflow whenever the project has `tietou_manager`, `tietou_worker1`, `
 - If a worker does not produce the requested artifact in a reasonable time, leaves unrelated temporary files, or cannot be reached through the collaboration CLI, the manager records the issue in the task record and sends one explicit cleanup/finish instruction through `lite-agent assign` when available.
 - If the worker still cannot provide a usable artifact and the task can continue without risking correctness, the manager may complete the blocked portion directly as a documented fallback, then must route the manager-produced artifact through `tietou_reviewer` before pushing or reporting completion.
 - Do not integrate worker branches containing placeholder files such as `test.tmp`, half-written outputs, credential material, or files outside the assigned scope. Ask for cleanup/rework or ignore the branch and document why.
+- Before running `commit_step.py`, check `git status --short` and make sure unrelated generated outputs are ignored, moved out of the repo, or intentionally staged. The helper runs `git add -A`, so unignored old artifacts can be committed accidentally.
 
 ### HuggingFace Material Library Workflow
 
