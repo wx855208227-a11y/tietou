@@ -51,3 +51,4 @@ Task id task-20260524-151757-705031-organize-huggingface-psychology-materials. W
 ## Steps
 - 2026-05-24T15:20:22Z: task created
 - 2026-05-24T15:26:10Z: completed - Add HF material taxonomy plan
+  - pushed_commit: 3a94fac
