@@ -41,6 +41,7 @@
 - Generated a manager review XLSX with evidence/level decisions, strong 二级 candidates, and self-check.
 - Integrated worker1 evidence/level recommendations and worker2 content/Tips plan into the manager branch.
 - Adjusted the final draft after worker feedback: measurement-error details are left for later信度/经典测验理论 chapters, and 测验应用 is downgraded to 三级 without standalone Tips.
+- Addressed final reviewer `NEEDS REWORK` feedback: removed unsupported “常模转换/项目反应理论”等等距性获得方法 from正文, kept only textbook-supported 原始分转标准分处理, and added 2021年标准化条件/标准化样组 true-question annotation at 心理测验三要素.
 
 ### Artifacts And Evidence
 - Deliverables:
@@ -58,6 +59,7 @@
 - Validation:
   - DOCX and XLSX zip integrity checks passed.
   - Python content validation passed: required chapter headings and true-question markers present, `不展开背诵` absent, review workbook readable.
+  - Rework validation passed: student DOCX includes `【20、21年真题】`, `测验标准化的条件`, `标准化样组`, and `原始分数转化为标准分数`; unsupported `常模转换或项目反应理论` phrasing is absent; review XLSX mirrors the 2021 evidence and source-limited 等距性 decision.
   - `git diff --check` passed.
 
 ## Steps
@@ -66,3 +68,4 @@
   - pushed_commit: 1b06747
 - 2026-05-24T20:51:54Z: Generate ECNU measurement yibentong chapters 1-2
   - pushed_commit: 691ad11
+- 2026-05-24T20:57:54Z: Address ECNU measurement review feedback
