@@ -37,15 +37,18 @@
 ### Claimed Output
 - Added a reusable HF material organization guide to the GitHub project and the HF dataset.
 - Updated the HF dataset README, file index, and cleanup log so future agents can discover the guide.
-- HF dataset pushed to `main` at commit `72fd67a`.
+- HF dataset pushed to `main`; latest commit `0b106d4` includes the reviewer-requested TSV schema clarification.
 
 ### Artifacts And Evidence
 - GitHub: `docs/huggingface-material-organization.md`.
 - HF dataset: `索引/HF资料整理思路.md`.
 - HF dataset references: `README.md`, `索引/资料目录.tsv`, `索引/清理记录.md`.
 - Validation: TSV field check passed; `.DS_Store`/`test.tmp` check returned no files; HF LFS file count remained 101.
+- Reviewer first pass: `PASS WITH RISKS`; low-risk issue was that the guide did not explicitly include the current `考试` TSV column.
+- Rework completed: GitHub and HF guide now document the 8-column TSV schema `用途/考试/院校/材料类型/科目/主题/年份/范围/文件路径/备注`.
 
 ## Steps
 - 2026-05-24T16:33:12Z: task created
 - 2026-05-24T16:36:41Z: Document HF material organization workflow
   - pushed_commit: f4d4e5a
+- 2026-05-24T16:39:46Z: Address HF organization guide review feedback
