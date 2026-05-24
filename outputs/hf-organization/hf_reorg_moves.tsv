@@ -1,0 +1,146 @@
+action	old_path	proposed_new_path	reason	confidence
+keep	.gitattributes	.gitattributes	HF/LFS attributes are repo infrastructure; leave at root.	high
+keep	312心理学统考/真题详解/312心理学考研 历年真题详解.docx	312心理学统考/真题详解/312心理学考研 历年真题详解.docx	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
+keep	312心理学统考/真题详解/312心理学考研 历年真题详解.pdf	312心理学统考/真题详解/312心理学考研 历年真题详解.pdf	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
+keep	347应用心理专硕/勤思-名校真题正解/347 应用心理专硕名校真题正解.docx	347应用心理专硕/勤思-名校真题正解/347 应用心理专硕名校真题正解.docx	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
+keep	347应用心理专硕/勤思-名校真题正解/347 应用心理专硕名校真题正解.pdf	347应用心理专硕/勤思-名校真题正解/347 应用心理专硕名校真题正解.pdf	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
+keep	347应用心理专硕/学府-名校真题真练/应用心理硕士347 名校真题真练.docx	347应用心理专硕/学府-名校真题真练/应用心理硕士347 名校真题真练.docx	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
+keep	347应用心理专硕/学府-名校真题真练/应用心理硕士347 名校真题真练.pdf	347应用心理专硕/学府-名校真题真练/应用心理硕士347 名校真题真练.pdf	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
+keep	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 解析册.docx	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 解析册.docx	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
+keep	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 解析册.pdf	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 解析册.pdf	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
+keep	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 试题册.docx	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 试题册.docx	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
+keep	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 试题册.pdf	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 试题册.pdf	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
+update	README.md	README.md	Update root index after reorg to describe preserved auxiliary libraries and new school library.	high
+delete	上海交通大学/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+delete	上海交通大学/一本通/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+move	上海交通大学/一本通/上交临床心理学一本通.docx	院校资料库/347应用心理专硕/上海交通大学/一本通/上交临床心理学一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	上海交通大学/一本通/上交实验心理学一本通.docx	院校资料库/347应用心理专硕/上海交通大学/一本通/上交实验心理学一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	上海交通大学/一本通/上交普通心理学一本通.docx	院校资料库/347应用心理专硕/上海交通大学/一本通/上交普通心理学一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+delete	上海交通大学/教材/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+move	上海交通大学/教材/上交临床心理学_第二版_姚树桥.pdf	院校资料库/347应用心理专硕/上海交通大学/教材/上交临床心理学_第二版_姚树桥.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	上海交通大学/教材/上交实验心理学 第3版 郭秀艳 人民卫生出版社.pdf	院校资料库/347应用心理专硕/上海交通大学/教材/上交实验心理学 第3版 郭秀艳 人民卫生出版社.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	上海交通大学/教材/上交普通心理学_第6版_ 彭聃龄版 .pdf	院校资料库/347应用心理专硕/上海交通大学/教材/上交普通心理学_第6版_ 彭聃龄版 .pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+delete	上海交通大学/真题/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+move	上海交通大学/真题/上交2025初试真题.jpg	院校资料库/347应用心理专硕/上海交通大学/真题/上交2025初试真题.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	上海交通大学/真题/上交2026初试真题.jpg	院校资料库/347应用心理专硕/上海交通大学/真题/上交2026初试真题.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	上海交通大学/真题/上交2026初试真题答案.pdf	院校资料库/347应用心理专硕/上海交通大学/真题/上交2026初试真题答案.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+delete	华东师范大学/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+delete	华东师范大学/一本通/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+move	华东师范大学/一本通/华东实验心理学一本通.docx	院校资料库/347应用心理专硕/华东师范大学/一本通/华东实验心理学一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	华东师范大学/一本通/华东心理学导论一本通.docx	院校资料库/347应用心理专硕/华东师范大学/一本通/华东心理学导论一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	华东师范大学/一本通/华东测量心理学一本通.docx	院校资料库/347应用心理专硕/华东师范大学/一本通/华东测量心理学一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	华东师范大学/一本通/华东统计心理学一本通.docx	院校资料库/347应用心理专硕/华东师范大学/一本通/华东统计心理学一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+delete	华东师范大学/教材/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+move	华东师范大学/教材/华东实验心理学_第二版_郭秀艳.pdf	院校资料库/347应用心理专硕/华东师范大学/教材/华东实验心理学_第二版_郭秀艳.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	华东师范大学/教材/华东心理学导论_梁宁建.pdf	院校资料库/347应用心理专硕/华东师范大学/教材/华东心理学导论_梁宁建.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	华东师范大学/教材/华东心理测量_第三版_金瑜.pdf	院校资料库/347应用心理专硕/华东师范大学/教材/华东心理测量_第三版_金瑜.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	华东师范大学/教材/华东心理统计学_第四版_邵志芳.pdf	院校资料库/347应用心理专硕/华东师范大学/教材/华东心理统计学_第四版_邵志芳.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+delete	华东师范大学/真题/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+move	华东师范大学/真题/华东初试真题册.docx	院校资料库/347应用心理专硕/华东师范大学/真题/华东初试真题册.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+delete	华东师范大学/考纲/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+move	华东师范大学/考纲/华东硕士研究生入学考试大纲.pdf	院校资料库/347应用心理专硕/华东师范大学/考纲/华东硕士研究生入学考试大纲.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+review_merge	教材/347应用心理专硕/华东师范大学/心理测量/README.md	院校资料库/347应用心理专硕/华东师范大学/教材/心理测量/README.md	Legacy 教材 subject README; merge or move only after manager checks whether it duplicates the new school/subject index.	medium
+review_duplicate	教材/347应用心理专硕/华东师范大学/心理测量/心理测量 第三版.pdf	院校资料库/347应用心理专硕/华东师范大学/教材/心理测量/心理测量 第三版.pdf	Legacy 教材 location should consolidate, but filename appears to overlap a school textbook; compare by path/blob before moving or marking duplicate.	medium
+review_merge	教材/347应用心理专硕/深圳大学/普通心理学/README.md	院校资料库/347应用心理专硕/深圳大学/教材/普通心理学/README.md	Legacy 教材 subject README; merge or move only after manager checks whether it duplicates the new school/subject index.	medium
+review_duplicate	教材/347应用心理专硕/深圳大学/普通心理学/普通心理学  彭聃龄版  第6版.pdf	院校资料库/347应用心理专硕/深圳大学/教材/普通心理学/普通心理学  彭聃龄版  第6版.pdf	Legacy 教材 location should consolidate, but filename appears to overlap a school textbook; compare by path/blob before moving or marking duplicate.	medium
+delete	深圳大学/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+delete	深圳大学/一本通/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+move	深圳大学/一本通/深大实验心理学一本通.docx	院校资料库/347应用心理专硕/深圳大学/一本通/深大实验心理学一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	深圳大学/一本通/深大普通心理学一本通.docx	院校资料库/347应用心理专硕/深圳大学/一本通/深大普通心理学一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	深圳大学/一本通/深大测量心理学一本通.docx	院校资料库/347应用心理专硕/深圳大学/一本通/深大测量心理学一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	深圳大学/一本通/深大统计心理学一本通.docx	院校资料库/347应用心理专硕/深圳大学/一本通/深大统计心理学一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+delete	深圳大学/教材/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+move	深圳大学/教材/深大实验心理学(第二版)_郭秀艳.pdf	院校资料库/347应用心理专硕/深圳大学/教材/深大实验心理学(第二版)_郭秀艳.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	深圳大学/教材/深大心理与教育测量_第4版 _戴海琦.pdf	院校资料库/347应用心理专硕/深圳大学/教材/深大心理与教育测量_第4版 _戴海琦.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	深圳大学/教材/深大普通心理学_第6版_彭聃龄.pdf	院校资料库/347应用心理专硕/深圳大学/教材/深大普通心理学_第6版_彭聃龄.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	深圳大学/教材/深大现代心理与教育统计学_第五版_张厚粲.pdf	院校资料库/347应用心理专硕/深圳大学/教材/深大现代心理与教育统计学_第五版_张厚粲.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+delete	深圳大学/真题/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+move	深圳大学/真题/深大初试真题册.docx	院校资料库/347应用心理专硕/深圳大学/真题/深大初试真题册.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+delete	深圳大学/考纲/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+move	深圳大学/考纲/深圳大学2026年硕士研究生入学考试大纲.docx	院校资料库/347应用心理专硕/深圳大学/考纲/深圳大学2026年硕士研究生入学考试大纲.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	深圳大学/考纲/深圳大学2026年硕士研究生入学考试大纲——批注版.docx	院校资料库/347应用心理专硕/深圳大学/考纲/深圳大学2026年硕士研究生入学考试大纲——批注版.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+keep	编制规范/一本通编制要求/README.md	编制规范/一本通编制要求/README.md	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
+keep	编制规范/一本通编制要求/一本通编制要求及细则.pdf	编制规范/一本通编制要求/一本通编制要求及细则.pdf	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
+keep	编制规范/一本通编制要求/一本通编制要求及细则_抽取文本.txt	编制规范/一本通编制要求/一本通编制要求及细则_抽取文本.txt	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
+keep	编制规范/一本通编制要求/一本通编制要求学习笔记.md	编制规范/一本通编制要求/一本通编制要求学习笔记.md	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
+move	考纲/347应用心理专硕/华东师范大学/2025华东347心理学专业综合考试范围.pdf	院校资料库/347应用心理专硕/华东师范大学/考纲/2025华东347心理学专业综合考试范围.pdf	Legacy 考纲 location; consolidate into the same school outline folder under the standardized school library.	high
+move	考纲/347应用心理专硕/华东师范大学/README.md	院校资料库/347应用心理专硕/华东师范大学/考纲/README.md	Legacy 考纲 location; consolidate into the same school outline folder under the standardized school library.	high
+delete	西北师范大学/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+delete	西北师范大学/一本通/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+move	西北师范大学/一本通/西北师大人格心理学一本通.docx	院校资料库/347应用心理专硕/西北师范大学/一本通/西北师大人格心理学一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/一本通/西北师大发展心理学一本通(不完整版).docx	院校资料库/347应用心理专硕/西北师范大学/一本通/西北师大发展心理学一本通(不完整版).docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/一本通/西北师大咨询一本通.docx	院校资料库/347应用心理专硕/西北师范大学/一本通/西北师大咨询一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/一本通/西北师大心理学研究方法一本通.docx	院校资料库/347应用心理专硕/西北师范大学/一本通/西北师大心理学研究方法一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/一本通/西北师大普通心理学一本通.docx	院校资料库/347应用心理专硕/西北师范大学/一本通/西北师大普通心理学一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/一本通/西北师大社会心理学一本通.docx	院校资料库/347应用心理专硕/西北师范大学/一本通/西北师大社会心理学一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/一本通/西北师组织行为学一本通（不完整版本）.docx	院校资料库/347应用心理专硕/西北师范大学/一本通/西北师组织行为学一本通（不完整版本）.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+delete	西北师范大学/教材/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+move	西北师范大学/教材/西北师大人格心理学_第8版_伯格.pdf	院校资料库/347应用心理专硕/西北师范大学/教材/西北师大人格心理学_第8版_伯格.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/教材/西北师大发展心理学_第三版_林崇德 .pdf	院校资料库/347应用心理专硕/西北师范大学/教材/西北师大发展心理学_第三版_林崇德 .pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/教材/西北师大心理咨询的理论与实务_第2版_江光荣.pdf	院校资料库/347应用心理专硕/西北师范大学/教材/西北师大心理咨询的理论与实务_第2版_江光荣.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/教材/西北师大心理学与生活 _第19版_津巴多.pdf	院校资料库/347应用心理专硕/西北师范大学/教材/西北师大心理学与生活 _第19版_津巴多.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/教材/西北师大心理学研究方法_第2版_王轶楠.pdf	院校资料库/347应用心理专硕/西北师范大学/教材/西北师大心理学研究方法_第2版_王轶楠.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/教材/西北师大普通心理学 _第5版_彭聃龄.pdf	院校资料库/347应用心理专硕/西北师范大学/教材/西北师大普通心理学 _第5版_彭聃龄.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/教材/西北师大普通心理学 _第6版_彭聃龄.pdf	院校资料库/347应用心理专硕/西北师范大学/教材/西北师大普通心理学 _第6版_彭聃龄.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/教材/西北师大社会心理学 _第11版_迈尔斯.pdf	院校资料库/347应用心理专硕/西北师范大学/教材/西北师大社会心理学 _第11版_迈尔斯.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/教材/西北师大组织行为学_第九版_[美]赫尔雷格尔.pdf	院校资料库/347应用心理专硕/西北师范大学/教材/西北师大组织行为学_第九版_[美]赫尔雷格尔.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+delete	西北师范大学/真题/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+delete	西北师范大学/真题/真题10-22/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+move	西北师范大学/真题/真题10-22/22年西北师范大学应用心理硕士真题.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/22年西北师范大学应用心理硕士真题.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_1.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_1.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_10.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_10.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_11.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_11.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_12.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_12.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_13.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_13.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_14.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_14.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_15.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_15.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_16.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_16.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_17.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_17.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_18.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_18.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_19.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_19.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_2.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_2.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_20.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_20.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_21.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_21.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_22.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_22.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_3.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_3.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_4.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_4.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_5.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_5.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_6.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_6.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_7.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_7.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_8.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_8.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北347真题10-19/0521_9.jpg	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北347真题10-19/0521_9.jpg	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北师大2022年考研真题.docx	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北师大2022年考研真题.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北师范2020年347真题（回忆版）.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北师范2020年347真题（回忆版）.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题10-22/西北师范2021年347真题.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/真题10-22/西北师范2021年347真题.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+delete	西北师范大学/真题/真题23-25/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+move	西北师范大学/真题/真题23-25/2024年西北师范大学研究生入学考试应用心理硕士347考研真题.docx	院校资料库/347应用心理专硕/西北师范大学/真题/真题23-25/2024年西北师范大学研究生入学考试应用心理硕士347考研真题.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题23-25/25真题.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/真题23-25/25真题.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题23-25/25答案.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/真题23-25/25答案.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题23-25/答案.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/真题23-25/答案.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/真题23-25/西北师大23初试真题.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/真题23-25/西北师大23初试真题.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/答案10-22/22年答案.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/答案10-22/22年答案.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/11年答案.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/11年答案.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/12年答案.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/12年答案.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/13年答案.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/13年答案.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/14年答案.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/14年答案.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/15年答案.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/15年答案.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/17年答案.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/17年答案.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/18年答案.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/18年答案.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/19年答案.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/19年答案.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/答案2020.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/答案10-22/参考答案1/答案11-20（缺16）/答案2020.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/答案10-22/参考答案2.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/答案10-22/参考答案2.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+move	西北师范大学/真题/答案10-22/参考答案3.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/答案10-22/参考答案3.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+delete	西北师范大学/考纲/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
+move	西北师范大学/考纲/西北师大硕士研究生入学考试大纲.doc	院校资料库/347应用心理专硕/西北师范大学/考纲/西北师大硕士研究生入学考试大纲.doc	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
+review_move	西北师范大学/考纲/西北师范大学非全报考.docx	院校资料库/347应用心理专硕/西北师范大学/招生信息/西北师范大学非全报考.docx	Filename suggests non-full-time admissions info rather than a pure outline; manager should choose 考纲 vs 招生信息 before git mv.	low
+add		院校资料库/README.md	Add top-level school-library README explaining standardized school layout and what remains in auxiliary libraries.	high
+add		院校资料库/347应用心理专硕/README.md	Add school-library index for 347 school-specific materials and reviewer workflow notes.	high
+add		院校资料库/347应用心理专硕/index.tsv	Add machine-readable school index listing school, categories, and source roots after git mv.	high
+add		院校资料库/347应用心理专硕/上海交通大学/README.md	Add per-school index for 一本通, 教材, 真题, and missing/optional 考纲 status.	high
+add		院校资料库/347应用心理专硕/华东师范大学/README.md	Add per-school index for 一本通, 教材, 真题, 考纲, and legacy 考纲 consolidation notes.	high
+add		院校资料库/347应用心理专硕/深圳大学/README.md	Add per-school index for 一本通, 教材, 真题, 考纲, and annotated-outline notes.	high
+add		院校资料库/347应用心理专硕/西北师范大学/README.md	Add per-school index for 一本通, 教材, 真题/答案, 考纲, and incomplete/ambiguous items.	high
+add		312心理学统考/README.md	Add README clarifying this remains the 312 auxiliary true-question library and is not folded into school folders.	high
+add		347应用心理专硕/README.md	Add README clarifying this remains the 泛347 auxiliary true-question library and is not a school-specific folder.	high
+add		编制规范/README.md	Add README clarifying compilation-standard assets remain shared project references.	high
+add		.gitignore	Add .DS_Store ignore rule to prevent reintroducing upload noise after cleanup.	high
