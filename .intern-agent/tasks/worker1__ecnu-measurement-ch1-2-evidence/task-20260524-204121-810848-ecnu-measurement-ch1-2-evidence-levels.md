@@ -55,3 +55,4 @@ Delegated by tietou_manager. Create analysis/ecnu-measurement-ch1-2/worker1_evid
 - 2026-05-24T20:41:21Z: task created
 - 2026-05-24T20:48:59Z: completed - Add ECNU measurement ch1-2 evidence levels
   - pushed_commit: c61b333
+- 2026-05-24T20:49:36Z: Clean ECNU evidence table formatting
