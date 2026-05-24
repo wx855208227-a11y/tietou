@@ -37,12 +37,31 @@
 - Keep the task scoped to chapters 1 and 2.
 
 ### Claimed Output
-- TODO: fill when reporting completion.
+- Generated a student-facing DOCX for 华东347《测量心理学》一本通第1-2章.
+- Generated a manager review XLSX with evidence/level decisions, strong 二级 candidates, and self-check.
+- Integrated worker1 evidence/level recommendations and worker2 content/Tips plan into the manager branch.
+- Adjusted the final draft after worker feedback: measurement-error details are left for later信度/经典测验理论 chapters, and 测验应用 is downgraded to 三级 without standalone Tips.
 
 ### Artifacts And Evidence
-- TODO: fill with changed files, commits, generated artifacts, logs, screenshots, or test output.
+- Deliverables:
+  - `deliverables/ecnu-measurement-ch1-2/华东347测量心理学一本通_第1-2章_自检版.docx`
+  - `deliverables/ecnu-measurement-ch1-2/华东347测量心理学一本通_第1-2章_审核表.xlsx`
+  - `deliverables/ecnu-measurement-ch1-2/编制说明_第1-2章.md`
+- Worker artifacts integrated:
+  - `analysis/ecnu-measurement-ch1-2/worker1_evidence_levels.md` from worker1 branch `b91779e`
+  - `analysis/ecnu-measurement-ch1-2/worker2_content_tips_plan.md` from worker2 branch `2a3886c`
+- Source notes/extracts:
+  - `analysis/ecnu-measurement-ch1-2/outline.txt`
+  - `analysis/ecnu-measurement-ch1-2/true_questions_measurement_section.txt`
+  - `analysis/ecnu-measurement-ch1-2/sample_ch1_ch2.txt`
+  - `analysis/ecnu-measurement-ch1-2/textbook_ocr_pages/`
+- Validation:
+  - DOCX and XLSX zip integrity checks passed.
+  - Python content validation passed: required chapter headings and true-question markers present, `不展开背诵` absent, review workbook readable.
+  - `git diff --check` passed.
 
 ## Steps
 - 2026-05-24T20:36:20Z: task created
 - 2026-05-24T20:37:18Z: Set up ECNU measurement yibentong task
   - pushed_commit: 1b06747
+- 2026-05-24T20:51:54Z: Generate ECNU measurement yibentong chapters 1-2
