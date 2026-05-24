@@ -70,3 +70,4 @@ User uploaded psychology考研 materials to HuggingFace dataset wx855208227/tiet
   - pushed_commit: 4fdd8f4
 - 2026-05-24T16:05:00Z: Final reviewer verdict PASS; pushed HF dataset main to commit 3c954e5.
 - 2026-05-24T15:36:21Z: completed - Record HF organization completion
+  - pushed_commit: d272408
