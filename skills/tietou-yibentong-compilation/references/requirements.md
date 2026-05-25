@@ -121,6 +121,7 @@ Before judging importance for a school-specific 一本通, build a compact quest
 - Classify each question by subject. For a mixed 347 paper, include only questions whose answer substance belongs to the current subject. For 心理测量, include items such as psychological tests, measurement levels, reliability, validity, norms, item analysis, test construction, test ethics, classical test theory, modern measurement theory, and representative scales/tests.
 - Mark cross-subject questions by dominant answer source. For example, a question using statistics to evaluate reliability can belong to 心理测量 if the scoring focus is reliability interpretation; a general hypothesis-testing calculation belongs to 统计心理学.
 - Record question type: choice, judgment, term explanation, short answer, essay, case/material analysis, experiment design, calculation/application, or other observed forms.
+- Build a target-school question-type inventory from the provided years before adding any question-type hint. The inventory is a boundary for the finished product: if the target school has never used a form such as case analysis, experiment design, or material analysis in the relevant paper/subject, do not label any knowledge point with that form in the成品正文.
 - Map each relevant question to the smallest textbook knowledge point that supplies the answer. Use substantive match, not shared words.
 - Use target-school true-question hits as decisive 一级 evidence and true-question markers. Do not create target-school true-question markers from 312 or other-school 347 questions.
 
@@ -141,7 +142,7 @@ Use this table as the basis for the manager review file. The student-facing fini
 
 ### Question-Type Fit And Examability
 
-When a point is not directly tested by the target school, judge examability by the question forms it can naturally support:
+When a point is not directly tested by the target school, first constrain possible question-type hints by the target school's observed true-question profile, then judge examability by the question forms it can naturally support. A natural question type that the target school has never used can support internal examability judgment or 强二级 discussion, but it should not appear as a finished正文 question-type hint.
 
 - Term explanation: named concepts, theories, scales, indexes, effects, methods, and representative tests.
 - Choice/judgment: concept boundaries, category membership, people/years, key features, advantages/disadvantages, and common misconceptions.
@@ -151,6 +152,8 @@ When a point is not directly tested by the target school, judge examability by t
 - Calculation/application: score transformation, norms, item difficulty/discrimination, reliability coefficients, validity evidence, and measurement-level/statistical-method matching.
 
 A knowledge point's level rises when it has stable question forms, clear scoring points, textbook emphasis, outline coverage, and target-school style fit. It falls when it is mostly narrative, lacks independent scoring points, or only appears as a remote background detail.
+
+For example, if 深圳大学历年真题没有出现过案例分析题, then 深大一本通 should not mark non-true-question points as `案例分析`; choose among the school's observed forms such as选择、名词解释、简答、论述等, according to the actual paper profile. Keep absent-but-theoretically-possible forms in the manager review file only when they materially affect judging examability.
 
 Use the likely question type to shape the正文 unit:
 
@@ -271,7 +274,7 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - Mark second- and third-level title page references to the textbook where applicable.
 - True-question marker format: `【xx年真题】`.
 - Put question-type hints in separate brackets after the true-question marker or after the level marker when there is no true-question marker. Example: `【20、23年真题】【选择/名词解释】`.
-- Finished products should retain question-type hints for all 一级 knowledge points. If the point has target-school true-question evidence, use the actual true-question type. If the 一级 point has no target-school true-question evidence, use the judged likely question type according to examability and school style.
+- Finished products should retain question-type hints for all 一级 knowledge points. If the point has target-school true-question evidence, use the actual true-question type. If the 一级 point has no target-school true-question evidence, use the judged likely question type according to examability and the target school's observed question-type boundary; do not add forms absent from that school's true-question profile.
 - 二级/三级 likely question types should not appear in the finished正文 by default; keep them in the manager review file.
 - If the same knowledge point appears in multiple years, list the years in order.
 
@@ -326,6 +329,7 @@ Run these checks before sending files:
 - Source check: every retained substantive point can be traced to the target textbook, target-school true question, official outline, or cited supplementary source.
 - Evidence check: target-school true-question points are 一级 and accurately marked; official-outline-covered content is at least 二级 except eligible 中国背景类 content.
 - Subject check: mixed-paper true questions are assigned by answer substance, not superficial keywords.
+- Question-type check: finished正文 question-type hints stay within the target school's observed true-question forms; absent forms such as 案例分析、实验设计、材料分析 are not used unless that school has actually tested them in the relevant paper/subject.
 - Level check: 一级/二级/三级 reflect exam probability; all 强二级 points are listed for leader review.
 - Structure check: textbook chapter order is preserved, but low-yield prose is compressed or deleted.
 - Core正文 quality check: confirm the正文 has been compiled to the best attainable quality under the current materials and rules, not merely made compliant. Re-read each section for four failure modes: deletable content left in, splittable content not layered, awkward textbook language not rewritten, and answerable scoring points not made clear enough. Also check whether any 一级/二级 point would benefit from a better comparison, Tips, table, or visual, and whether any current expansion overstates a low-yield point.
