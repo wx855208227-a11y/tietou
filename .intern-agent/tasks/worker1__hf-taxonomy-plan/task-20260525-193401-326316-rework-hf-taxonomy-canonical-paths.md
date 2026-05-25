@@ -50,3 +50,4 @@ Review result NEEDS REWORK for task-20260524-151757-705031-organize-huggingface-
 - 2026-05-25T19:34:01Z: task created
 - 2026-05-25T19:42:00Z: revised taxonomy outputs to canonical HF paths and validated TSV/count/top-level coverage/diff check.
 - 2026-05-25T19:36:20Z: completed - Align HF taxonomy plan with canonical paths
+  - pushed_commit: 11ffbca
