@@ -19,6 +19,8 @@ OUT_DIR = Path("deliverables/ecnu-measurement-ch1-2")
 DOCX_PATH = OUT_DIR / "华东347测量心理学一本通_第1-2章_自检版.docx"
 XLSX_PATH = OUT_DIR / "华东347测量心理学一本通_第1-2章_审核表.xlsx"
 NOTES_PATH = OUT_DIR / "编制说明_第1-2章.md"
+TIP_RIBBON_PATH = OUT_DIR / "assets" / "tietou_tips_ribbon.png"
+FONT_PATH = Path("outputs/ecnu-347/measurement-psychology/assets/fonts/NotoSansSC-Regular.otf")
 
 
 def set_run_font(run, size=12, bold=None, underline=None, color=None):
@@ -108,13 +110,61 @@ def set_cell_border(cell, **kwargs):
 
 
 def set_table_border(table, color="A6A6A6", size="6"):
+    tbl_pr = table._tbl.tblPr
+    if tbl_pr.find(qn("w:tblLayout")) is None:
+        layout = OxmlElement("w:tblLayout")
+        layout.set(qn("w:type"), "fixed")
+        tbl_pr.append(layout)
     border = {"val": "single", "sz": size, "color": color, "space": "0"}
-    for row in table.rows:
+    for row_idx, row in enumerate(table.rows):
         row_pr = row._tr.get_or_add_trPr()
         if row_pr.find(qn("w:cantSplit")) is None:
             row_pr.append(OxmlElement("w:cantSplit"))
+        if row_idx == 0 and row_pr.find(qn("w:tblHeader")) is None:
+            row_pr.append(OxmlElement("w:tblHeader"))
         for cell in row.cells:
             set_cell_border(cell, top=border, bottom=border, left=border, right=border)
+
+
+def ensure_tip_ribbon():
+    """Create a small Tips ribbon close to the human sample's upper-left label."""
+    TIP_RIBBON_PATH.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+    except ImportError:
+        return
+
+    scale = 4
+    img = Image.new("RGBA", (360 * scale, 150 * scale), (255, 255, 255, 0))
+    draw = ImageDraw.Draw(img)
+    blue = (59, 89, 152, 255)
+    fill = (255, 255, 255, 255)
+
+    def pts(values):
+        return [(int(x * scale), int(y * scale)) for x, y in values]
+
+    # A simple slanted ribbon with two small tails; designed to remain legible in black-and-white print.
+    main = [(54, 80), (242, 27), (286, 76), (98, 130)]
+    left_tail = [(54, 80), (15, 66), (36, 103), (98, 130)]
+    right_tail = [(242, 27), (322, 21), (286, 76)]
+    draw.polygon(pts(left_tail), fill=fill, outline=blue)
+    draw.polygon(pts(right_tail), fill=fill, outline=blue)
+    draw.polygon(pts(main), fill=fill, outline=blue)
+    draw.line(pts(main + [main[0]]), fill=blue, width=3 * scale)
+    draw.line(pts(left_tail + [left_tail[0]]), fill=blue, width=3 * scale)
+    draw.line(pts(right_tail + [right_tail[0]]), fill=blue, width=3 * scale)
+
+    font_file = str(FONT_PATH) if FONT_PATH.exists() else None
+    font = ImageFont.truetype(font_file, 18 * scale) if font_file else ImageFont.load_default()
+    text_layer = Image.new("RGBA", (220 * scale, 60 * scale), (255, 255, 255, 0))
+    td = ImageDraw.Draw(text_layer)
+    text = "铁头 tips"
+    bbox = td.textbbox((0, 0), text, font=font)
+    td.text(((220 * scale - (bbox[2] - bbox[0])) / 2 - bbox[0], (60 * scale - (bbox[3] - bbox[1])) / 2 - bbox[1]), text, font=font, fill=(0, 0, 0, 255))
+    rotated = text_layer.rotate(-16, expand=True, resample=Image.Resampling.BICUBIC)
+    img.alpha_composite(rotated, (92 * scale, 8 * scale))
+    img = img.resize((360, 150), Image.Resampling.LANCZOS)
+    img.save(TIP_RIBBON_PATH)
 
 
 def clear_cell(cell):
@@ -141,19 +191,25 @@ def shade_cell(cell, fill):
 
 
 def add_tip(doc, title, paragraphs=None, table=None, source=None):
+    ensure_tip_ribbon()
     spacer = doc.add_paragraph()
     spacer.paragraph_format.space_after = Pt(0)
     keep_paragraph(spacer, with_next=True, together=True)
 
-    # Match the human sample's Tips feel: a small upper-left label attached to a light-blue block.
+    # Match the human sample's Tips feel: a small upper-left ribbon attached to a light-blue block.
     outer = doc.add_table(rows=2, cols=2)
     outer.alignment = WD_TABLE_ALIGNMENT.CENTER
     outer.autofit = False
+    outer_pr = outer._tbl.tblPr
+    if outer_pr.find(qn("w:tblLayout")) is None:
+        layout = OxmlElement("w:tblLayout")
+        layout.set(qn("w:type"), "fixed")
+        outer_pr.append(layout)
     label = outer.cell(0, 0)
     blank = outer.cell(0, 1)
     body = outer.cell(1, 0).merge(outer.cell(1, 1))
-    set_cell_width(label, 2.4)
-    set_cell_width(blank, 13.2)
+    set_cell_width(label, 2.8)
+    set_cell_width(blank, 12.8)
     set_cell_width(body, 15.6)
     for row in outer.rows:
         row._tr.get_or_add_trPr().append(OxmlElement("w:cantSplit"))
@@ -163,19 +219,20 @@ def add_tip(doc, title, paragraphs=None, table=None, source=None):
 
     label.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
     shade_cell(label, "FFFFFF")
-    set_cell_border(label, top={"val": "single", "sz": "10", "color": "5B9BD5", "space": "0"}, bottom={"val": "single", "sz": "10", "color": "5B9BD5", "space": "0"}, left={"val": "single", "sz": "10", "color": "5B9BD5", "space": "0"}, right={"val": "single", "sz": "10", "color": "5B9BD5", "space": "0"})
+    set_cell_border(label, top={"val": "nil"}, bottom={"val": "nil"}, left={"val": "nil"}, right={"val": "nil"})
     set_cell_border(blank, top={"val": "nil"}, bottom={"val": "nil"}, left={"val": "nil"}, right={"val": "nil"})
     p = label.paragraphs[0]
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     keep_paragraph(p, with_next=True, together=True)
-    r = p.add_run("铁头")
-    set_run_font(r, size=10, bold=True)
-    r = p.add_run("tips")
-    set_run_font(r, size=10, bold=True)
+    if TIP_RIBBON_PATH.exists():
+        p.add_run().add_picture(str(TIP_RIBBON_PATH), width=Cm(2.4))
+    else:
+        r = p.add_run("铁头 tips")
+        set_run_font(r, size=10, bold=True)
 
     body.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.TOP
-    shade_cell(body, "DAE3F3")
-    border = {"val": "single", "sz": "8", "color": "DAE3F3", "space": "0"}
+    shade_cell(body, "D9E2F3")
+    border = {"val": "single", "sz": "8", "color": "D9E2F3", "space": "0"}
     set_cell_border(body, top=border, bottom=border, left=border, right=border)
     p = body.paragraphs[0]
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -212,14 +269,14 @@ def add_tip(doc, title, paragraphs=None, table=None, source=None):
             for i, value in enumerate(row):
                 cells[i].text = value
         set_table_border(inner, color="7F7F7F", size="6")
-        for row in inner.rows:
+        for row_idx, row in enumerate(inner.rows):
             for c in row.cells:
                 c.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
                 for p2 in c.paragraphs:
-                    p2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    p2.alignment = WD_ALIGN_PARAGRAPH.CENTER if row_idx == 0 else WD_ALIGN_PARAGRAPH.LEFT
                     keep_paragraph(p2, with_next=False, together=True)
                     for r in p2.runs:
-                        set_run_font(r, size=9.5, bold=False)
+                        set_run_font(r, size=10.5, bold=(row_idx == 0))
     if source:
         sp = body.add_paragraph()
         sp.alignment = WD_ALIGN_PARAGRAPH.RIGHT
@@ -308,21 +365,21 @@ def build_docx():
 
     add_heading(doc, "二、近代心理测量的早期尝试与先驱者探索P6（二级）", 2)
     add_heading(doc, "（一）智力落后儿童分类与训练P6（三级）", 3)
-    add_marked_para(doc, "**艾斯克罗**首先正式区分**智力落后**与**精神异常**，并认为语言能力是判断智力水平的重要指标。**沈干**是训练智力落后者的先驱，使用“心理训练法”，并创办教育智力落后儿童的学校。")
+    add_marked_para(doc, "**艾斯克罗**__首先正式区分智力落后与精神异常__，并认为语言能力是判断智力水平的重要指标。**沈干**__是训练智力落后者的先驱__，使用“心理训练法”，并创办教育智力落后儿童的学校。")
     add_heading(doc, "（二）冯特实验心理学的影响P7（二级）", 3)
-    add_marked_para(doc, "冯特实验心理学对早期心理测验有两点影响：第一，研究内容偏向**感觉敏感性**和**简单反应时**，影响了早期测验项目；第二，实验强调严格控制情境，后来转化为心理测验中的**标准化**思想。")
+    add_marked_para(doc, "冯特实验心理学对早期心理测验有两点影响：第一，__研究内容偏向感觉敏感性和简单反应时__，影响了早期测验项目；第二，__实验控制思想后来转化为心理测验中的标准化思想__。")
     add_heading(doc, "（三）高尔顿的理想和贡献P8（二级）", 3)
     add_marked_para(doc, "**高尔顿**是__直接推动测验运动发展的第一人__。他在《人类才能及其发展的研究》中提出“**测验**”和“**心理测量**”两个术语，也是最早实际从事测验活动的学者之一。")
-    add_marked_para(doc, "高尔顿的贡献包括：建立**人体测量学实验室**，积累个别差异资料；设计高尔顿棒、高尔顿哨等测量工具；并较早使用**评定量表**、**问卷法**和**自由联想技术**。")
+    add_marked_para(doc, "高尔顿的贡献包括：建立**人体测量学实验室**，__积累个别差异资料__；设计高尔顿棒、高尔顿哨等测量工具；并较早使用**评定量表**、**问卷法**和**自由联想技术**。")
     add_heading(doc, "（四）心理测量逐步发展P9（二级）", 3)
-    add_marked_para(doc, "**卡特尔**于1890年发表《心理测验与测量》，使“**心理测验**”首次出现在心理学文献中；他重视感觉辨别力和反应时测量。")
-    add_marked_para(doc, "**克雷丕林**较早将心理测验用于精神病理学，并使用自由联想法诊断精神病人；**艾宾浩斯**重视综合能力，首创较复杂的**语句完成测验**。")
+    add_marked_para(doc, "**卡特尔**于**1890年**发表《心理测验与测量》，__使“心理测验”首次出现在心理学文献中__；他重视感觉辨别力和反应时测量。")
+    add_marked_para(doc, "**克雷丕林**__较早将心理测验用于精神病理学__，并使用自由联想法诊断精神病人；**艾宾浩斯**重视综合能力，__首创较复杂的语句完成测验__。")
 
     add_heading(doc, "三、社会需要是心理测量和测验发展的动力P10（二级）", 2)
     add_heading(doc, "（一）比奈和世界上第一个智力测验P11（一级）【20年真题】【选择】", 3)
-    add_marked_para(doc, "**比奈**被称为**心理测验的鼻祖**。他认为智力包含推理、判断以及运用旧知识解决新问题等高级心理过程。")
-    add_marked_para(doc, "1904年，比奈与**西蒙**合作，完成世界上第一个智力测验量表，即**比奈—西蒙量表**；1905年发表《诊断异常儿童的新方法》，因此也称**1905年量表**。")
-    add_marked_para(doc, "1916年，斯坦福大学教授**推孟**修订比奈—西蒙量表，形成著名的**斯坦福—比奈量表**，简称**S-B量表**或**斯比量表**。")
+    add_marked_para(doc, "**比奈**__被称为心理测验的鼻祖__。他认为智力包含__推理、判断以及运用旧知识解决新问题等高级心理过程__。")
+    add_marked_para(doc, "**1904年**，比奈与**西蒙**合作，__完成世界上第一个智力测验量表__，即**比奈—西蒙量表**；**1905年**发表《诊断异常儿童的新方法》，因此也称**1905年量表**。")
+    add_marked_para(doc, "**1916年**，斯坦福大学教授**推孟**__修订比奈—西蒙量表，形成斯坦福—比奈量表__，简称**S-B量表**或**斯比量表**。")
     add_tip(
         doc,
         "比奈为什么高频",
@@ -333,9 +390,9 @@ def build_docx():
         source="【心理测量P11】",
     )
     add_heading(doc, "（二）团体测验的产生P11（二级）", 3)
-    add_marked_para(doc, "早期比奈量表属于**个别测验**，每次主要测量一名被试，适合个案深入分析，但耗时、对主试要求高。")
+    add_marked_para(doc, "早期比奈量表属于**个别测验**，__每次主要测量一名被试，适合个案深入分析，但耗时、对主试要求高__。")
     add_marked_para(doc, "第一次世界大战期间，美国因大规模选兵需要，发展出历史上第一个团体测验。**陆军A式量表**是文字测验，**陆军B式量表**是非文字测验，适用于文盲和不懂英语的新兵。")
-    add_marked_para(doc, "团体测验的价值在于能同时测量大量被试，简化指导语和施测程序，降低主试训练要求。")
+    add_marked_para(doc, "团体测验的价值在于__能同时测量大量被试，简化指导语和施测程序，降低主试训练要求__。")
     add_tip(
         doc,
         "个别测验与团体测验的易混点",
@@ -359,8 +416,8 @@ def build_docx():
 
     add_heading(doc, "一、测量的基本问题P29（一级）【选择/简答】", 2)
     add_heading(doc, "（一）测量的定义P29（一级）【20年真题】【选择】", 3)
-    add_marked_para(doc, "**测量**是__按照一定的法则，用数字方法对事物属性进行描述的过程__。史蒂文斯的经典表述是：“测量是按照法则给事物指派数字。”")
-    add_marked_para(doc, "测量包含三个基本成分：**测量对象**、**测量规则或法则**、**测量结果**。对象是事物的属性和特征；法则是给属性分派数字的依据；结果是描述属性的数字或符号。")
+    add_marked_para(doc, "**测量**是__按照一定的法则，用数字方法对事物属性进行描述的过程__。**史蒂文斯**的经典表述是：__测量是按照法则给事物指派数字__。")
+    add_marked_para(doc, "测量包含三个基本成分：**测量对象**、**测量规则或法则**、**测量结果**；其中，__对象是事物属性和特征，法则是给属性分派数字的依据，结果是描述属性的数字或符号__。")
     add_tip(
         doc,
         "用体重理解测量三要素",
@@ -371,8 +428,8 @@ def build_docx():
         source="【心理测量P29】",
     )
     add_heading(doc, "（二）测量的要素P32（二级）", 3)
-    add_marked_para(doc, "任何测量都应具备两个要素：**参照点**和**单位**。参照点是计算的起点，单位是表示数量多少的基本尺度。")
-    add_marked_para(doc, "参照点分为**绝对零点**和**相对零点**。绝对零点表示“无”，如0米表示没有长度；相对零点是人为规定的起点，如海拔以海平面为零点。")
+    add_marked_para(doc, "任何测量都应具备两个要素：**参照点**和**单位**。__参照点是计算的起点，单位是表示数量多少的基本尺度__。")
+    add_marked_para(doc, "参照点分为**绝对零点**和**相对零点**。__绝对零点表示“无”__，如0米表示没有长度；__相对零点是人为规定的起点__，如海拔以海平面为零点。")
     add_marked_para(doc, "理想单位要满足两个条件：一是**意义确定**，所有人理解相同；二是**价值相等**，相邻单位之间差距相等。")
     add_heading(doc, "（三）四种测量水平和测量量表P33（一级）【20、22、25、26年真题】【选择/简答/名词解释】", 3)
     add_marked_para(doc, "**量表**是__具有参照点和单位的连续体__，可以把事物属性表现出来。史蒂文斯将测量分为四种水平：**类别测量**、**等级测量**、**等距测量**和**等比测量**。")
@@ -380,7 +437,7 @@ def build_docx():
         doc,
         "四种量表对比与记忆线",
         paragraphs=[
-            "华东真题高频考查量表水平的判断：**均数和标准差**通常对应等距及以上水平；**摄氏温度**有相对零点，属于等距量表；**等比量表**具有绝对零点，可作倍数解释。",
+            "华东真题高频考查量表水平的判断：**均数和标准差**通常对应等距及以上水平；**摄氏温度**有相对零点，属于等距量表；**等比量表**__具有绝对零点，可作倍数解释__。",
             "可以按“能做什么”记：类别量表只能**分堆**；等级量表能**排队**；等距量表能比较**差多少**；等比量表还能比较**几倍**。",
             "例如考试成绩的标准分通常可按等距处理，但心理特质本身没有绝对零点，所以心理测量一般不能直接说“甲的智力是乙的两倍”。",
         ],
@@ -396,19 +453,19 @@ def build_docx():
         source="【心理测量P33】",
     )
     add_heading(doc, "（四）直接测量和间接测量P34（二级）", 3)
-    add_marked_para(doc, "**直接测量**是能直接测得事物属性的测量，如测量长度；**间接测量**不能直接测得目标属性，只能根据测量结果进行推论。__心理测量一般属于间接测量__。")
+    add_marked_para(doc, "**直接测量**是__能直接测得事物属性的测量__，如测量长度；**间接测量**是__不能直接测得目标属性，只能根据测量结果进行推论的测量__。__心理测量一般属于间接测量__。")
     add_heading(doc, "（五）测量的方法P34（二级）", 3)
-    add_marked_para(doc, "测量方法包括实验法、观察法和测验法。心理测量较多使用**测验法**，广义心理测量可包括实验、观察等方法，狭义心理测量则主要指应用测验法进行的测量。")
+    add_marked_para(doc, "测量方法包括**实验法**、**观察法**和**测验法**。心理测量较多使用测验法；__广义心理测量可包括实验、观察等方法，狭义心理测量主要指应用测验法进行的测量__。")
     add_heading(doc, "（六）测量误差和精确程度P34（二级）", 3)
-    add_marked_para(doc, "测量结果越精确，价值越高；但测量总会有误差，__误差越大，精确程度越低；误差越小，精确程度越高__。影响精确程度的因素包括测量对象本身、测量工具和测量目的。")
+    add_marked_para(doc, "测量结果越精确，价值越高；但测量总会有误差，__误差越大，精确程度越低；误差越小，精确程度越高__。影响精确程度的因素包括**测量对象本身**、**测量工具**和**测量目的**。")
 
     add_heading(doc, "二、心理测量的基本概念P35（一级）【名词解释/简答】", 2)
     add_heading(doc, "（一）心理测量的定义P35（一级）【名词解释】", 3)
     add_marked_para(doc, "**心理测量**是__根据一定法则，用数字对人的行为加以确定__；也就是依据心理学理论和操作程序，给人的行为与心理属性确定数量化价值。")
     add_heading(doc, "（二）心理测量的可能性P35（二级）", 3)
-    add_marked_para(doc, "心理测量可能性的依据有两个命题：第一，任何现象只要客观存在，就总有数量性质，代表人物是**桑代克**；第二，凡有数量的现象都可以测量，代表人物是**麦柯尔**。")
+    add_marked_para(doc, "心理测量可能性的依据有两个命题：第一，**桑代克**提出__凡客观存在的现象都有数量性质__；第二，**麦柯尔**提出__凡有数量的现象都可以测量__。")
     add_heading(doc, "（三）心理测量的特点P36（二级）", 3)
-    add_marked_para(doc, "心理测量具有**间接性**和**相对性**。间接性是指通过外显行为推论内在心理属性；相对性是指人的心理测量结果通常表示个体在群体或连续行为序列中的相对位置。")
+    add_marked_para(doc, "心理测量具有**间接性**和**相对性**。__间接性是通过外显行为推论内在心理属性__；__相对性是用测量结果表示个体在群体或连续行为序列中的相对位置__。")
     add_tip(
         doc,
         "心理测量为什么是间接的",
@@ -420,18 +477,18 @@ def build_docx():
     )
     add_heading(doc, "（四）心理测量的水平P37（一级）【25年真题】【简答】", 3)
     add_marked_para(doc, "严格说，__心理测量只具有等级量表的特征__。但多数心理特征近似常态分布，且测量结果可转化为标准分数，因此实践中常把心理量表当作**等距量表**处理。")
-    add_marked_para(doc, "心理量表的等距处理主要依赖__把原始分数转化为标准分数__，使测验分数在统计解释上可按等距量表处理；严格获得等距性的具体方法，教材在后续量表与常模等章节再展开。")
+    add_marked_para(doc, "心理量表的等距处理主要依赖__把原始分数转化为标准分数__，使测验分数在统计解释上可按等距量表处理；但心理特质通常没有绝对零点，__不能作“几倍”的解释__。")
 
     add_heading(doc, "三、心理测验的基本概念P37（一级）【选择/名词解释】", 2)
     add_heading(doc, "（一）心理测验和心理测量的联系与区别P37（二级）", 3)
-    add_marked_para(doc, "**心理测验**主要是了解心理的工具，多在“名词”意义上使用；**心理测量**是使用测验等工具了解心理的活动，多在“动词”意义上使用，范围更广。")
-    add_marked_para(doc, "二者联系在于：能用于实际心理测量的心理测验才是真正有效的工具；应用规范测验工具的心理测量活动，才是科学的测量。")
+    add_marked_para(doc, "**心理测验**主要是__了解心理的工具__，多在“名词”意义上使用；**心理测量**是__使用测验等工具了解心理的活动__，多在“动词”意义上使用，范围更广。")
+    add_marked_para(doc, "二者联系在于：__能用于实际心理测量的心理测验才是真正有效的工具；应用规范测验工具的心理测量活动，才是科学的测量__。")
     add_heading(doc, "（二）心理测验的定义P37（一级）【名词解释】", 3)
     add_marked_para(doc, "**心理测验**实质上是__对行为样组的客观和标准化测量__。它不是测量全部行为，而是选取能代表心理特性的行为样本进行推论。")
     add_heading(doc, "（三）心理测验三要素P38（一级）【20、21年真题】【选择/简答/名词解释】", 3)
-    add_marked_para(doc, "心理测验具有三个要素：**行为样组**、**标准化**和**客观性**。华东2020年真题考查“不属于心理测验要素”的选项，注意“法则”属于一般测量定义，不属于心理测验三要素。")
+    add_marked_para(doc, "心理测验具有三个要素：**行为样组**、**标准化**和**客观性**。华东2020年真题考查“不属于心理测验要素”的选项，注意__“法则”属于一般测量定义，不属于心理测验三要素__。")
     add_marked_para(doc, "**行为样组**是__从相关行为中选择一部分有代表性的行为，用以推论人的心理特性__。测验无法穷尽所有行为，因此行为样组必须有代表性。")
-    add_marked_para(doc, "**标准化**是测验的一致性，包括__测验内容、施测条件、评分规则和测验常模的标准化__。华东2021年真题考过**测验标准化的条件**和**标准化样组**；标准化样组属于常模建立中的代表性样本，后续测验编制与常模章节再详细展开。")
+    add_marked_para(doc, "**标准化**是测验的一致性，包括__测验内容、施测条件、评分规则和测验常模的标准化__。华东2021年真题考过**测验标准化的条件**和**标准化样组**；__标准化样组是建立常模时使用的代表性样本__。")
     add_marked_para(doc, "**客观性**是指测验不受主观支配，__测验的实施、记分和解释可以重复__，行为样组和标准化共同服务于客观性。")
     add_tip(
         doc,
@@ -446,10 +503,10 @@ def build_docx():
         source="【心理测量P29、P38】",
     )
     add_heading(doc, "（四）心理测验客观性指标P39（一级）【选择/名词解释】", 3)
-    add_marked_para(doc, "衡量心理测验客观性的指标主要包括**信度**、**效度**、**难度**和**鉴别力**。其中，信度和效度是判断测验好坏的核心指标，难度和鉴别力主要用于项目质量分析。")
-    add_marked_para(doc, "**信度**是测验结果的可靠程度，强调结果是否稳定、一致；常见类型包括**重测信度**、**复本信度**和**内在一致性信度**。")
-    add_marked_para(doc, "**效度**是测验实际测量出所测特性或功能的真实性程度，强调是否测到了想测的东西；常见类型包括**内容效度**、**结构效度**和**效标效度**。")
-    add_marked_para(doc, "**难度**是测题难易水平的数量指标，通常用通过率表示；**鉴别力**是测题区分不同水平被试的能力。一般来说，中等难度项目的鉴别力较高。")
+    add_marked_para(doc, "衡量心理测验客观性的指标主要包括**信度**、**效度**、**难度**和**鉴别力**。其中，__信度和效度是判断测验好坏的核心指标__，难度和鉴别力主要用于项目质量分析。")
+    add_marked_para(doc, "**信度**是__测验结果的可靠程度__，强调结果是否稳定、一致；常见类型包括**重测信度**、**复本信度**和**内在一致性信度**。")
+    add_marked_para(doc, "**效度**是__测验实际测量出所测特性或功能的真实性程度__，强调是否测到了想测的东西；常见类型包括**内容效度**、**结构效度**和**效标效度**。")
+    add_marked_para(doc, "**难度**是__测题难易水平的数量指标__，通常用通过率表示；**鉴别力**是__测题区分不同水平被试的能力__。一般来说，__中等难度项目的鉴别力较高__。")
     add_tip(
         doc,
         "信度和效度的生活化区分",
@@ -462,17 +519,17 @@ def build_docx():
 
     add_heading(doc, "四、测验的种类P41（二级）", 2)
     add_heading(doc, "（一）按测量对象分类P41（二级）", 3)
-    add_marked_para(doc, "按测量对象，测验可分为**认知测验**和**人格测验**。认知测验又称能力测验，包括智力测验、能力倾向测验、教育测验和创造力测验；人格测验测量能力以外的个性心理特征，如性格、情绪、需要、动机、兴趣、态度、焦虑、气质和自我概念等。")
+    add_marked_para(doc, "按测量对象，测验可分为**认知测验**和**人格测验**。__认知测验又称能力测验__，包括智力测验、能力倾向测验、教育测验和创造力测验；__人格测验测量能力以外的个性心理特征__，如性格、情绪、需要、动机、兴趣、态度、焦虑、气质和自我概念等。")
     add_heading(doc, "（二）按测验人数分类P42（二级）", 3)
-    add_marked_para(doc, "按一次施测人数，测验分为**个别测验**和**团体测验**。个别测验观察细致、结果较可靠，但耗时、对主试要求高；团体测验效率高、评分更客观，但不易控制每个被试的状态。")
+    add_marked_para(doc, "按一次施测人数，测验分为**个别测验**和**团体测验**。__个别测验观察细致、结果较可靠，但耗时、对主试要求高__；__团体测验效率高、评分更客观，但不易控制每个被试的状态__。")
     add_heading(doc, "（三）按测验材料分类P42（二级）", 3)
-    add_marked_para(doc, "按材料呈现方式，测验分为**语言或文字测验**和**非语言或操作测验**。文字测验适合测量较高层次心理功能，但受语言文化背景影响；非语言测验较少受文化和文字水平限制，适合学前儿童、不识字成人或跨文化比较。")
+    add_marked_para(doc, "按材料呈现方式，测验分为**语言或文字测验**和**非语言或操作测验**。__文字测验适合测量较高层次心理功能，但受语言文化背景影响__；__非语言测验较少受文化和文字水平限制__，适合学前儿童、不识字成人或跨文化比较。")
     add_heading(doc, "（四）按记分方式和其他标准分类P42（三级）", 3)
-    add_marked_para(doc, "按记分方式，测验可分为**客观测验**和**非客观测验**。其他分类还包括选择反应测验与结构反应测验、常模参照测验与标准参照测验、筛选性测验与诊断性测验等，了解即可。")
+    add_marked_para(doc, "按记分方式，测验可分为**客观测验**和**非客观测验**。其他分类还包括**选择反应测验**与**结构反应测验**、**常模参照测验**与**标准参照测验**、**筛选性测验**与**诊断性测验**等。")
 
     add_heading(doc, "五、测验的应用P43（三级）", 2)
-    add_marked_para(doc, "心理测验的基本应用包括：了解个别差异；诊断、预测和评价；甄选、分类和安置；服务心理辅导和心理咨询；辅助心理与教育科研。")
-    add_marked_para(doc, "其中，**了解个别差异**是心理测验最基本的功能；在教育、职业、人事、临床和科研领域，测验都可以提供量化依据，但前提是测验本身具备足够的信度、效度和标准化程序。")
+    add_marked_para(doc, "心理测验的基本应用包括：**了解个别差异**；**诊断、预测和评价**；**甄选、分类和安置**；服务心理辅导和心理咨询；辅助心理与教育科研。")
+    add_marked_para(doc, "其中，__了解个别差异是心理测验最基本的功能__；在教育、职业、人事、临床和科研领域，测验都可以提供量化依据，但前提是__测验本身具备足够的信度、效度和标准化程序__。")
 
     doc.save(DOCX_PATH)
 
@@ -498,10 +555,12 @@ def build_xlsx():
     ws.append(strong_headers)
     strong_rows = [
         ["高尔顿贡献", "第一章P8", "二级", "近代测量史核心人物，术语与方法贡献稳定可考，但缺华东真题精确命中", "无", "历史、发展和原理概述", "可参考泛347/312对人物贡献选择题的常见考法", "选择/名词解释", "暂保留二级；如负责人认为华东会强化测量史，可升一级", "中", ""],
+        ["卡特尔、克雷丕林、艾宾浩斯", "第一章P9", "二级", "卡特尔使“心理测验”进入心理学文献，艾宾浩斯首创语句完成测验，均属于人物-贡献匹配型可考点", "无", "历史、发展和原理概述", "人物贡献类选择题常见；但华东暂无精确命中", "选择/人物匹配", "保留二级；如负责人认为测量史人物会加重，可升一级", "中", ""],
         ["个别测验与团体测验", "第一章P11；第二章P42", "二级", "与比奈量表、陆军A/B式量表和测验分类相连，易形成比较题", "无直接真题", "智力测验起源与测验类型相关", "跨院校常见选择/简答辨析点", "选择/简答", "暂保留二级，作为比奈一级点的辅助比较", "中", ""],
         ["参照点和单位", "第二章P32", "二级", "是理解四种量表和绝对零点/相对零点的前置条件", "无直接真题；与量表真题间接相关", "心理测量基本原理", "四种量表题常涉及零点和单位", "选择/简答", "保留二级；不单独升一级", "中高", ""],
         ["测量误差和精确程度", "第二章P34", "二级", "华东后续章节高频考随机误差/标准误，但本章只是导入", "23、24、25年误差相关真题最小映射在后续经典测验理论/信度章节", "心理测量基本原理、信效度相关", "误差题型稳定", "选择/简答", "本章保留二级导入，后续章节按一级展开", "高", ""],
         ["心理测量的间接性、相对性", "第二章P36", "二级", "心理测量定义后的核心特点，适合简答，但缺目标真题精确命中", "无", "心理测量基本原理", "概念辨析常见", "选择/简答", "暂保留二级；若负责人重视基础概念辨析可升一级", "中", ""],
+        ["难度、鉴别力", "第二章P39-P41", "二级", "属于心理测验客观性指标，支撑后续项目分析；本章只是概念入口，暂无华东真题精确命中", "无本章直接真题；信度、效度已有多次真题但不能连带把难度/鉴别力全部升一级", "心理测验客观性指标；后续项目分析相关", "跨院校常见项目质量选择题", "选择/名词解释", "暂保留二级；后续项目分析章节再按证据判断是否升一级", "中高", ""],
         ["测验分类", "第二章P41-P43", "二级", "分类框架支撑智力/人格/常模等后续章节，选择题可考", "无本章直接真题", "测验类型、智力测验、人格测验相关", "跨院校常见分类题", "选择/简答", "暂保留二级，不为纯分类框架升一级", "中", ""],
     ]
     for row in strong_rows:
@@ -516,7 +575,7 @@ def build_xlsx():
         ["第一章", "艾斯克罗、沈干", "P6", "历史发展概述", "无", "", "三级", "否", "不做", "早期尝试，保留人物贡献关键词"],
         ["第一章", "冯特实验心理学影响", "P7", "历史发展概述", "无", "", "二级", "否", "不做", "与标准化思想相关，保留研究内容和情境控制两点"],
         ["第一章", "高尔顿贡献", "P8", "历史发展概述", "无直接测量真题", "选择/名词解释", "二级", "是", "不做", "术语和人物贡献可考，接近一级但缺目标真题"],
-        ["第一章", "卡特尔、克雷丕林、艾宾浩斯", "P9", "历史发展概述", "无", "选择", "二级", "否", "不做", "保留年份、论文、首创测验等选择题点"],
+        ["第一章", "卡特尔、克雷丕林、艾宾浩斯", "P9", "历史发展概述", "无", "选择", "二级", "是", "不做", "保留年份、论文、首创测验等选择题点；列强二级供负责人判断"],
         ["第一章", "比奈—西蒙量表", "P11", "智力测验的起源", "20年相关真题", "选择", "一级", "否", "Tips", "目标真题涉及第一个智力测验，保留时间线"],
         ["第一章", "个别测验与团体测验", "P11-P12", "智力测验发展", "无直接真题", "选择/简答", "二级", "是", "Tips表格", "与比奈和陆军量表相邻，易混，做比较表"],
         ["第一章", "我国心理测量发展", "P15-P18", "历史发展概述", "无", "", "三级", "否", "不做", "我国发展史，无真题支撑，压缩"],
@@ -533,7 +592,8 @@ def build_xlsx():
         ["第二章", "心理测验定义", "P37", "心理测量基本原理", "20年真题相关", "选择", "一级", "否", "不做", "行为样组、客观、标准化"],
         ["第二章", "心理测验三要素", "P38", "心理测量基本原理", "20、21年真题", "选择/简答/名词解释", "一级", "否", "Tips表格", "和一般测量三要素高频易混；2021年标准化条件/标准化样组在本章提示，后续详讲"],
         ["第二章", "标准化", "P38", "心理测量基本原理/量表编制", "21年真题相关", "简答/名词解释", "一级", "否", "Tips表格", "标准化条件可迁移到测验编制"],
-        ["第二章", "信度、效度、难度、鉴别力", "P39-P41", "信度效度/基本原理", "信效度多次真题", "选择/名词解释", "一级", "否", "Tips", "本章为预备概念，后章会展开"],
+        ["第二章", "信度、效度", "P39-P41", "信度效度/基本原理", "信度、效度多次真题", "选择/名词解释", "一级", "否", "Tips", "本章保留定义和类型入口，详细内容在对应章节展开"],
+        ["第二章", "难度、鉴别力", "P39-P41", "心理测验客观性指标/项目分析", "无本章直接真题", "选择/名词解释", "二级", "是", "Tips", "与信度效度同属客观性指标，但缺目标真题精确命中，列强二级"],
         ["第二章", "测验分类", "P41-P43", "测验类型相关", "无直接真题", "选择/简答", "二级", "是", "不做", "分类体系可考但非最高频"],
         ["第二章", "测验应用", "P43-P45", "广义应用背景", "无", "简答背景", "三级", "否", "不做", "较常识化且无真题，压缩保留功能链"],
     ]

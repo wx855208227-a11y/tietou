@@ -26,7 +26,7 @@ Source PDF: `docs/yibentong/一本通编制要求及细则.pdf` in the `agiamaso
    - Split and layer long prose.
    - Bold keywords and underline key sentences.
    - Check typos.
-   - Do not place editor rationale in the student-facing正文, such as “无真题支撑”“正文保留主线即可”“细节了解即可”. These belong in the review file or internal notes.
+   - Do not place editor rationale or task-process wording in the student-facing正文, such as “无真题支撑”“正文保留主线即可”“细节了解即可”“了解即可”“后续章节再展开”“本章先掌握”. These belong in the review file, internal notes, or should be expressed only through level marks and content compression.
 4. Check past-exam questions.
    - If a target-school paper contains multiple subjects, first classify questions by subject and keep only the relevant subject questions for this 一本通 chapter. Use the answer substance, not surface keywords, to decide the subject.
    - Find all knowledge points touched by target院校历年真题.
@@ -227,7 +227,7 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
   - If two Tips blocks are adjacent, leave two blank lines between them.
   - If a Tips block is based on a textbook experiment, mark the lower-right page reference as `【科目+Pxx】`.
   - Leave two blank lines between tables and Tips.
-- Tips visual format must match the 深大普心一本通 sample as closely as possible: logo/label position, border, fill/background, font size, spacing, and page-fit behavior are part of the requirement, not optional decoration.
+- Tips visual format must match the 深大普心一本通 sample as closely as possible: upper-left `铁头 tips` ribbon/logo, light-blue body block, centered bold Tips title, border/fill/background, font size, spacing, and page-fit behavior are part of the requirement, not optional decoration. A plain table label is not enough when generating DOCX.
 - Summary tables and visual comparisons should appear inside Tips-style blocks unless the leader explicitly requests a standalone正文 table.
 
 ## A4 Print Layout

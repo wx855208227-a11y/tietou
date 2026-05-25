@@ -54,3 +54,4 @@
   - pushed_commit: ec3fab1
 - 2026-05-25T13:50:51Z: Revise ECNU measurement yibentong format and audit files
   - pushed_commit: d413714
+- 2026-05-25T14:01:30Z: Revise ECNU measurement chapters after feedback
