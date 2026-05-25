@@ -80,7 +80,7 @@ For a textbook chapter such as `心理测量和测验的历史回顾`, the expec
 
 Remove or heavily compress long accounts of social context, institutional history, broad reflections, and policy discussion unless the user explicitly asks for a detailed history version.
 
-For psychology考研 materials, `中国/中国古代/我国历史发展` content is non-core by default when there is no target-school true-question evidence. Process it conservatively: mark as 二级/三级, compress to high-level clues, or delete low-yield details according to examability. In student-facing wording, use expressions such as `了解即可`; avoid wording like `不展开背诵` or other process-oriented editorial notes. If the target school has tested the exact point, mark that point 一级 and add the true-question marker.
+For psychology考研 materials, `中国/中国古代/我国历史发展` content is non-core by default when there is no target-school true-question evidence. Process it conservatively: mark as 二级/三级, compress to high-level clues, or delete low-yield details according to examability. Do not add student-facing process reminders such as `了解即可` or `不展开背诵`; let the level mark and concise content selection carry the learning signal. If the target school has tested the exact point, mark that point 一级 and add the true-question marker.
 
 ## Importance Levels
 
@@ -97,7 +97,7 @@ For psychology考研 materials, `中国/中国古代/我国历史发展` content
 - 二级: medium-frequency points that are reasonably likely to appear in real exams, including important textbook content that supports 一级 clusters or has clear examinability, but is not directly true-question-covered and is less central than core definitions/classifications/theories.
 - 强二级: a manual-review subset inside 二级. Use this label in the manager review file, not in the finished正文 title; in the finished product it remains marked 二级 unless the leader confirms upgrade. Typical cases include: official-outline-covered points with a stable question form but no direct true-question hit; textbook major subpoints that strongly support a 一级 cluster; points adjacent to repeated true-question themes; and points that could plausibly be upgraded to 一级 based on the leader's school-specific judgment.
 - 三级: low-frequency points that can still be tested but would usually be偏、怪、难, or near the edge of the normal scope, including background, low-frequency history, broad development overview, minor scale descriptions, or content mainly for understanding.
-- 中国/中国古代/我国历史发展类内容在没有目标院校真题支撑时，默认不作为重点。可按教材地位和可考性压缩为二级或三级；弱可考的细节可删除。正文表述用“了解即可”等学生视角措辞，不写“不展开背诵”等编制过程话术。只有被目标院校真题实质考过的具体点才升为一级。
+- 中国/中国古代/我国历史发展类内容在没有目标院校真题支撑时，默认不作为重点。可按教材地位和可考性压缩为二级或三级；弱可考的细节可删除。正文不写“了解即可”“不展开背诵”等学习提示或编制过程话术；通过层级标注与内容压缩体现重要性。只有被目标院校真题实质考过的具体点才升为一级。
 - Official outline evidence identifies important clusters. Do not automatically mark every subpoint under an outline-covered chapter as 一级.
 - Official-outline-covered content should be at least 二级 by default. The main exception is 中国/中国古代/我国发展史等中国背景类内容: when there is no target-school true-question evidence, these can be marked 三级 or compressed according to examability.
 - True-question evidence must be substantive. Only mark `【xx年真题】` when that exact knowledge point or its answer substance was tested; do not mark because the same person, school, or general topic appeared in another context.
@@ -218,7 +218,7 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - Life-close examples should use experiences most Chinese students have lived through, such as school exams, class ranking, choosing courses, family communication, shopping, social media, commuting, job interviews, or everyday interpersonal situations. Use exaggeration, metaphor, or contrast when it strengthens memory, but keep the psychological meaning accurate.
 - Avoid obscure examples, irrelevant examples, forced analogies, or explaining one unfamiliar concept with another unfamiliar concept. If a knowledge point does not suit a clear example, skip the example.
 - Tips should be `textbook experiment adaptation`, `supplementary content in Tips form`, `summary visual/comparison aid`, or `concrete example for understanding`. Do not use Tips for true-question reminders, answer strategies, broad summaries, motivational notes, or loose chapter-level comments. Put those in正文, 易混点, or delivery notes when needed.
-- For history/factual 三级 points, usually do not create Tips. Keep the正文 concise and use `了解即可` when appropriate.
+- For history/factual 三级 points, usually do not create Tips. Keep the正文 concise, and avoid adding explicit process reminders such as `了解即可`.
 - Tips spacing and style:
   - Leave one blank line before and after a Tips block.
   - The sample uses a visual `铁头tips` label, often implemented with a small textbox/shape; when generating DOCX programmatically, use a consistent visible `铁头tips` label and keep the content immediately below it.
