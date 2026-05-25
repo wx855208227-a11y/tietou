@@ -1,16 +1,16 @@
 action	old_path	proposed_new_path	reason	confidence
 keep	.gitattributes	.gitattributes	HF/LFS attributes are repo infrastructure; leave at root.	high
-keep	312心理学统考/真题详解/312心理学考研 历年真题详解.docx	312心理学统考/真题详解/312心理学考研 历年真题详解.docx	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
-keep	312心理学统考/真题详解/312心理学考研 历年真题详解.pdf	312心理学统考/真题详解/312心理学考研 历年真题详解.pdf	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
-keep	347应用心理专硕/勤思-名校真题正解/347 应用心理专硕名校真题正解.docx	347应用心理专硕/勤思-名校真题正解/347 应用心理专硕名校真题正解.docx	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
-keep	347应用心理专硕/勤思-名校真题正解/347 应用心理专硕名校真题正解.pdf	347应用心理专硕/勤思-名校真题正解/347 应用心理专硕名校真题正解.pdf	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
-keep	347应用心理专硕/学府-名校真题真练/应用心理硕士347 名校真题真练.docx	347应用心理专硕/学府-名校真题真练/应用心理硕士347 名校真题真练.docx	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
-keep	347应用心理专硕/学府-名校真题真练/应用心理硕士347 名校真题真练.pdf	347应用心理专硕/学府-名校真题真练/应用心理硕士347 名校真题真练.pdf	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
-keep	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 解析册.docx	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 解析册.docx	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
-keep	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 解析册.pdf	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 解析册.pdf	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
-keep	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 试题册.docx	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 试题册.docx	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
-keep	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 试题册.pdf	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 试题册.pdf	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
-update	README.md	README.md	Update root index after reorg to describe preserved auxiliary libraries and new school library.	high
+move	312心理学统考/真题详解/312心理学考研 历年真题详解.docx	公共题库/312心理学统考/真题详解/312心理学考研 历年真题详解.docx	Canonical taxonomy keeps 312 auxiliary true-question materials under 公共题库, not as a root library.	high
+move	312心理学统考/真题详解/312心理学考研 历年真题详解.pdf	公共题库/312心理学统考/真题详解/312心理学考研 历年真题详解.pdf	Canonical taxonomy keeps 312 auxiliary true-question materials under 公共题库, not as a root library.	high
+move	347应用心理专硕/勤思-名校真题正解/347 应用心理专硕名校真题正解.docx	公共题库/347应用心理专硕/勤思-名校真题正解/347 应用心理专硕名校真题正解.docx	Canonical taxonomy keeps 泛347 auxiliary true-question materials under 公共题库, not as a root library.	high
+move	347应用心理专硕/勤思-名校真题正解/347 应用心理专硕名校真题正解.pdf	公共题库/347应用心理专硕/勤思-名校真题正解/347 应用心理专硕名校真题正解.pdf	Canonical taxonomy keeps 泛347 auxiliary true-question materials under 公共题库, not as a root library.	high
+move	347应用心理专硕/学府-名校真题真练/应用心理硕士347 名校真题真练.docx	公共题库/347应用心理专硕/学府-名校真题真练/应用心理硕士347 名校真题真练.docx	Canonical taxonomy keeps 泛347 auxiliary true-question materials under 公共题库, not as a root library.	high
+move	347应用心理专硕/学府-名校真题真练/应用心理硕士347 名校真题真练.pdf	公共题库/347应用心理专硕/学府-名校真题真练/应用心理硕士347 名校真题真练.pdf	Canonical taxonomy keeps 泛347 auxiliary true-question materials under 公共题库, not as a root library.	high
+move	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 解析册.docx	公共题库/347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 解析册.docx	Canonical taxonomy keeps 泛347 auxiliary true-question materials under 公共题库, not as a root library.	high
+move	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 解析册.pdf	公共题库/347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 解析册.pdf	Canonical taxonomy keeps 泛347 auxiliary true-question materials under 公共题库, not as a root library.	high
+move	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 试题册.docx	公共题库/347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 试题册.docx	Canonical taxonomy keeps 泛347 auxiliary true-question materials under 公共题库, not as a root library.	high
+move	347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 试题册.pdf	公共题库/347应用心理专硕/文都比邻-名校真题名家详解/347应用心理专研 试题册.pdf	Canonical taxonomy keeps 泛347 auxiliary true-question materials under 公共题库, not as a root library.	high
+update	README.md	README.md	Update root index after reorg to describe canonical 公共题库, 院校资料库, 编制规范, and 索引 layout.	high
 delete	上海交通大学/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
 delete	上海交通大学/一本通/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
 move	上海交通大学/一本通/上交临床心理学一本通.docx	院校资料库/347应用心理专硕/上海交通大学/一本通/上交临床心理学一本通.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
@@ -59,10 +59,10 @@ move	深圳大学/真题/深大初试真题册.docx	院校资料库/347应用心
 delete	深圳大学/考纲/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
 move	深圳大学/考纲/深圳大学2026年硕士研究生入学考试大纲.docx	院校资料库/347应用心理专硕/深圳大学/考纲/深圳大学2026年硕士研究生入学考试大纲.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
 move	深圳大学/考纲/深圳大学2026年硕士研究生入学考试大纲——批注版.docx	院校资料库/347应用心理专硕/深圳大学/考纲/深圳大学2026年硕士研究生入学考试大纲——批注版.docx	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
-keep	编制规范/一本通编制要求/README.md	编制规范/一本通编制要求/README.md	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
-keep	编制规范/一本通编制要求/一本通编制要求及细则.pdf	编制规范/一本通编制要求/一本通编制要求及细则.pdf	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
-keep	编制规范/一本通编制要求/一本通编制要求及细则_抽取文本.txt	编制规范/一本通编制要求/一本通编制要求及细则_抽取文本.txt	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
-keep	编制规范/一本通编制要求/一本通编制要求学习笔记.md	编制规范/一本通编制要求/一本通编制要求学习笔记.md	Auxiliary/shared library, not a root school folder; preserve current top-level location.	high
+keep	编制规范/一本通编制要求/README.md	编制规范/一本通编制要求/README.md	Canonical shared compilation-standard library; keep under 编制规范/一本通编制要求/.	high
+keep	编制规范/一本通编制要求/一本通编制要求及细则.pdf	编制规范/一本通编制要求/一本通编制要求及细则.pdf	Canonical shared compilation-standard library; keep under 编制规范/一本通编制要求/.	high
+keep	编制规范/一本通编制要求/一本通编制要求及细则_抽取文本.txt	编制规范/一本通编制要求/一本通编制要求及细则_抽取文本.txt	Canonical shared compilation-standard library; keep under 编制规范/一本通编制要求/.	high
+keep	编制规范/一本通编制要求/一本通编制要求学习笔记.md	编制规范/一本通编制要求/一本通编制要求学习笔记.md	Canonical shared compilation-standard library; keep under 编制规范/一本通编制要求/.	high
 move	考纲/347应用心理专硕/华东师范大学/2025华东347心理学专业综合考试范围.pdf	院校资料库/347应用心理专硕/华东师范大学/考纲/2025华东347心理学专业综合考试范围.pdf	Legacy 考纲 location; consolidate into the same school outline folder under the standardized school library.	high
 move	考纲/347应用心理专硕/华东师范大学/README.md	院校资料库/347应用心理专硕/华东师范大学/考纲/README.md	Legacy 考纲 location; consolidate into the same school outline folder under the standardized school library.	high
 delete	西北师范大学/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
@@ -132,15 +132,18 @@ move	西北师范大学/真题/答案10-22/参考答案2.pdf	院校资料库/347
 move	西北师范大学/真题/答案10-22/参考答案3.pdf	院校资料库/347应用心理专硕/西北师范大学/真题/答案10-22/参考答案3.pdf	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
 delete	西北师范大学/考纲/.DS_Store		Mac Finder upload noise; safe destructive cleanup requested for .DS_Store only.	high
 move	西北师范大学/考纲/西北师大硕士研究生入学考试大纲.doc	院校资料库/347应用心理专硕/西北师范大学/考纲/西北师大硕士研究生入学考试大纲.doc	Root school folder material; move under standardized 347 school library while preserving category/subpath.	high
-review_move	西北师范大学/考纲/西北师范大学非全报考.docx	院校资料库/347应用心理专硕/西北师范大学/招生信息/西北师范大学非全报考.docx	Filename suggests non-full-time admissions info rather than a pure outline; manager should choose 考纲 vs 招生信息 before git mv.	low
+review_move	西北师范大学/考纲/西北师范大学非全报考.docx	院校资料库/347应用心理专硕/西北师范大学/报考信息/西北师范大学非全报考.docx	Filename suggests non-full-time admissions info rather than a pure outline; manager should choose 报考信息 vs 考纲 before git mv.	low
 add		院校资料库/README.md	Add top-level school-library README explaining standardized school layout and what remains in auxiliary libraries.	high
 add		院校资料库/347应用心理专硕/README.md	Add school-library index for 347 school-specific materials and reviewer workflow notes.	high
-add		院校资料库/347应用心理专硕/index.tsv	Add machine-readable school index listing school, categories, and source roots after git mv.	high
+add		院校资料库/347应用心理专硕/index.tsv	Add optional school-specific machine-readable index; canonical repo-wide retrieval index remains 索引/资料目录.tsv.	high
+add		索引/资料目录.tsv	Add canonical repo-wide inventory index for retrieval across 公共题库, 院校资料库, and 编制规范 after git mv.	high
+add		索引/清理记录.md	Add canonical cleanup audit log recording .DS_Store removals, unresolved review rows, and duplicate checks.	high
 add		院校资料库/347应用心理专硕/上海交通大学/README.md	Add per-school index for 一本通, 教材, 真题, and missing/optional 考纲 status.	high
 add		院校资料库/347应用心理专硕/华东师范大学/README.md	Add per-school index for 一本通, 教材, 真题, 考纲, and legacy 考纲 consolidation notes.	high
 add		院校资料库/347应用心理专硕/深圳大学/README.md	Add per-school index for 一本通, 教材, 真题, 考纲, and annotated-outline notes.	high
 add		院校资料库/347应用心理专硕/西北师范大学/README.md	Add per-school index for 一本通, 教材, 真题/答案, 考纲, and incomplete/ambiguous items.	high
-add		312心理学统考/README.md	Add README clarifying this remains the 312 auxiliary true-question library and is not folded into school folders.	high
-add		347应用心理专硕/README.md	Add README clarifying this remains the 泛347 auxiliary true-question library and is not a school-specific folder.	high
+add		公共题库/README.md	Add README explaining public auxiliary question-bank taxonomy and separation from school-specific true questions.	high
+add		公共题库/312心理学统考/README.md	Add README clarifying 312 materials are auxiliary evidence under 公共题库, not a root library.	high
+add		公共题库/347应用心理专硕/README.md	Add README clarifying 泛347 materials are auxiliary evidence under 公共题库, not school-specific folders.	high
 add		编制规范/README.md	Add README clarifying compilation-standard assets remain shared project references.	high
 add		.gitignore	Add .DS_Store ignore rule to prevent reintroducing upload noise after cleanup.	high

@@ -44,6 +44,35 @@ for r in blocked:
 PY
 ```
 
+Validate canonical taxonomy targets in the plan before touching the HF clone:
+
+```bash
+python3 - <<'PY'
+import csv, os
+plan = os.environ['PLAN']
+errors = []
+required_adds = {'索引/资料目录.tsv', '索引/清理记录.md'}
+seen_adds = set()
+with open(plan, encoding='utf-8', newline='') as f:
+    for r in csv.DictReader(f, delimiter='\t'):
+        new = r['proposed_new_path']
+        if r['action'] == 'add':
+            seen_adds.add(new)
+        if new:
+            top = new.split('/', 1)[0]
+            if top in {'312心理学统考', '347应用心理专硕'}:
+                errors.append(f'root public library target remains: {new}')
+            if '招生信息' in new:
+                errors.append(f'non-canonical 招生信息 target: {new}')
+missing = sorted(required_adds - seen_adds)
+if missing:
+    errors.append('missing canonical index add rows: ' + ', '.join(missing))
+if errors:
+    raise SystemExit('\n'.join(errors))
+print('canonical target checks passed')
+PY
+```
+
 Feasibility dry-run for executable actions. Do not execute `review_*` rows until the manager resolves them:
 
 ```bash
@@ -78,8 +107,10 @@ PY
 ## 2. Reviewer Checkpoint Before Execution
 
 - Confirm only `.DS_Store` files are proposed for deletion.
-- Confirm `312心理学统考/`, generic `347应用心理专硕/`, and `编制规范/` are preserved at top level.
-- Resolve every row listed in `outputs/hf-organization/ambiguous_move_items.md`; leave unresolved rows untouched.
+- Confirm root `312心理学统考/` and generic root `347应用心理专硕/` are moved into `公共题库/312心理学统考/` and `公共题库/347应用心理专硕/`; they should not remain as top-level libraries after cleanup.
+- Confirm `编制规范/一本通编制要求/` is preserved as the shared compilation-standard library.
+- Confirm canonical index deliverables are planned under `索引/资料目录.tsv` and `索引/清理记录.md`; `院校资料库/347应用心理专硕/index.tsv` is only a supporting school-specific index.
+- Resolve every row listed in `outputs/hf-organization/ambiguous_move_items.md`; leave unresolved rows untouched until manager decision.
 - Decide whether README/index docs and `.gitignore` will be created in the same HF commit or a separate documentation commit.
 
 ## 3. Execute Git Moves And Noise Deletes
@@ -105,7 +136,7 @@ with open(plan, encoding='utf-8', newline='') as f:
 PY
 ```
 
-Then add/update the planned README/index docs manually, and add `.gitignore` with at least:
+Then add/update the planned README/index docs manually, including `索引/资料目录.tsv` and `索引/清理记录.md`, and add `.gitignore` with at least:
 
 ```gitignore
 .DS_Store
@@ -123,7 +154,7 @@ find . -name .DS_Store -print | sed 's#^./##' | sort > /tmp/hf_ds_store_after.tx
 wc -l /tmp/hf_files_after.txt /tmp/hf_ds_store_after.txt
 ```
 
-Verify moved files preserved the same Git object IDs, deleted files are only `.DS_Store`, and preserved auxiliary libraries remain tracked:
+Verify moved files preserved the same Git object IDs, deleted files are only `.DS_Store`, and kept shared compilation-standard files remain tracked:
 
 ```bash
 python3 - <<'PY'
@@ -198,18 +229,29 @@ git diff --cached --summary
 git diff --cached --check
 ```
 
-Top-level structure should no longer include root school folders after non-review moves are complete:
+Top-level structure should no longer include root school folders, root public-bank folders, or legacy category folders after all executable moves and manager-resolved review moves are complete:
 
 ```bash
 find . -maxdepth 1 -mindepth 1 -type d -print | sed 's#^./##' | sort
+python3 - <<'PY'
+import os
+allowed = {'公共题库', '院校资料库', '编制规范', '索引', '.git'}
+actual = {p for p in os.listdir('.') if os.path.isdir(p)}
+extras = sorted(actual - allowed)
+missing = sorted({'公共题库', '院校资料库', '编制规范', '索引'} - actual)
+if extras or missing:
+    raise SystemExit(f'top-level taxonomy mismatch extras={extras} missing={missing}')
+print('top-level taxonomy check passed')
+PY
 ```
 
-Expected top-level directories after cleanup are `312心理学统考`, `347应用心理专硕`, `编制规范`, and `院校资料库`, plus Git internals. Legacy top-level `教材` and `考纲` should be gone only after the manager resolves or moves all pending legacy review items.
+Expected top-level directories after cleanup are `公共题库`, `院校资料库`, `编制规范`, and `索引`, plus repo metadata. Root `312心理学统考` and root generic `347应用心理专硕` must not remain; legacy top-level `教材`, `考纲`, and school-name roots should be gone after manager decisions are applied or explicitly documented before push.
 
 ## 6. Final Reviewer Checkpoint Before HF Push
 
+- Check `索引/资料目录.tsv` is readable and covers `公共题库`, `院校资料库`, and `编制规范` retrieval paths; check `索引/清理记录.md` records .DS_Store removal and unresolved/reviewed duplicate decisions.
 - Check `院校资料库/347应用心理专硕/<学校>/README.md` indexes list each school category present after the move.
-- Check auxiliary `312心理学统考/` and generic `347应用心理专硕/` paths are unchanged except optional README additions.
+- Check auxiliary `公共题库/312心理学统考/` and `公共题库/347应用心理专硕/` paths are tracked, and root `312心理学统考/` plus root generic `347应用心理专硕/` are absent.
 - Check no duplicate-looking legacy textbook was deleted without explicit manager decision.
 - Check all ambiguous items are either still in place or recorded with the manager's decision.
 - Check `git lfs status` is clean after staging/committing and before `git push`.
