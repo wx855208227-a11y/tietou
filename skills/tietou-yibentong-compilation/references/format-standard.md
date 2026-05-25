@@ -44,22 +44,28 @@ If 华文楷体、华文新魏, 方正舒体, or Kristen ITC are unavailable in 
 
 - Catalog must be generated from Word heading styles, not manually typed.
 - Apply `Heading 1` to chapter titles, `Heading 2` to `一、...` titles, and `Heading 3` to `（一）...` titles.
+- If the textbook has a higher book-level structure such as `第一编 绪论`, preserve it in the正文 before the relevant chapter. Do not replace the chapter title with a self-invented summary title.
 - The 深大 sample's default catalog includes levels 1-2 through `TOC \o "1-2" \h \u`. Use this as the default unless the leader asks for a third-level catalog; if third-level catalog is required, use `TOC \o "1-3" \h \u`.
+- The leader's latest fixed directory rule: catalog title is `目录`, 宋体一号居中; catalog body is 宋体 11 pt. TOC level 1 entries are bold. Leave a blank line or equivalent spacing between chapter entries in multi-chapter documents.
 - After generating or editing a DOCX, update fields in Word/WPS before final export whenever possible. If the local toolchain cannot refresh fields, keep correct heading styles and TOC field codes so the leader can refresh the catalog directly.
 - The visible catalog must look like a Word/WPS generated catalog from the 深大 sample, not like a hand-typed placeholder list. Avoid visible placeholder text such as `右键更新域生成目录`, and avoid blue hyperlink-style TOC text in delivered files. If field refresh is unavailable, keep a valid TOC field and provide a conservative black visible result that matches the generated-catalog appearance as closely as possible.
 
 ## Title And Body Styles
 
 - Normal正文: 宋体, 小四/12 pt, 1.5 line spacing, justified alignment.
-- Body prose paragraphs: first-line indent 2 Chinese characters (`480` twips) when they are continuous explanation sentences.
+- Body prose paragraphs: first-line indent 2 Chinese characters (`480` twips) when they are continuous explanation sentences. Apply Chinese line-breaking rules for first/last characters where the toolchain supports it.
 - Numbered answer-outline lines may omit first-line indent for compactness.
-- Chapter title / `Heading 1`: centered, bold, about 16 pt, keep with next; chapter should start on a new page.
-- Second-level title / `Heading 2`: left aligned, bold, about 14 pt, spacing before/after about 13 pt.
-- Third-level title / `Heading 3`: left aligned, bold, usually 12 pt inherited from Normal, spacing before/after about 13 pt.
+- Chapter title / `Heading 1`: format as `第X章 ×××××` with exactly one space after `第X章`; 宋体三号/16 pt, bold, centered, keep with next. Each chapter starts on a new page by placing a page break before the chapter title, except the first chapter immediately after the catalog.
+- Second-level title / `Heading 2`: format as `一、×××××`; use the Chinese 顿号, no extra space after the 顿号; 宋体四号/14 pt, bold, left aligned, keep with next.
+- Third-level title / `Heading 3`: format as `（一）×××××`; no 顿号 and no extra space after the bracket; 宋体小四/12 pt, bold, left aligned, keep with next.
 - Heading 1/2/3 text must be black. Do not leave default Word blue heading color, hyperlink blue, theme accent color, or other decorative colors in titles or generated catalog text.
 - When generating DOCX programmatically, black must be applied not only to `Heading 1/2/3`, but also to related character styles such as `Heading1Char`、`Heading2Char`、`Heading3Char`, plus TOC and hyperlink-related styles when present. Remove or override theme accent colors such as `accent1`; otherwise Word/WPS may still render refreshed headings or catalog links in blue.
-- Deeper title levels use正文 style with visible numbering: `1.` level is usually bold; `（1）`、`①`、`A.` are used only when the hierarchy needs them and should remain compact.
+- Deeper title levels use正文 style with visible numbering. `1.××××` uses an Arabic number plus a period, no extra space after the period; this level is usually bold and should have visual spacing before the next same-level item. If the item has very little content, no lower-level points, or would look heavy, it may remain unbolded unless the content itself is important.
+- `（1）××××` is not indented and does not require blank spacing between same-level items.
+- `①` indents one Chinese character.
+- If the hierarchy still needs another level, use `A.` indented two Chinese characters. If `A.` is used, `a.` indents three Chinese characters; if `A.` is not needed, `a.` may be used directly with a two-character indent.
 - Do not manually fake chapter, second-level, or third-level titles with plain正文 formatting; use the proper heading style so the catalog works.
+- Page numbers start from the first正文 page after the catalog, not from the cover or catalog page. Use 宋体四号/14 pt for the footer page number.
 
 ## Bold, Underline, And Highlight
 
@@ -80,6 +86,7 @@ Tips are visually independent shaded learning blocks placed after the relevant k
 - Tips body正文: 宋体 12 pt, 1.5 line spacing, first-line indent 2 characters for explanatory paragraphs.
 - Source/page marker: right aligned in the last shaded paragraph, e.g. `【普通心理学第六版P52】`.
 - Keep the logo and shaded body together. Do not let the logo sit on one page and the block body start on the next.
+- Tips and supplementary blocks should not split across pages when avoidable. If only a short part of a Tips block would remain on the first page, move the whole block to the next page. If only a short tail remains on the next page, reduce inner spacing or line spacing slightly when it does not hurt readability. Tips tables and visual summaries must not be split awkwardly.
 - Do not use a plain one-cell table with `铁头tips` text as a substitute when the output is intended as final DOCX.
 
 ## Supplementary Content Format

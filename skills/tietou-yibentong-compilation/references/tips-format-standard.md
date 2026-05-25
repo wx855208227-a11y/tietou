@@ -20,7 +20,7 @@ This note records the leader-confirmed Tips format reference for future 一本�
 - Summary tables, comparison tables, and diagrams should be placed inside this Tips block style, not as standalone正文 sections.
 - Supplementary content follows the 深大 sample's `补充内容：` double-line box style; when it is used as a Tips-type extension, keep the supplement box style rather than forcing a plain Tips body.
 - The block must be readable on A4 black-and-white printing: sufficient contrast, readable body font, no dependence on color alone, and no tiny text.
-- Keep each Tips block together on one page when feasible. Do not leave the upper-left label separated from the block body, and avoid splitting tables/visuals across pages.
+- Keep each Tips block together on one page when feasible. Do not leave the upper-left label separated from the block body, and avoid splitting tables/visuals across pages. If the first-page part of a Tips block would be very short, move the whole Tips block to the next page; if only a short tail spills to the next page, reduce the Tips inner line spacing/spacing slightly only when readability and aesthetics remain acceptable.
 
 ## Content Types Allowed In Tips
 

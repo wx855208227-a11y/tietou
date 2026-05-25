@@ -27,7 +27,9 @@ FORMAT_SAMPLE = ROOT / "skills/tietou-yibentong-compilation/references/format-sa
 
 TIP_LABELS = {"**Tips**", "Tips", "**铁头tips**", "铁头tips"}
 
-REVISED_MARKDOWN = r"""# 第一章 心理测量和测验的历史回顾
+REVISED_MARKDOWN = r"""@PART 第一编 绪论
+
+# 第一章 心理测量和测验的历史回顾
 
 现代**心理测量和测验**形成于**19世纪欧洲**，直接动因是<u>评定心理特征的个别差异</u>。
 
@@ -35,7 +37,7 @@ REVISED_MARKDOWN = r"""# 第一章 心理测量和测验的历史回顾
 
 心理测量与**实验方法**共同构成心理学实证研究的两大范式：心理测量偏重<u>个体差异的测定</u>，实验方法偏重<u>变量关系的控制与解释</u>。
 
-## 第一节 中国古代的心理测量思想和实践P3（三级）
+## 一、中国古代的心理测量思想和实践P3（三级）
 
 1.**心理测量完整实践的三个前提**
 
@@ -73,9 +75,9 @@ REVISED_MARKDOWN = r"""# 第一章 心理测量和测验的历史回顾
 
 （3）民间与教育测量活动包括《**学记**》、《**礼记·本命**》、“**周岁试儿**”、**七巧板**和**九连环**等，分别涉及教育测验、年龄发展线索、婴儿行为诊断、空间想象和问题解决。
 
-## 第二节 近代心理测量的早期尝试与先驱者的探索P6（二级）
+## 二、近代心理测量的早期尝试与先驱者的探索P6（二级）
 
-### 一、早期对智力落后儿童的分类与训练的兴趣P6
+### （一）早期对智力落后儿童的分类与训练的兴趣P6
 
 1.**产生原因**
 
@@ -101,7 +103,7 @@ REVISED_MARKDOWN = r"""# 第一章 心理测量和测验的历史回顾
 
 比奈后来推动建立鉴别<u>不能适应正常学校学习但仍可教育的儿童</u>的方法；以比奈为首的专门研究小组成立，是心理测验发展史上的重要事件。
 
-### 二、冯特实验心理学的影响P7（三级）
+### （二）冯特实验心理学的影响P7（三级）
 
 1.**基本立场**
 
@@ -117,7 +119,7 @@ REVISED_MARKDOWN = r"""# 第一章 心理测量和测验的历史回顾
 
 **标准化**的核心意义是：<u>在统一情境下观察所有受试者</u>。
 
-### 三、高尔顿的理想和贡献P8
+### （三）高尔顿的理想和贡献P8
 
 1.**地位**
 
@@ -139,7 +141,7 @@ REVISED_MARKDOWN = r"""# 第一章 心理测量和测验的历史回顾
 
 高尔顿发展个别差异资料的统计分析方法，提出**相关**概念；其学生**皮尔逊**后来完善相关计算方法。
 
-### 四、卡特尔及其早期个别差异研究P9
+### （四）卡特尔及其早期个别差异研究P9
 
 1.**地位**
 
@@ -175,11 +177,11 @@ REVISED_MARKDOWN = r"""# 第一章 心理测量和测验的历史回顾
 
 ![现代智力测验形成路径](assets/modern-intelligence-test-path.png)
 
-## 第三节 社会需要是心理测量和测验发展的动力P10（二级）
+## 三、社会需要是心理测量和测验发展的动力P10（二级）
 
 科学的发展源于实际需要，**心理测量**的发展也是如此。社会需要是<u>心理测量和测验发展的动力</u>。
 
-### 一、比奈和世界上第一个智力测验P11（一级）【20年真题】【选择】
+### （一）比奈和世界上第一个智力测验P11（一级）【20年真题】【选择】
 
 1.**地位**
 
@@ -234,7 +236,7 @@ REVISED_MARKDOWN = r"""# 第一章 心理测量和测验的历史回顾
 | 地位 | <u>世界上第一个真正意义上的智力测验</u> | 比奈量表在美国的重要修订版 |
 | 易混点 | “1905年第一个智力测验”对应它 | 不要把1916年的修订版误当成1905年原始量表 |
 
-### 二、团体测验的产生P11
+### （二）团体测验的产生P11
 
 1.**产生原因**
 
@@ -274,9 +276,9 @@ REVISED_MARKDOWN = r"""# 第一章 心理测量和测验的历史回顾
 | 适用场景 | 临床个案、深入分析 | 军队、学校、选拔、筛查 |
 | 记忆抓手 | “一对一精细测” | “一批人快速筛” |
 
-## 第四节 心理测量和测验在我国的发展P13（三级）
+## 四、心理测量和测验在我国的发展P13（三级）
 
-### 一、1949年之前心理测验的发展和停滞P13
+### （一）1949年之前心理测验的发展和停滞P13
 
 1.**西方心理测验的引入及其迅猛发展**
 
@@ -296,7 +298,7 @@ REVISED_MARKDOWN = r"""# 第一章 心理测量和测验的历史回顾
 
 测验运动后来走向停滞，主要与<u>滥用测验、施测训练不足、结果解释不慎重</u>以及抗日战争后工作中断有关。
 
-### 二、1949年之后心理测量和测验的发展P14
+### （二）1949年之后心理测量和测验的发展P14
 
 1.**停止发展的时期**
 
@@ -314,15 +316,15 @@ REVISED_MARKDOWN = r"""# 第一章 心理测量和测验的历史回顾
 
 （4）恢复初期引进**经典测验理论（CTT）**、**概化理论（GT）**和**项目反应理论（IRT）**；20世纪80年代中期以后，开始编制适合中国人的心理测验工具。
 
-## 第五节 改革开放40多年来我国心理测量和测验发展概述P15（三级）
+## 五、改革开放40多年来我国心理测量和测验发展概述P15（三级）
 
-### 一、往事回顾P16
+### （一）往事回顾P16
 
 改革开放初期的重要事件主要包括：**心理测量专业研究生招生和培养**、**全国性心理测验培训班**、**全国范围心理量表协作修订**、**心理测量专业委员会成立**、一批有影响的专著与论文出版，以及**海峡两岸心理与教育测量学术研讨会**开展。
 
 这些事件共同推动了我国心理测量从恢复走向规范化、组织化和专业化。
 
-### 二、心理测量迅猛发展的特点评述P18
+### （二）心理测量迅猛发展的特点评述P18
 
 1.**心理测验和量表增多，质量提升**
 
@@ -336,7 +338,7 @@ REVISED_MARKDOWN = r"""# 第一章 心理测量和测验的历史回顾
 
 测验研发依托**CTT**、**IRT**、**GT**等测量理论，并结合多元统计、结构方程模型、计算机化测验和**计算机自适应测验（CAT）**。
 
-### 三、对存在问题和未来前景的几点思考P23
+### （三）对存在问题和未来前景的几点思考P23
 
 1.**组织与研究机构建设**
 
@@ -412,6 +414,37 @@ def set_keep(paragraph, *, together=False, next=False):
     fmt.keep_with_next = next
 
 
+def set_p_element_keep(p_element, *, together=False, next=False):
+    p_pr = p_element.find(qn("w:pPr"))
+    if p_pr is None:
+        p_pr = OxmlElement("w:pPr")
+        p_element.insert(0, p_pr)
+    if together and p_pr.find(qn("w:keepLines")) is None:
+        p_pr.append(OxmlElement("w:keepLines"))
+    if next and p_pr.find(qn("w:keepNext")) is None:
+        p_pr.append(OxmlElement("w:keepNext"))
+
+
+def set_page_number_start(section, start=1):
+    sect_pr = section._sectPr
+    pg_num = sect_pr.find(qn("w:pgNumType"))
+    if pg_num is None:
+        pg_num = OxmlElement("w:pgNumType")
+        sect_pr.append(pg_num)
+    pg_num.set(qn("w:start"), str(start))
+
+
+def set_cjk_line_rules(doc):
+    settings = doc.settings.element
+    compat = settings.find(qn("w:compat"))
+    if compat is None:
+        compat = OxmlElement("w:compat")
+        settings.append(compat)
+    for tag in ("w:useFELayout", "w:kinsoku", "w:overflowPunct"):
+        if compat.find(qn(tag)) is None:
+            compat.append(OxmlElement(tag))
+
+
 def force_style_black(doc, style_ids):
     for style in doc.styles:
         if style.style_id not in style_ids:
@@ -449,6 +482,7 @@ def clean_source_text():
 
 
 def setup_document(doc):
+    set_cjk_line_rules(doc)
     section = doc.sections[0]
     section.page_width = Cm(21)
     section.page_height = Cm(29.7)
@@ -474,8 +508,8 @@ def setup_document(doc):
     h1.font.bold = True
     h1.font.color.rgb = RGBColor(0, 0, 0)
     h1.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    h1.paragraph_format.line_spacing = 2.4
-    h1.paragraph_format.space_before = Pt(12)
+    h1.paragraph_format.line_spacing = 1.5
+    h1.paragraph_format.space_before = Pt(0)
     h1.paragraph_format.space_after = Pt(12)
     h1.paragraph_format.keep_with_next = True
 
@@ -486,9 +520,9 @@ def setup_document(doc):
     h2.font.bold = True
     h2.font.color.rgb = RGBColor(0, 0, 0)
     h2.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
-    h2.paragraph_format.line_spacing = 1.73
-    h2.paragraph_format.space_before = Pt(8)
-    h2.paragraph_format.space_after = Pt(8)
+    h2.paragraph_format.line_spacing = 1.5
+    h2.paragraph_format.space_before = Pt(10)
+    h2.paragraph_format.space_after = Pt(6)
     h2.paragraph_format.keep_with_next = True
 
     h3 = doc.styles["Heading 3"]
@@ -498,9 +532,9 @@ def setup_document(doc):
     h3.font.bold = True
     h3.font.color.rgb = RGBColor(0, 0, 0)
     h3.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
-    h3.paragraph_format.line_spacing = 1.72
+    h3.paragraph_format.line_spacing = 1.5
     h3.paragraph_format.space_before = Pt(8)
-    h3.paragraph_format.space_after = Pt(8)
+    h3.paragraph_format.space_after = Pt(4)
     h3.paragraph_format.keep_with_next = True
 
     force_style_black(doc, {
@@ -540,16 +574,27 @@ def add_toc(doc):
 
     toc_entries = [
         (1, "第一章 心理测量和测验的历史回顾", "1"),
-        (2, "第一节 中国古代的心理测量思想和实践", "1"),
-        (2, "第二节 近代心理测量的早期尝试与先驱者的探索", "2"),
-        (2, "第三节 社会需要是心理测量和测验发展的动力", "5"),
-        (2, "第四节 心理测量和测验在我国的发展", "7"),
-        (2, "第五节 改革开放40多年来我国心理测量和测验发展概述", "8"),
+        (2, "一、中国古代的心理测量思想和实践", "1"),
+        (2, "二、近代心理测量的早期尝试与先驱者的探索", "2"),
+        (3, "（一）早期对智力落后儿童的分类与训练的兴趣", "2"),
+        (3, "（二）冯特实验心理学的影响", "3"),
+        (3, "（三）高尔顿的理想和贡献", "4"),
+        (3, "（四）卡特尔及其早期个别差异研究", "4"),
+        (2, "三、社会需要是心理测量和测验发展的动力", "6"),
+        (3, "（一）比奈和世界上第一个智力测验", "6"),
+        (3, "（二）团体测验的产生", "8"),
+        (2, "四、心理测量和测验在我国的发展", "9"),
+        (3, "（一）1949年之前心理测验的发展和停滞", "9"),
+        (3, "（二）1949年之后心理测量和测验的发展", "10"),
+        (2, "五、改革开放40多年来我国心理测量和测验发展概述", "11"),
+        (3, "（一）往事回顾", "11"),
+        (3, "（二）心理测量迅猛发展的特点评述", "11"),
+        (3, "（三）对存在问题和未来前景的几点思考", "12"),
     ]
 
     for idx, (level, title, page) in enumerate(toc_entries):
         p = doc.add_paragraph()
-        p.paragraph_format.left_indent = Cm(0 if level == 1 else 0.74)
+        p.paragraph_format.left_indent = Cm(0 if level == 1 else 0.74 if level == 2 else 1.48)
         p.paragraph_format.tab_stops.add_tab_stop(Cm(14.6), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.DOTS)
         set_paragraph_spacing(p, after=1, line=1.15)
         run = p.add_run()
@@ -558,7 +603,7 @@ def add_toc(doc):
             fld_begin.set(qn("w:fldCharType"), "begin")
             instr = OxmlElement("w:instrText")
             instr.set(qn("xml:space"), "preserve")
-            instr.text = 'TOC \\o "1-2" \\h \\u'
+            instr.text = 'TOC \\o "1-3" \\h \\u'
             fld_separate = OxmlElement("w:fldChar")
             fld_separate.set(qn("w:fldCharType"), "separate")
             run._r.append(fld_begin)
@@ -571,7 +616,7 @@ def add_toc(doc):
             fld_end = OxmlElement("w:fldChar")
             fld_end.set(qn("w:fldCharType"), "end")
             run._r.append(fld_end)
-        format_run(run, size=11)
+        format_run(run, size=11, bold=(level == 1))
 
     set_update_fields(doc)
     doc.add_section(WD_SECTION.NEW_PAGE)
@@ -587,6 +632,7 @@ def set_update_fields(doc):
 
 
 def add_page_number(section):
+    set_page_number_start(section, 1)
     section.footer.is_linked_to_previous = False
     footer = section.footer.paragraphs[0]
     footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -654,21 +700,64 @@ def insert_tip_label(doc):
     sample = sample_tip_label_element()
     if sample is not None:
         label = deepcopy(sample)
+        set_p_element_keep(label, together=True, next=True)
         doc._body._element.insert_element_before(label, "w:sectPr")
         return
     p = doc.add_paragraph()
+    set_keep(p, together=True, next=True)
     run = p.add_run("铁头tips")
     format_run(run, size=10, bold=True)
+
+
+def add_part_title(doc, text):
+    parts = text.split(maxsplit=1)
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    set_paragraph_spacing(p, before=0, after=4, line=1.5)
+    set_keep(p, together=True, next=True)
+    add_inline_runs(p, parts[0], size=16, force_bold=True)
+    if len(parts) > 1:
+        p2 = doc.add_paragraph()
+        p2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        set_paragraph_spacing(p2, before=0, after=12, line=1.5)
+        set_keep(p2, together=True, next=True)
+        add_inline_runs(p2, parts[1], size=16, force_bold=True)
+
+
+def classify_numbered_line(text):
+    if re.match(r"^\d+\.", text):
+        return "num1"
+    if re.match(r"^（\d+）", text):
+        return "num2"
+    if re.match(r"^[①②③④⑤⑥⑦⑧⑨⑩]", text):
+        return "num3"
+    if re.match(r"^[A-Z]\. ?", text):
+        return "upper_alpha"
+    if re.match(r"^[a-z]\. ?", text):
+        return "lower_alpha"
+    return None
+
+
+def is_num1_heading(text):
+    return bool(re.match(r"^\d+\.\*\*.+\*\*$", text) or (re.match(r"^\d+\.", text) and len(re.sub(r"\*\*|<u>|</u>", "", text)) <= 24))
 
 
 def add_body_paragraph(doc, text):
     p = doc.add_paragraph()
     set_paragraph_spacing(p, after=2)
     stripped = text.strip()
-    is_list = bool(re.match(r"^(\d+\.|（\d+）|[①②③④⑤⑥⑦⑧⑨⑩]|[A-Z]\.|[a-z]\.)", stripped))
-    if not is_list:
-        p.paragraph_format.first_line_indent = Cm(0.74)
-    add_inline_runs(p, stripped, size=12)
+    number_level = classify_numbered_line(stripped)
+    num1_heading = is_num1_heading(stripped)
+    if num1_heading:
+        set_paragraph_spacing(p, before=6, after=2)
+        set_keep(p, together=True, next=True)
+    if number_level == "num3":
+        p.paragraph_format.first_line_indent = Pt(12)
+    elif number_level in {"upper_alpha", "lower_alpha"}:
+        p.paragraph_format.first_line_indent = Pt(24)
+    elif not number_level:
+        p.paragraph_format.first_line_indent = Pt(24)
+    add_inline_runs(p, stripped, size=12, force_bold=num1_heading)
     return p
 
 
@@ -680,6 +769,11 @@ def add_heading(doc, level, text):
     set_keep(p, together=True, next=True)
     if level == 1:
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        set_paragraph_spacing(p, before=0, after=12, line=1.5)
+    elif level == 2:
+        set_paragraph_spacing(p, before=10, after=6, line=1.5)
+    else:
+        set_paragraph_spacing(p, before=8, after=4, line=1.5)
     return p
 
 
@@ -731,6 +825,7 @@ def add_markdown_table(doc, rows, *, font_size=10, in_tip=False):
             para = cell.paragraphs[0]
             para.alignment = WD_ALIGN_PARAGRAPH.CENTER
             set_paragraph_spacing(para, after=0, line=1.15)
+            set_keep(para, together=True, next=False)
             text = row[c_idx] if c_idx < len(row) else ""
             add_inline_runs(para, text, size=font_size)
             if r_idx == 0:
@@ -753,6 +848,7 @@ def add_tip_paragraph(doc, text="", *, title=False, source=False):
     p = doc.add_paragraph()
     set_p_shading(p, "DBE3F4" if title else "DAE3F3")
     set_paragraph_spacing(p, after=0)
+    set_keep(p, together=True, next=True)
     if title:
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         add_inline_runs(p, text, size=12, force_bold=True)
@@ -760,7 +856,7 @@ def add_tip_paragraph(doc, text="", *, title=False, source=False):
         p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
         add_inline_runs(p, text, size=12)
     else:
-        p.paragraph_format.first_line_indent = Cm(0.74)
+        p.paragraph_format.first_line_indent = Pt(24)
         add_inline_runs(p, text, size=12)
     return p
 
@@ -768,47 +864,59 @@ def add_tip_paragraph(doc, text="", *, title=False, source=False):
 def add_tip_block(doc, tip_lines):
     if not tip_lines:
         return
+    if any(is_markdown_image(line) for line in tip_lines):
+        doc.add_page_break()
     insert_tip_label(doc)
     first = tip_lines[0]
     body = tip_lines[:]
     title = None
+    tip_paragraphs = []
     if not first.startswith("例如") and not is_markdown_image(first) and not first.startswith("|"):
         plain = re.sub(r"\*\*|<u>|</u>", "", first)
         if len(plain) <= 45 or first.startswith(("易混", "图示", "现代")):
             title = first
             body = tip_lines[1:]
     if title:
-        add_tip_paragraph(doc, title, title=True)
+        tip_paragraphs.append(add_tip_paragraph(doc, title, title=True))
     for line in body:
         if is_markdown_image(line):
             p = doc.add_paragraph()
             set_p_shading(p, "DAE3F3")
+            set_keep(p, together=True, next=True)
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER
             run = p.add_run()
             run.add_picture(str(image_path_from_line(line)), width=Cm(14.5))
+            tip_paragraphs.append(p)
             continue
         if line.startswith("|"):
             continue
         if line.startswith("【") and line.endswith("】"):
-            add_tip_paragraph(doc, line, source=True)
+            tip_paragraphs.append(add_tip_paragraph(doc, line, source=True))
         else:
-            add_tip_paragraph(doc, line)
+            tip_paragraphs.append(add_tip_paragraph(doc, line))
+    for idx, paragraph in enumerate(tip_paragraphs):
+        set_keep(paragraph, together=True, next=(idx < len(tip_paragraphs) - 1))
     doc.add_paragraph()
 
 
 def add_supplement_box(doc, lines):
+    paragraphs = []
     for idx, line in enumerate(lines):
         p = doc.add_paragraph()
         set_p_double_border(p)
         set_paragraph_spacing(p, after=0)
+        set_keep(p, together=True, next=True)
         if idx == 0:
             add_inline_runs(p, line, size=12, force_bold=True)
         elif len(line) <= 24 and not line.endswith("。"):  # title line
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER
             add_inline_runs(p, line, size=12, force_bold=True)
         else:
-            p.paragraph_format.first_line_indent = Cm(0.74)
+            p.paragraph_format.first_line_indent = Pt(24)
             add_inline_runs(p, line, size=12)
+        paragraphs.append(p)
+    for idx, paragraph in enumerate(paragraphs):
+        set_keep(paragraph, together=True, next=(idx < len(paragraphs) - 1))
     doc.add_paragraph()
 
 
@@ -842,9 +950,14 @@ def build_docx(markdown_text):
     add_page_number(doc.sections[-1])
     lines = markdown_text.splitlines()
     i = 0
+    chapter_count = 0
     while i < len(lines):
         line = lines[i].strip()
         if not line:
+            i += 1
+            continue
+        if line.startswith("@PART "):
+            add_part_title(doc, line[6:].strip())
             i += 1
             continue
         if line in TIP_LABELS:
@@ -862,6 +975,9 @@ def build_docx(markdown_text):
                     add_tip_block(doc, tip_lines)
             continue
         if line.startswith("# "):
+            if chapter_count > 0:
+                doc.add_page_break()
+            chapter_count += 1
             add_heading(doc, 1, line[2:].strip())
         elif line.startswith("## "):
             add_heading(doc, 2, line[3:].strip())
@@ -915,13 +1031,13 @@ def build_review_xlsx():
         ["题型池", "第1章直接证据为选择题；非直接题型仅用于审核表，不在成品正文乱标"],
         ["真题一级", "比奈/比内—西蒙量表：1905年第一个智力测验，题册显示为选择题"],
         ["考纲覆盖", "心理测量基本原理和方法、心理测量和测验的历史发展、智力测验的起源"],
-        ["教材结构核对", "正文标题已按教材目录改为第一节至第五节；编制者自拟概括不再作为结构标题"],
+        ["教材结构核对", "教材第1章前有第一编 绪论；正文已保留第一编，并按负责人最新规则将教材第一节至第五节转为二级标题一、至五、"],
         ["专名核对", "教材P6写作“沈干（E. Sequin）”，成品按教材写法保留“沈干”"],
         ["分点分层", "按定义/原因/贡献/观点/项目/意义等类型重编，避免只把原文切成短段"],
         ["过程话术检查", "成品正文不含了解即可、无真题支撑、不展开背诵等话术"],
-        ["Tips", "保留现代智力测验形成路径、比奈生活化例子、比奈/比内译名、比奈量表辨析、个别/团体测验辨析"],
-        ["格式", "使用深大母版的封面/TOC字段/Heading 1-3/宋体小四/铁头tips标签/浅蓝底/表格样式；标题与目录强制黑色"],
-        ["风险", "本地无 Word/WPS 渲染能力，已尽量用TOC字段和黑色可见目录模拟生成效果；最终页码可在Word/WPS中刷新"],
+        ["Tips", "保留现代智力测验形成路径、比奈生活化例子、比奈/比内译名、比奈量表辨析、个别/团体测验辨析；图片/表格Tips主动分页，文本Tips设置同页约束"],
+        ["格式", "按最新规则使用第X章/一、/（一）三级标题；正文宋体小四1.5倍行距；目录标题宋体一号、目录正文11号、一级目录加粗；页码从正文第一页起算"],
+        ["风险", "本地无 Word/WPS 渲染能力，已使用keep-with-next、keep-lines、cantSplit和主动分页降低跨页风险；最终视觉分页仍需在Word/WPS中核对"],
     ]
     for row in evidence_rows:
         ev.append(row)
@@ -939,7 +1055,7 @@ def build_review_xlsx():
 def main():
     DELIVER.mkdir(parents=True, exist_ok=True)
     markdown = clean_source_text()
-    LATEST_MD.write_text(markdown, encoding="utf-8")
+    LATEST_MD.write_text(markdown.replace("@PART ", ""), encoding="utf-8")
     build_docx(markdown)
     build_review_xlsx()
     print(OUTPUT_DOCX)
