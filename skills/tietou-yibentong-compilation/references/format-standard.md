@@ -87,6 +87,7 @@ Tips are visually independent shaded learning blocks placed after the relevant k
 - Source/page marker: right aligned in the last shaded paragraph, e.g. `【普通心理学第六版P52】`.
 - Keep the logo and shaded body together. Do not let the logo sit on one page and the block body start on the next.
 - Tips and supplementary blocks should not split across pages when avoidable. If only a short part of a Tips block would remain on the first page, move the whole block to the next page. If only a short tail remains on the next page, reduce inner spacing or line spacing slightly when it does not hurt readability. Tips tables and visual summaries must not be split awkwardly.
+- Do not solve every Tips/table/visual pagination risk by inserting a hard page break before the block. Hard page breaks can leave large blank areas and harm the visual rhythm. Prefer compact visuals, adjusted image aspect ratios, controlled spacing, `keep-with-next`, `keep-lines`, and table row `cantSplit`; use hard page breaks only when the first-page remainder would be clearly worse.
 - Do not use a plain one-cell table with `铁头tips` text as a substitute when the output is intended as final DOCX.
 
 ## Supplementary Content Format
@@ -108,6 +109,7 @@ Supplementary content follows the 深大 sample's double-line box style.
 - Use compact 宋体 text, normally 12 pt or smaller only when needed for fit and still readable in A4 black-and-white printing.
 - Do not use decorative colors. If shading is used, it must remain clear in black-and-white printing.
 - Comparison tables and diagrams should be placed inside Tips-style blocks when they function as learning aids.
+- For generated diagrams, control the aspect ratio for A4 print. Avoid very tall diagrams that force page breaks or leave large blank spaces. Redraw as horizontal or two-row layouts when possible, while keeping all text large and clear in black-and-white printing.
 
 ## Layout Self-Check
 

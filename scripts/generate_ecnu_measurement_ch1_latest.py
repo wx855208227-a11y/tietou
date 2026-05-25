@@ -211,10 +211,6 @@ REVISED_MARKDOWN = r"""@PART 第一编 绪论
 
 （4）**1908年**和**1911年**，比奈两次修订该量表；**1916年**，美国斯坦福大学**推孟**修订该量表，形成**斯坦福—比奈量表**。
 
-5.**真题对应**
-
-**1905年**对应**比奈—西蒙量表**，其地位是<u>世界上第一个真正意义上的智力测验</u>。
-
 **铁头tips**
 
 例如  比奈不再用“头大不大、手长不长”判断儿童聪不聪明，而是让儿童完成词语、图片解释、推理判断等任务。这样更像直接观察儿童怎样思考，而不是只看身体外形这些间接线索。
@@ -831,17 +827,13 @@ def add_markdown_table(doc, rows, *, font_size=10, in_tip=False):
             if r_idx == 0:
                 for run in para.runs:
                     run.bold = True
-    spacer = doc.add_paragraph()
-    set_paragraph_spacing(spacer, after=3)
 
 
 def add_tip_table_block(doc, title, rows):
-    doc.add_page_break()
     insert_tip_label(doc)
     if title:
         add_tip_paragraph(doc, title, title=True)
     add_markdown_table(doc, rows, font_size=10, in_tip=True)
-    doc.add_paragraph()
 
 
 def add_tip_paragraph(doc, text="", *, title=False, source=False):
@@ -864,8 +856,6 @@ def add_tip_paragraph(doc, text="", *, title=False, source=False):
 def add_tip_block(doc, tip_lines):
     if not tip_lines:
         return
-    if any(is_markdown_image(line) for line in tip_lines):
-        doc.add_page_break()
     insert_tip_label(doc)
     first = tip_lines[0]
     body = tip_lines[:]
@@ -885,7 +875,7 @@ def add_tip_block(doc, tip_lines):
             set_keep(p, together=True, next=True)
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER
             run = p.add_run()
-            run.add_picture(str(image_path_from_line(line)), width=Cm(14.5))
+            run.add_picture(str(image_path_from_line(line)), width=Cm(14.2))
             tip_paragraphs.append(p)
             continue
         if line.startswith("|"):
@@ -896,7 +886,6 @@ def add_tip_block(doc, tip_lines):
             tip_paragraphs.append(add_tip_paragraph(doc, line))
     for idx, paragraph in enumerate(tip_paragraphs):
         set_keep(paragraph, together=True, next=(idx < len(tip_paragraphs) - 1))
-    doc.add_paragraph()
 
 
 def add_supplement_box(doc, lines):
@@ -1035,7 +1024,7 @@ def build_review_xlsx():
         ["专名核对", "教材P6写作“沈干（E. Sequin）”，成品按教材写法保留“沈干”"],
         ["分点分层", "按定义/原因/贡献/观点/项目/意义等类型重编，避免只把原文切成短段"],
         ["过程话术检查", "成品正文不含了解即可、无真题支撑、不展开背诵等话术"],
-        ["Tips", "保留现代智力测验形成路径、比奈生活化例子、比奈/比内译名、比奈量表辨析、个别/团体测验辨析；图片/表格Tips主动分页，文本Tips设置同页约束"],
+        ["Tips", "保留现代智力测验形成路径、比奈生活化例子、比奈/比内译名、比奈量表辨析、个别/团体测验辨析；图片重绘为横向紧凑版，取消图片/表格Tips前强制分页，改用同页约束减少大块空白"],
         ["格式", "按最新规则使用第X章/一、/（一）三级标题；正文宋体小四1.5倍行距；目录标题宋体一号、目录正文11号、一级目录加粗；页码从正文第一页起算"],
         ["风险", "本地无 Word/WPS 渲染能力，已使用keep-with-next、keep-lines、cantSplit和主动分页降低跨页风险；最终视觉分页仍需在Word/WPS中核对"],
     ]
