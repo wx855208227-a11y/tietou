@@ -10,6 +10,8 @@ Source PDF: `docs/yibentong/一本通编制要求及细则.pdf` in the `agiamaso
 - 辅助材料: official/electronic reference textbook, target院校官方考纲, target院校历年真题, optional 312历年真题, optional 泛347历年真题库, and leader-provided published textbook/academic literature sources. Online文库、咨询号、无出处网络总结, and unsourced notes cannot be used as authoritative supplementary sources.
 - Use external material for comparison, not blind copying. Use the textbook as the authority for wording, definitions, structure, and source verification.
 - Evidence priority for 347 school-specific work: target-school true questions > target-school official outline > assigned textbook structure and wording > auxiliary 312/泛347 true-question evidence > other external materials.
+- HF 中已上传的一本通只作为格式参考，不作为内容参考。除非负责人明确要求做内容比对或审核，否则不得借鉴、学习、复刻或迁移 HF 一本通中的正文内容、层级判断、真题标注、Tips 内容、语言组织和取舍逻辑。新编一本通的内容依据只能来自指定教材、目标院校考纲、目标院校真题，以及有明确出处的出版教材或学术文献。
+- 格式参考以 `27深大普心一本通（最新版）(1).docx` 为标准，重点参考封面、目录、页码、标题、正文、Tips、表格、字体、间距、logo/标签、边框和底色等格式，不参考其内容质量。
 
 ## Compilation Process
 
@@ -24,6 +26,7 @@ Source PDF: `docs/yibentong/一本通编制要求及细则.pdf` in the `agiamaso
    - Split and layer long prose.
    - Bold keywords and underline key sentences.
    - Check typos.
+   - Do not place editor rationale in the student-facing正文, such as “无真题支撑”“正文保留主线即可”“细节了解即可”. These belong in the review file or internal notes.
 4. Check past-exam questions.
    - If a target-school paper contains multiple subjects, first classify questions by subject and keep only the relevant subject questions for this 一本通 chapter. Use the answer substance, not surface keywords, to decide the subject.
    - Find all knowledge points touched by target院校历年真题.
@@ -62,7 +65,7 @@ Each numbered point should carry one memorisable scoring point. If a paragraph c
 
 ### Compression Benchmark
 
-Use supplied high-quality 一本通 samples as the benchmark. For textbook history/development chapters, aggressive compression is expected: preserve people, years, named works/tests, and contributions; remove most story-like narration. If a compiled section is more than about twice the density of the human sample for the same source, review for over-retention.
+Use the compilation rules, textbook structure, target-school evidence, and leader-confirmed standards as the content benchmark. HF 一本通 samples are not content-quality benchmarks and must not be used to learn wording, level decisions, or取舍逻辑. For textbook history/development chapters, aggressive compression is expected: preserve people, years, named works/tests, and contributions; remove most story-like narration. If a compiled section reads like a cleaned textbook summary, review for over-retention.
 
 ### Example: History Chapter Screening
 
@@ -203,6 +206,8 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - If keywords are too dense in one sentence, do not bold every keyword; underline the key phrase/sentence segment that carries the complete point instead.
 - Underlines should not be too long; keep each underline within about 1.5 lines. Avoid reflexively underlining whole sentences when a shorter clause is enough.
 - Do not mix bold and underline randomly. Use bold for isolated terms; use underline for relational judgments, definitions, causal links, contribution statements, steps, or comparison conclusions.
+- If a unit is an answer-bearing definition, judgment, boundary, cause-effect relation, or short scoring phrase, prefer underline. Use bold only for isolated terms, names, theories, scales, methods, years, indexes, and fixed labels.
+- Self-check by reading only the bold and underlined fragments: they should reconstruct the core meaning of the paragraph without including process commentary or decorative noise.
 
 ## Tips
 
@@ -222,6 +227,8 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
   - If two Tips blocks are adjacent, leave two blank lines between them.
   - If a Tips block is based on a textbook experiment, mark the lower-right page reference as `【科目+Pxx】`.
   - Leave two blank lines between tables and Tips.
+- Tips visual format must match the 深大普心一本通 sample as closely as possible: logo/label position, border, fill/background, font size, spacing, and page-fit behavior are part of the requirement, not optional decoration.
+- Summary tables and visual comparisons should appear inside Tips-style blocks unless the leader explicitly requests a standalone正文 table.
 
 ## A4 Print Layout
 
@@ -281,6 +288,7 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - Catalog title: 宋体一号居中.
 - Catalog body: 宋体11号; first-level catalog entries bold; leave one blank line between chapters.
 - Tips and supplementary content should avoid crossing pages. If only a short fragment spills over, move the whole block to the next page or adjust spacing if it does not hurt readability.
+- Tables should follow the sample's font, border, fill, alignment, and compactness; they should be readable in A4 black-and-white printing and should not split across pages unless unavoidable.
 
 ## Self-Check And Two-File Delivery
 
@@ -291,19 +299,21 @@ Every delivery should go through self-check first, then provide two files unless
 Default format: DOCX. This is the student-facing 一本通成品 and should be clean enough for direct review or later排版合稿.
 
 - Keep only student-facing content: title levels,正文, importance levels, true-question markers, retained question-type hints, Tips, tables/visuals, supplement blocks, and page references.
-- Do not include internal notes such as `待确认`, `我判断`, `可能`, evidence scoring, or review comments inside正文 unless they are meant to appear in the final material.
+- Do not include internal notes such as `待确认`, `我判断`, `可能`, `无真题支撑`, `正文保留主线即可`, evidence scoring, or review comments inside正文 unless they are meant to appear in the final material.
 - Before delivery, check source fidelity, no unsupported content, concise layering, keyword/key-phrase marking, Tips priority, table/visual placement, A4 print layout, and cross-page risks.
 
 ### File 2: Manager Review File
 
 Default format: XLSX. Use DOCX/MD only when the leader requests it or when the chapter is too small to justify a spreadsheet. The review file exists to let the leader audit quickly without rereading the whole textbook.
 
+The first/main sheet should make the leader's decision fast. For 一本通 level review, it should focus on 强二级候选是否升为一级/保留二级, not a flat dump of every 一级/二级/三级 item. Use supporting sheets for full evidence mapping and self-check details.
+
 Include these sections:
 
 - Materials used and missing materials.
 - Chapter evidence table: knowledge point, page, outline mapping, target-school true-question evidence, auxiliary evidence, likely question type, suggested level, and treatment decision.
 - 一级依据表: all 一级 points and whether the basis is target-school true question, outline core, textbook core, or leader-confirmed rule.
-- 强二级复核表: all strong 二级 candidates, upgrade reason, likely question type, and whether they are candidates for 一级.
+- 强二级复核表: all strong 二级 candidates, current正文位置, current level, why it is 强二级, target-school evidence, outline evidence, auxiliary evidence if used, likely question type, suggested decision, confidence, and manager confirmation column.
 - Tips/visual/supplement decision log: type, location, reason, source/page, and skipped borderline candidates.
 - Deletion/compression/downgrade notes: especially long background, 中国背景类 content, and low-yield historical details.
 - Self-check results: pass/fail or short notes for evidence mapping, level logic, core正文 compilation quality, wording concision, bold/underline extraction, Tips, visual/table rules, supplement sources, formatting, and unresolved assumptions.
@@ -324,7 +334,7 @@ Run these checks before sending files:
 - Tips check: Tips follow priority order and are not added merely to fill space; ordinary 三级 points usually have no Tips.
 - Visual/table check: tables and visuals serve at least one 一级 point unless listed for review; diagrams are actual diagrams, readable in black-and-white, and placed inside Tips.
 - Supplement check: missing but important/tested points are added as `补充内容：xxxx`, with traceable published textbook or academic literature source and page when available.
-- Format check: title levels, page references, true-question markers, retained question-type hints, line spacing, cover/catalog/page-number sample standards, Tips label/box grouping, and cross-page risks are checked.
+- Format check: title levels, page references, true-question markers, retained question-type hints, line spacing, cover/catalog/page-number sample standards, Tips logo/label, border/fill/background, table font/borders/fill, grouping, and cross-page risks are checked.
 - Assumption check: any nontrivial guess is moved into the manager review file instead of silently entering the finished product.
 
 ## Review Checklist
@@ -340,5 +350,7 @@ Run these checks before sending files:
 - All 强二级 candidates are separately listed for leader review.
 - The manager review file includes evidence, level, Tips/visual/supplement, and uncertainty logs.
 - Tips are relevant, concise, and page-marked when based on textbook experiments.
+- Tips and tables match the 深大普心一本通 format standard, including logo/label, border/fill/background, font, and page-fit.
 - Supplementary content uses the required box and label, and the source is a traceable published textbook or academic literature source.
 - Title levels, numbering, punctuation, page references, true-question markers, retained question-type hints, cover/catalog/page-number standards, chapter page breaks, and cross-page tips/supplements are checked.
+- Review workbook main sheet focuses on 强二级 upgrade/keep decisions rather than listing every level indiscriminately.
