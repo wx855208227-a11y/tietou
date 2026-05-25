@@ -6,7 +6,7 @@ Source input: sanitized inventory `hf_file_inventory.tsv`. Findings below are ba
 
 - `.DS_Store`: 21 entries. These are macOS metadata files and should be deleted or ignored during migration.
 - Upload/temp noise search: no filenames containing `upload`, `上传`, `tmp`, or `__MACOSX` appeared in the sanitized inventory. If the live clone has additional upload artifacts, they need a separate scan before migration.
-- Root metadata: `.gitattributes` and root `README.md` are not study materials. Keep them as repository metadata or archive under `04_归档_迁移来源/hf_root_metadata/`.
+- Root metadata: `.gitattributes` and root `README.md` are not study materials. Keep them as repository metadata and record the decision in `索引/清理记录.md`.
 - Many pdf/docx/jpg paths list sizes around 130-134 bytes in the sanitized inventory. Treat size as inventory metadata only; do not infer file validity or content from it.
 
 ## Duplicate Or Legacy Locations To Confirm
@@ -21,7 +21,7 @@ Source input: sanitized inventory `hf_file_inventory.tsv`. Findings below are ba
 
 - `西北师范大学/一本通/西北师大发展心理学一本通(不完整版).docx`: mark as incomplete/draft unless manager confirms it is usable as final.
 - `西北师范大学/一本通/西北师组织行为学一本通（不完整版本）.docx`: mark as incomplete/draft unless manager confirms it is usable as final.
-- `西北师范大学/考纲/西北师范大学非全报考.docx`: filename suggests admission/program information rather than an exam outline. Confirm whether it belongs under `官方考纲`, `招生信息`, or `待确认`.
+- `西北师范大学/考纲/西北师范大学非全报考.docx`: filename suggests admission/program information rather than an exam outline. Confirm whether it belongs under `考纲`, `报考信息`, or `待确认`.
 - `西北师范大学/真题/真题23-25/答案.pdf`: filename lacks year; confirm which exam year it answers.
 - `西北师范大学/真题/答案10-22/参考答案2.pdf` and `参考答案3.pdf`: filenames do not identify year coverage; keep in `待拆分` until mapped.
 - `西北师范大学/真题/真题10-22/西北347真题10-19/0521_1.jpg` through `0521_22.jpg`: image sequence lacks per-file year/page metadata; keep as one raw scanned collection until split.
@@ -31,6 +31,6 @@ Source input: sanitized inventory `hf_file_inventory.tsv`. Findings below are ba
 ## Recommended Cleanup Policy
 
 1. Remove `.DS_Store` from the material library and add an ignore rule if the storage workflow permits it.
-2. Move legacy `教材/` and `考纲/` folders into a migration archive first; deduplicate only after confirmation.
+2. Record legacy `教材/` and `考纲/` folders in `索引/清理记录.md` first; map them to canonical `院校资料库/347应用心理专硕/<院校>/教材` or `院校资料库/347应用心理专硕/<院校>/考纲` paths only after confirmation.
 3. Preserve raw scan collections until a reviewer maps pages to years and questions.
 4. Use `待确认` for uncertain files rather than forcing them into official outline, true question, answer, or final 一本通 categories.
