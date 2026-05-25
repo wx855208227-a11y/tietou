@@ -9,11 +9,11 @@ Use this skill for all 铁头一本通 compilation, rewriting, review, and manag
 
 ## Required References
 
-Read [requirements.md](references/requirements.md) before producing or reviewing 一本通 content. For Tips formatting, also read [tips-format-standard.md](references/tips-format-standard.md) and use its confirmed sample. Keep this SKILL.md loaded for workflow discipline; use the reference for detailed rules.
+Read [requirements.md](references/requirements.md) before producing or reviewing 一本通 content. For DOCX formatting, also read [format-standard.md](references/format-standard.md); for Tips-specific details, read [tips-format-standard.md](references/tips-format-standard.md). Keep this SKILL.md loaded for workflow discipline; use the references for detailed rules.
 
 The original source PDF is stored in the `agiamason/tietou` project repository at `docs/yibentong/一本通编制要求及细则.pdf`. Start from this skill and its distilled reference; open the PDF only when exact original wording, screenshots, or formatting examples are needed. If the PDF is image-heavy, use `intern-agent-pdf-ocr-batch` and inspect it in small batches.
 
-For cover, catalog, page-number formatting, table style, fonts, spacing, and A4 print layout, follow the user-provided human sample `27深大普心一本通（最新版）(1).docx` when available. For Tips visual style, use the leader-confirmed sample `references/format-samples/chapter-01-yibentong-v11-selective-tips.docx` as the fixed standard, together with the 深大 sample for broader document formatting.
+For cover, catalog, page-number formatting, title styles, body text, table style, fonts, spacing, Tips logo/background, supplementary-content boxes, and A4 print layout, follow the leader-confirmed whole-document sample `references/format-samples/shenda-general-psychology-yibentong-format-sample.docx`. The generated sample `references/format-samples/chapter-01-yibentong-v11-selective-tips.docx` remains a secondary Tips comparison sample only.
 
 Important: 一本通 files in HF are format references only unless the leader explicitly assigns a content review task. Do not copy, imitate, learn, or borrow their正文内容、层级判断、真题标注、Tips内容、语言表述, or content-selection decisions. The leader has confirmed those files may contain content problems. For new compilation, content authority is the assigned textbook, target-school official outline, target-school true questions, and traceable published教材/文献 only. Use the 深大普心一本通 sample as the formatting standard, not as a content standard.
 
@@ -95,7 +95,7 @@ Use this when organizing HF materials for future 一本通 compilation.
 - Content gate: the正文 is the best attainable compiled version under current materials, not just a compliant draft.
 - Annotation gate: importance levels, true-question markers, 一级题型提示, bold keywords, and underlined key phrases follow the rules.
 - Tips/visual gate: Tips follow priority, visuals/tables serve appropriate importance levels, and supplement sources are traceable published textbooks or academic literature.
-- Format gate: Tips match the leader-confirmed `chapter-01-yibentong-v11-selective-tips.docx` format sample; tables, cover, catalog, fonts, logo/label placement, border/background color, and page layout match the 深大普心一本通 formatting sample as closely as the DOCX toolchain allows. Headings must not be orphaned at page bottoms; headings and their first正文 paragraph should stay together, and Tips/tables should not be split awkwardly across pages.
+- Format gate: cover, catalog, page numbers, title styles, body text, Tips logo/background, supplementary-content boxes, tables, fonts, spacing, and page layout match the leader-confirmed `shenda-general-psychology-yibentong-format-sample.docx` as closely as the DOCX toolchain allows. Headings must not be orphaned at page bottoms; headings and their first正文 paragraph should stay together, and Tips/tables/supplement boxes should not be split awkwardly across pages.
 - Delivery gate: finished DOCX and manager review XLSX exist, self-check is complete, A4 black-and-white layout risks are checked, and unresolved assumptions are visible in the review file.
 
 ## Exam-Facing Compilation Guardrails

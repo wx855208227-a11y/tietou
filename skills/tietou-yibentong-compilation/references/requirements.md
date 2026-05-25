@@ -11,7 +11,7 @@ Source PDF: `docs/yibentong/一本通编制要求及细则.pdf` in the `agiamaso
 - Use external material for comparison, not blind copying. Use the textbook as the authority for wording, definitions, structure, and source verification.
 - Evidence priority for 347 school-specific work: target-school true questions > target-school official outline > assigned textbook structure and wording > auxiliary 312/泛347 true-question evidence > other external materials.
 - HF 中已上传的一本通只作为格式参考，不作为内容参考。除非负责人明确要求做内容比对或审核，否则不得借鉴、学习、复刻或迁移 HF 一本通中的正文内容、层级判断、真题标注、Tips 内容、语言组织和取舍逻辑。新编一本通的内容依据只能来自指定教材、目标院校考纲、目标院校真题，以及有明确出处的出版教材或学术文献。
-- 格式参考以 `27深大普心一本通（最新版）(1).docx` 为整体文档标准，重点参考封面、目录、页码、标题、正文、表格、字体、间距、logo/标签、边框和底色等格式，不参考其内容质量。Tips 呈现形式以负责人确认的 `references/format-samples/chapter-01-yibentong-v11-selective-tips.docx` 为固定标准；编制或审核 Tips 前同时读取 `tips-format-standard.md`。
+- 格式参考以负责人确认的 `references/format-samples/shenda-general-psychology-yibentong-format-sample.docx` 为整体文档母版，重点参考封面、目录、页码、标题、正文、Tips logo/背景框、补充内容、表格、字体、间距、边框和底色等格式，不参考其内容质量。编制或审核 DOCX 格式前读取 `format-standard.md`；编制或审核 Tips 前同时读取 `tips-format-standard.md`。`chapter-01-yibentong-v11-selective-tips.docx` 仅作为生成稿 Tips 的二级对照样例。
 
 ## Compilation Process
 
@@ -230,7 +230,7 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
   - If two Tips blocks are adjacent, leave two blank lines between them.
   - If a Tips block is based on a textbook experiment, mark the lower-right page reference as `【科目+Pxx】`.
   - Leave two blank lines between tables and Tips.
-- Tips visual format must match the leader-confirmed `chapter-01-yibentong-v11-selective-tips.docx` sample as closely as possible, while staying compatible with the broader 深大普心一本通 document style: upper-left `铁头 tips` identity, independent block body, centered bold Tips title when needed, border/fill/background, font size, spacing, and page-fit behavior are part of the requirement, not optional decoration. A plain table label is not enough when generating DOCX.
+- Tips visual format must match the leader-confirmed 深大普心 format sample as closely as possible: upper-left `铁头tips` logo/textbox identity, light-blue independent block body, centered bold Tips title when needed, fill/background, font size, spacing, source/page marker, and page-fit behavior are part of the requirement, not optional decoration. A plain table label is not enough when generating DOCX. Use `chapter-01-yibentong-v11-selective-tips.docx` only as a secondary generated-output comparison sample.
 - Summary tables and visual comparisons should appear inside Tips-style blocks unless the leader explicitly requests a standalone正文 table.
 
 ## A4 Print Layout
@@ -242,12 +242,13 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 
 ## Supplementary Content
 
-- Content not from the current textbook should be placed in a supplement box.
+- Content not from the current textbook should be placed in a supplement box following the 深大普心 sample.
 - Supplementary sources must be traceable, authoritative, and preferably published textbooks. Academic journal articles can be used when they are the best source for a tested or important point.
 - Do not use online文库、咨询号、unverified web summaries, or unsourced notes as supplement sources.
 - For common course areas, use same-domain textbook families when possible. For example, 普通心理学类 supplements should come from published textbooks such as `普通心理学`, `心理学导论`, or `心理学与生活`-type sources, rather than loose online explanations.
-- Use a double-line box around supplementary content.
-- Mark the upper-left label `补充内容：`.
+- Use a black double-line box around supplementary content.
+- Mark the opening label `补充内容：` in bold.
+- If the supplement has a specific title, center and bold it inside the box.
 - Supplementary content also needs key-point marking.
 - If the source cannot be verified in mainstream textbooks, mark the uncertainty and ask the leader when it affects correctness.
 
@@ -282,7 +283,7 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 
 - After compiling正文, Tips, and supplementary content, adjust format and apply title levels before final review.
 - Recommended final order: apply title levels, mark second/third-level page references, mark true-question markers, mark importance levels, add page numbers, generate catalog, add cover.
-- Cover, catalog, and page-number standards should follow the user-provided human sample `27深大普心一本通（最新版）(1).docx` when available; verify school, year, subject, and reference textbooks for the current project.
+- Cover, catalog, page-number, title,正文, Tips, supplement, table, and print-layout standards should follow `format-standard.md` and the leader-confirmed 深大普心 sample; verify school, year, subject, and reference textbooks for the current project.
 - Full document line spacing: 1.5.
 - Body font: 宋体小四.
 - Follow Chinese line-breaking habits and use proper first-line indentation.
@@ -354,7 +355,7 @@ Run these checks before sending files:
 - All 强二级 candidates are separately listed for leader review.
 - The manager review file includes evidence, level, Tips/visual/supplement, and uncertainty logs.
 - Tips are relevant, concise, and page-marked when based on textbook experiments.
-- Tips match the leader-confirmed `chapter-01-yibentong-v11-selective-tips.docx` format sample; tables and broader document formatting match the 深大普心一本通 standard, including logo/label, border/fill/background, font, and page-fit.
+- Cover, catalog, page numbers, title styles,正文, Tips, supplementary content, tables, and page layout match the leader-confirmed 深大普心 format sample and `format-standard.md`, including logo/label, border/fill/background, font, and page-fit.
 - Supplementary content uses the required box and label, and the source is a traceable published textbook or academic literature source.
 - Title levels, numbering, punctuation, page references, true-question markers, retained question-type hints, cover/catalog/page-number standards, chapter page breaks, and cross-page tips/supplements are checked.
 - Review workbook main sheet focuses on 强二级 upgrade/keep decisions rather than listing every level indiscriminately.
