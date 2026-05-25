@@ -11,7 +11,7 @@ Source PDF: `docs/yibentong/一本通编制要求及细则.pdf` in the `agiamaso
 - Use external material for comparison, not blind copying. Use the textbook as the authority for wording, definitions, structure, and source verification.
 - Evidence priority for 347 school-specific work: target-school true questions > target-school official outline > assigned textbook structure and wording > auxiliary 312/泛347 true-question evidence > other external materials.
 - HF 中已上传的一本通只作为格式参考，不作为内容参考。除非负责人明确要求做内容比对或审核，否则不得借鉴、学习、复刻或迁移 HF 一本通中的正文内容、层级判断、真题标注、Tips 内容、语言组织和取舍逻辑。新编一本通的内容依据只能来自指定教材、目标院校考纲、目标院校真题，以及有明确出处的出版教材或学术文献。
-- 格式参考以 `27深大普心一本通（最新版）(1).docx` 为标准，重点参考封面、目录、页码、标题、正文、Tips、表格、字体、间距、logo/标签、边框和底色等格式，不参考其内容质量。
+- 格式参考以 `27深大普心一本通（最新版）(1).docx` 为整体文档标准，重点参考封面、目录、页码、标题、正文、表格、字体、间距、logo/标签、边框和底色等格式，不参考其内容质量。Tips 呈现形式以负责人确认的 `references/format-samples/chapter-01-yibentong-v11-selective-tips.docx` 为固定标准；编制或审核 Tips 前同时读取 `tips-format-standard.md`。
 
 ## Compilation Process
 
@@ -230,7 +230,7 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
   - If two Tips blocks are adjacent, leave two blank lines between them.
   - If a Tips block is based on a textbook experiment, mark the lower-right page reference as `【科目+Pxx】`.
   - Leave two blank lines between tables and Tips.
-- Tips visual format must match the 深大普心一本通 sample as closely as possible: upper-left `铁头 tips` ribbon/logo, light-blue body block, centered bold Tips title, border/fill/background, font size, spacing, and page-fit behavior are part of the requirement, not optional decoration. A plain table label is not enough when generating DOCX.
+- Tips visual format must match the leader-confirmed `chapter-01-yibentong-v11-selective-tips.docx` sample as closely as possible, while staying compatible with the broader 深大普心一本通 document style: upper-left `铁头 tips` identity, independent block body, centered bold Tips title when needed, border/fill/background, font size, spacing, and page-fit behavior are part of the requirement, not optional decoration. A plain table label is not enough when generating DOCX.
 - Summary tables and visual comparisons should appear inside Tips-style blocks unless the leader explicitly requests a standalone正文 table.
 
 ## A4 Print Layout
@@ -354,7 +354,7 @@ Run these checks before sending files:
 - All 强二级 candidates are separately listed for leader review.
 - The manager review file includes evidence, level, Tips/visual/supplement, and uncertainty logs.
 - Tips are relevant, concise, and page-marked when based on textbook experiments.
-- Tips and tables match the 深大普心一本通 format standard, including logo/label, border/fill/background, font, and page-fit.
+- Tips match the leader-confirmed `chapter-01-yibentong-v11-selective-tips.docx` format sample; tables and broader document formatting match the 深大普心一本通 standard, including logo/label, border/fill/background, font, and page-fit.
 - Supplementary content uses the required box and label, and the source is a traceable published textbook or academic literature source.
 - Title levels, numbering, punctuation, page references, true-question markers, retained question-type hints, cover/catalog/page-number standards, chapter page breaks, and cross-page tips/supplements are checked.
 - Review workbook main sheet focuses on 强二级 upgrade/keep decisions rather than listing every level indiscriminately.
