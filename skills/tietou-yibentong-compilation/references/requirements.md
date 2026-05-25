@@ -41,6 +41,8 @@ Source PDF: `docs/yibentong/一本通编制要求及细则.pdf` in the `agiamaso
 
 When no existing 一本通 is available and the official textbook is the主体材料, compile according to the textbook's chapter order. Do not reorganize the document by official exam outline headings. Official outlines are usually broad and may span multiple textbook chapters; use them to judge importance only.
 
+教材原有的章、节、目等结构性标题必须尽量保持一致，不要用编制者自拟的概括标题替换教材标题。若确实需要总结一个教材没有明示的逻辑主题，只能放在正文、Tips、表格或审核说明中，不得冒充教材原结构标题。编制前必须用教材目录/OCR/PDF逐级核对本章标题。
+
 The target is an exam-facing考点筛选稿. 一本通 should stay close to textbook concepts and scoring language, but it should not preserve all textbook narration. A chapter output that is close to the length and narrative density of a textbook summary is too verbose.
 
 ### Screening Before Rewriting
@@ -63,6 +65,8 @@ After screening, rebuild the section around answerable layers rather than textbo
 
 Each numbered point should carry one memorisable scoring point. If a paragraph contains several answer points, split it into `1.` / `（1）` / `①` layers. If a paragraph only explains background, compress it to one short sentence or remove it.
 
+“分点分层”不是简单分段。对概念性内容，应优先拆成 `1.定义/核心含义`、`2.特点/要素`、`3.影响因素/作用`、`4.评价/应用/易混点` 等类型层；对人物和历史内容，应拆成 `1.身份/地位`、`2.核心贡献`、`3.代表方法/作品/测验`、`4.意义/局限`。每个编号项都应像采分点，而不是教材原句换行。
+
 ### Compression Benchmark
 
 Use the compilation rules, textbook structure, target-school evidence, and leader-confirmed standards as the content benchmark. HF 一本通 samples are not content-quality benchmarks and must not be used to learn wording, level decisions, or取舍逻辑. For textbook history/development chapters, aggressive compression is expected: preserve people, years, named works/tests, and contributions; remove most story-like narration. If a compiled section reads like a cleaned textbook summary, review for over-retention.
@@ -73,7 +77,7 @@ For a textbook chapter such as `心理测量和测验的历史回顾`, the expec
 
 - 中国古代心理测量的三个前提;
 - 孔子、孟子、刘劭、《学记》《礼记·本命》、科举、周岁试儿、七巧板、九连环 and their testable contributions;
-- 艾斯克罗、塞甘、冯特、高尔顿、卡特尔、克雷丕林、艾宾浩斯 and their core contributions;
+- 艾斯克罗、教材指定的 Sequin 译名（如本书写作“沈干”）、冯特、高尔顿、卡特尔、克雷丕林、艾宾浩斯 and their core contributions;
 - 比奈—西蒙量表、1905年量表、斯坦福—比奈量表;
 - 个别测验 vs 团体测验, 陆军甲种/乙种测验;
 - 我国发展概述 only as high-level examinable features unless specific events are likely or真题-covered.
@@ -181,6 +185,7 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - Rewrite after screening, not before screening. First remove low-yield material, then polish the retained points.
 - Prefer concise formal answer language over continuous exposition. Good 一本通 paragraphs often look like answer outlines.
 - Preserve exact names, years, works, scale names, theory names, and textbook judgments when they are likely scoring points.
+- 专有名词、译名、人名、书名、量表名必须以指定教材为准，不得因为常见译名或英文名自行替换教材译名。若 OCR 与常识或其他资料冲突，应回到教材原页截图/PDF核对，并在审核文件记录。例如教材写作“沈干”时，正文应跟随教材写“沈干”，不能改成其他常见译名。
 - Do not add Tips, examples, or explanations merely to fill space. Add them only when they improve understanding or prevent common mistakes.
 
 ## Active Comparison And Visual Learning

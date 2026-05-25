@@ -46,6 +46,7 @@ If 华文楷体、华文新魏, 方正舒体, or Kristen ITC are unavailable in 
 - Apply `Heading 1` to chapter titles, `Heading 2` to `一、...` titles, and `Heading 3` to `（一）...` titles.
 - The 深大 sample's default catalog includes levels 1-2 through `TOC \o "1-2" \h \u`. Use this as the default unless the leader asks for a third-level catalog; if third-level catalog is required, use `TOC \o "1-3" \h \u`.
 - After generating or editing a DOCX, update fields in Word/WPS before final export whenever possible. If the local toolchain cannot refresh fields, keep correct heading styles and TOC field codes so the leader can refresh the catalog directly.
+- The visible catalog must look like a Word/WPS generated catalog from the 深大 sample, not like a hand-typed placeholder list. Avoid visible placeholder text such as `右键更新域生成目录`, and avoid blue hyperlink-style TOC text in delivered files. If field refresh is unavailable, keep a valid TOC field and provide a conservative black visible result that matches the generated-catalog appearance as closely as possible.
 
 ## Title And Body Styles
 
@@ -55,6 +56,8 @@ If 华文楷体、华文新魏, 方正舒体, or Kristen ITC are unavailable in 
 - Chapter title / `Heading 1`: centered, bold, about 16 pt, keep with next; chapter should start on a new page.
 - Second-level title / `Heading 2`: left aligned, bold, about 14 pt, spacing before/after about 13 pt.
 - Third-level title / `Heading 3`: left aligned, bold, usually 12 pt inherited from Normal, spacing before/after about 13 pt.
+- Heading 1/2/3 text must be black. Do not leave default Word blue heading color, hyperlink blue, theme accent color, or other decorative colors in titles or generated catalog text.
+- When generating DOCX programmatically, black must be applied not only to `Heading 1/2/3`, but also to related character styles such as `Heading1Char`、`Heading2Char`、`Heading3Char`, plus TOC and hyperlink-related styles when present. Remove or override theme accent colors such as `accent1`; otherwise Word/WPS may still render refreshed headings or catalog links in blue.
 - Deeper title levels use正文 style with visible numbering: `1.` level is usually bold; `（1）`、`①`、`A.` are used only when the hierarchy needs them and should remain compact.
 - Do not manually fake chapter, second-level, or third-level titles with plain正文 formatting; use the proper heading style so the catalog works.
 
@@ -111,4 +114,4 @@ Before delivery, check these visual issues against the 深大 sample:
 - Supplementary content uses the double-line box style.
 - Tables are compact, readable, and not split awkwardly.
 - No title is left at the bottom of a page with its正文 starting on the next page.
-- Images, Tips, tables, and supplement boxes are not split across pages when avoidable.
+- Images, Tips, tables, and supplement boxes are not split across pages when avoidable. Tips tables are especially not allowed to split across pages in ordinary chapter output; if the table does not fit, shorten it, reduce nonessential rows, or move the whole Tips block to the next page.
