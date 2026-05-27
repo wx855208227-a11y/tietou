@@ -282,6 +282,20 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - Catalog body: 宋体11号; first-level catalog entries bold; leave one blank line between chapters.
 - Tips and supplementary content should avoid crossing pages. If only a short fragment spills over, move the whole block to the next page or adjust spacing if it does not hurt readability.
 
+## DOCX Render Preview Format Loop
+
+During 一本通 DOCX generation, run the Linux rendering loop after each near-final DOCX build so formatting problems are visible before the file reaches the leader. This is not a separate final QA substitute; it is a feedback loop for modifying the DOCX generation script and style settings.
+
+```bash
+python3 scripts/docx_format_preview.py path/to/input.docx --out-dir format-preview/docx-render/<project> --force
+```
+
+The render bundle must include `output.docx`, `output.pdf`, `previews/page-*.png`, contact sheet PNGs, and `format_report.md`. Use the PDF and preview images to check the visual result, not only the DOCX XML or python-docx settings.
+
+`format_report.md` should clearly record: input/output paths, dependency commands, PDF page count and page size, suspected blank or text-light pages, heading/TOC/style checks, generated preview paths, and the next formatting risks the generator should fix.
+
+The generation loop should focus on: generated catalog appearance, blue heading/catalog text, orphan headings at page bottoms, Tips logo/background grouping, Tips/table/supplement page splits, large blank areas, image/table readability under A4 black-and-white printing, and whether page numbers start from the first正文 page. If any of these issues appear, revise the DOCX generator and rerun the render loop; do not patch only the PDF or preview images.
+
 ## Self-Check And Two-File Delivery
 
 Every delivery should go through self-check first, then provide two files unless the leader asks for a different format.
@@ -292,7 +306,7 @@ Default format: DOCX. This is the student-facing 一本通成品 and should be c
 
 - Keep only student-facing content: title levels,正文, importance levels, true-question markers, retained question-type hints, Tips, tables/visuals, supplement blocks, and page references.
 - Do not include internal notes such as `待确认`, `我判断`, `可能`, evidence scoring, or review comments inside正文 unless they are meant to appear in the final material.
-- Before delivery, check source fidelity, no unsupported content, concise layering, keyword/key-phrase marking, Tips priority, table/visual placement, A4 print layout, and cross-page risks.
+- Before delivery, check source fidelity, no unsupported content, concise layering, keyword/key-phrase marking, Tips priority, table/visual placement, A4 print layout, cross-page risks, and the DOCX render-preview format bundle.
 
 ### File 2: Manager Review File
 
@@ -324,7 +338,7 @@ Run these checks before sending files:
 - Tips check: Tips follow priority order and are not added merely to fill space; ordinary 三级 points usually have no Tips.
 - Visual/table check: tables and visuals serve at least one 一级 point unless listed for review; diagrams are actual diagrams, readable in black-and-white, and placed inside Tips.
 - Supplement check: missing but important/tested points are added as `补充内容：xxxx`, with traceable published textbook or academic literature source and page when available.
-- Format check: title levels, page references, true-question markers, retained question-type hints, line spacing, cover/catalog/page-number sample standards, Tips label/box grouping, and cross-page risks are checked.
+- Format check: title levels, page references, true-question markers, retained question-type hints, line spacing, cover/catalog/page-number sample standards, Tips label/box grouping, cross-page risks, and DOCX render-preview format loop are checked.
 - Assumption check: any nontrivial guess is moved into the manager review file instead of silently entering the finished product.
 
 ## Review Checklist

@@ -15,6 +15,8 @@ The original source PDF is stored in the `agiamason/tietou` project repository a
 
 For cover, catalog, and page-number formatting, follow the user-provided human sample `27深大普心一本通（最新版）(1).docx` when available.
 
+For DOCX generation, use the render-preview format loop documented in `docs/yibentong/docx-format-render-loop.md` and implemented by `scripts/docx_format_preview.py`. This is not a separate final QA substitute; it is the feedback loop for fixing Word formatting while generating 一本通. After generating a student-facing DOCX, render it to `output.pdf`, page preview PNGs, contact sheet PNGs, and `format_report.md`; inspect those artifacts and revise the DOCX generation logic until the visible format is acceptable.
+
 ## Non-Negotiable Workflow
 
 1. Confirm the source set: 铁头一本通 draft or textbook as 主体材料, official/e-textbook reference, target院校官方考纲, target院校历年真题, and optional 312/泛347真题库.
@@ -27,7 +29,7 @@ For cover, catalog, and page-number formatting, follow the user-provided human s
 8. Treat screenshot examples as formatting examples, not as new正文规则 unless the leader confirms.
 9. For PDF/OCR/image-heavy materials, also use `intern-agent-pdf-ocr-batch`: process screenshots in small batches and keep durable local notes.
 10. When turning a new project PDF into reusable agent knowledge, create or update a dedicated skill: keep the operational workflow in `SKILL.md`, put detailed extracted rules in `references/`, and record the source PDF path so future agents read the skill first and consult the PDF only for detail checks.
-11. Run a self-check before delivery: source fidelity, evidence mapping, level logic, core正文 compilation quality, wording concision, bold/underline extraction, Tips priority, visual/table gate, supplement sources, A4 print layout, and unresolved assumptions.
+11. Run a self-check before delivery: source fidelity, evidence mapping, level logic, core正文 compilation quality, wording concision, bold/underline extraction, Tips priority, visual/table gate, supplement sources, A4 print layout, rendered preview format loop, and unresolved assumptions.
 12. Deliver two files by default: a self-checked student-facing finished DOCX, and a manager review XLSX that makes the leader's audit fast. The review file should list evidence mapping, level decisions, 强二级 candidates, Tips/visual/supplement decisions, deletions/compressions, self-check results, and open confirmations.
 
 ## Manager-Worker-Reviewer Collaboration
@@ -64,7 +66,8 @@ Use this workflow whenever the project has `tietou_manager`, `tietou_worker1`, `
 - Content gate: the正文 is the best attainable compiled version under current materials, not just a compliant draft.
 - Annotation gate: importance levels, true-question markers, 一级题型提示, bold keywords, and underlined key phrases follow the rules.
 - Tips/visual gate: Tips follow priority, visuals/tables serve appropriate importance levels, and supplement sources are traceable published textbooks or academic literature.
-- Delivery gate: finished DOCX and manager review XLSX exist, self-check is complete, A4 black-and-white layout risks are checked, and unresolved assumptions are visible in the review file.
+- Format loop gate: cover, catalog, page numbers, title styles, body text, Tips logo/background, supplementary-content boxes, tables, fonts, spacing, and page layout follow the leader-confirmed sample as closely as the DOCX toolchain allows. Headings must not be orphaned at page bottoms; headings and their first正文 paragraph should stay together, and Tips/tables/supplement boxes should not be split awkwardly across pages. During generation, run `python3 scripts/docx_format_preview.py <docx> --out-dir format-preview/docx-render/<project> --force`, inspect `format_report.md`, `output.pdf`, and contact sheets, then adjust the DOCX generation logic and rerun until obvious format problems are gone.
+- Delivery gate: finished DOCX, manager review XLSX, and render-preview format bundle exist; self-check is complete; A4 black-and-white layout risks are checked; unresolved assumptions are visible in the review file.
 
 ## Exam-Facing Compilation Guardrails
 
@@ -82,7 +85,7 @@ Use this workflow whenever the project has `tietou_manager`, `tietou_worker1`, `
 - Gate comparison tables and visuals by importance: they should normally serve at least one 一级 point. 二级 points may appear as supporting comparisons, and 三级 points may appear only when needed to clarify the 一级/二级 distinction; do not create standalone tables or visuals for pure 三级 content.
 - Put summary visuals and comparison tables in `铁头tips` blocks at the relevant knowledge point, not as standalone正文 sections.
 - Design visuals for black-and-white printing: use high contrast, larger type, thick lines/arrows, and do not rely on color to encode meaning.
-- Lay out for A4 black-and-white double-sided printing: avoid orphan headings at page bottoms and avoid splitting images, tables, tips, or supplement boxes across pages when generating DOCX/PDF.
+- Lay out for A4 black-and-white double-sided printing: avoid orphan headings at page bottoms and avoid splitting images, tables, tips, or supplement boxes across pages when generating DOCX/PDF. Use the generated PDF and preview images as the immediate truth source for these layout checks before the file reaches the leader.
 - Keywords and key phrases must be deliberately separated: bold isolated terms, names, theories, scales, methods, indexes, years, and fixed expressions; underline answer-bearing phrases, clauses, or short sentences. The underlined unit can be a sentence fragment, not necessarily a complete sentence. The selected bold/underline text should be enough to reconstruct the paragraph's core content.
 - Tips are selective, not mandatory for every knowledge point. Priority order: textbook experiments/small demonstrations first and required when present; then supplementary content for important or target-school-tested points absent from the main textbook, with source textbook/page; then life-close examples only for genuinely hard-to-understand 一级/二级 points. Avoid tips for ordinary 三级 points and skip examples that would be forced or harder than the concept.
 - Supplementary content should be presented through a Tips-style block. Start with `补充内容：xxxx`, cite the source textbook and page when available, then edit according to 一本通 rules: layered structure, concise wording, bold keywords, and underlined key phrases. Supplement sources must be published textbooks or academic literature with traceable出处; do not use online文库、咨询号、unverified web summaries, or unsourced notes.
