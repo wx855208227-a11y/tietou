@@ -247,6 +247,19 @@ PY
 
 Expected top-level directories after cleanup are `公共题库`, `院校资料库`, `编制规范`, and `索引`, plus repo metadata. Root `312心理学统考` and root generic `347应用心理专硕` must not remain; legacy top-level `教材`, `考纲`, and school-name roots should be gone after manager decisions are applied or explicitly documented before push.
 
+Also check tracked paths directly so a stale local directory does not hide a taxonomy violation:
+
+```bash
+python3 - <<'PY'
+import subprocess
+tracked = subprocess.check_output(['git', 'ls-files'], text=True).splitlines()
+bad = [p for p in tracked if p.startswith(('312心理学统考/', '347应用心理专硕/'))]
+if bad:
+    raise SystemExit('root public-bank paths still tracked:\n' + '\n'.join(bad))
+print('no root public-bank tracked paths remain')
+PY
+```
+
 ## 6. Final Reviewer Checkpoint Before HF Push
 
 - Check `索引/资料目录.tsv` is readable and covers `公共题库`, `院校资料库`, and `编制规范` retrieval paths; check `索引/清理记录.md` records .DS_Store removal and unresolved/reviewed duplicate decisions.
