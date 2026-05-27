@@ -73,6 +73,16 @@ print('canonical target checks passed')
 PY
 ```
 
+Reviewer freshness check: if this plan is copied from the worker branch, confirm the branch head is newer than the stale `9f9df50` plan before using it:
+
+```bash
+git -C /path/to/tietou/repo fetch origin worker2/hf-reorg-move-plan
+git -C /path/to/tietou/repo rev-parse origin/worker2/hf-reorg-move-plan
+git -C /path/to/tietou/repo merge-base --is-ancestor 9f9df50 origin/worker2/hf-reorg-move-plan
+```
+
+The current corrected plan must include `公共题库/312心理学统考/`, `公共题库/347应用心理专硕/`, `索引/资料目录.tsv`, `索引/清理记录.md`, and `报考信息`; if any of those are absent, the reviewer is looking at an old copy.
+
 Feasibility dry-run for executable actions. Do not execute `review_*` rows until the manager resolves them:
 
 ```bash
