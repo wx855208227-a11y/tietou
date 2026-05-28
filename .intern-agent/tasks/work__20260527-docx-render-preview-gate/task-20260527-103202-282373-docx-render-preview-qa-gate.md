@@ -50,6 +50,7 @@ Create an independent Word/DOCX formatting render loop: after generating a 一�
 - Smoke validation: `python3 -m py_compile scripts/docx_format_preview.py` passed.
 - Smoke validation: temporary DOCX rendered to `format-preview/docx-render/smoke/` with `output.docx`, `output.pdf`, `previews/page-*.png`, `contact-sheet-01.png`, `output.txt`, and `format_report.md`.
 - Real sample validation: `outputs/ecnu-347/measurement-psychology/chapter-01-yibentong-v11-selective-tips.docx` rendered to `format-preview/docx-render/ecnu-measurement-ch1-v11/`. Report showed A4 portrait was OK, but flagged missing Heading/TOC structure and possible blue text pages, demonstrating the loop can expose practical format problems.
+- Leader feedback after comparing PDF and Word: font differences are acceptable, but LibreOffice PDF does not fully preserve the Word/WPS Tips bow logo rendering where `铁头tips` should be slanted inside the bow. Word/WPS renders it correctly. This is now documented as a known renderer boundary; Word/WPS is authoritative for that decorative logo while PDF remains useful for pagination, splitting, whitespace, and table/image checks.
 - Generated render bundles are under ignored `format-preview/` and are not committed.
 
 ## Steps
@@ -58,3 +59,4 @@ Create an independent Word/DOCX formatting render loop: after generating a 一�
 - 2026-05-27T10:38Z: implemented initial DOCX render script, added documentation and skill/requirements updates, and smoke-tested DOCX -> PDF -> PNG previews -> report.
 - 2026-05-27T10:45Z: user clarified this is a generation feedback loop, not a standalone QA task; renamed/reframed artifacts around format preview and iterative DOCX repair.
 - 2026-05-27T10:48Z: added page-image metrics for bottom whitespace and possible blue rendered text; ran the loop on a temporary smoke DOCX and an existing 一本通 DOCX sample.
+- 2026-05-28T00:00Z: recorded leader-confirmed LibreOffice render limitation for Tips bow/slanted-logo elements; updated docs, skill, requirements, and generated report text to avoid false fixes.

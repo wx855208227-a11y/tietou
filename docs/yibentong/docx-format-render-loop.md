@@ -33,6 +33,8 @@ python3 scripts/docx_format_preview.py path/to/input.docx \
 
 然后按 `format_report.md`、`output.pdf` 和联系表回看格式问题，修改 DOCX 生成脚本或样式设置，再重新生成 DOCX 并重复渲染。只有当渲染预览里看不到明显格式问题时，才进入交付或人工复核。
 
+已确认的渲染边界：LibreOffice 导出的 PDF 与 Word/WPS 基本接近，字体有轻微差异可以接受；但 Word 里的 Tips logo/VML 旋转装饰可能无法完全还原，尤其是蝴蝶结里的 `铁头tips` 斜放文字。这个局部以 Word/WPS 打开效果为准：如果 Word/WPS 中 `铁头tips` 正常斜着展示在蝴蝶结里，而 PDF 中该装饰不一致，不要据此修改 DOCX 生成逻辑。
+
 ## 标准输出
 
 输出目录包含：
@@ -63,7 +65,7 @@ python3 scripts/docx_format_preview.py path/to/input.docx \
 
 - 目录是否像 Word/WPS 自动生成目录，是否有蓝色标题或蓝色目录文字。
 - 章节标题、二级标题、三级标题是否套用了正确标题样式，标题是否孤立在页尾。
-- Tips logo 是否和底框在同一页，Tips、补充内容、表格、图片是否被截断跨页。
+- Tips logo 是否和底框在同一页，Tips、补充内容、表格、图片是否被截断跨页。Tips 蝴蝶结里的斜放 `铁头tips` 装饰以 Word/WPS 为准，PDF 只辅助检查位置和分页。
 - 是否出现大块空白；如果由图片比例导致，优先重画或调整图片比例，不要用硬分页制造更大的空白。
 - 图表在 A4 黑白打印下是否清晰，不能依赖颜色区分信息。
 - 页码是否从正文第一页开始，封面和目录是否未计入正文页码。
@@ -74,11 +76,12 @@ python3 scripts/docx_format_preview.py path/to/input.docx \
 
 - `format_report.md` 中没有 `ERROR`。
 - `RISK` 项已经看过，能明确是不影响成品的提示，或已经通过回改生成逻辑处理。
-- PDF 和联系表已扫过，未发现标题跨页、Tips/表格截断、目录异常、大块空白、图片文字看不清等问题。
+- PDF 和联系表已扫过，未发现标题跨页、Tips/表格截断、目录异常、大块空白、图片文字看不清等问题；Tips 蝴蝶结/旋转文字若只在 PDF 中失真，但 Word/WPS 正常，可记录为 LibreOffice 渲染差异。
 - 如果发现问题，先改 DOCX 生成逻辑，再重新跑门禁；不要只改 PDF 或预览图。
 
 ## 局限
 
 - LibreOffice 的渲染和 Microsoft Word/WPS 不会完全一致，但能提前暴露大部分分页、字体、目录、图片、表格和空白问题。
+- 已知差异：LibreOffice PDF 可能不能完全还原 Word/WPS 中 Tips logo 的蝴蝶结形状、文本框旋转和斜放 `铁头tips`。这类装饰性元素以 Word/WPS 版为准。
 - 标题孤立页尾、Tips 被切开、图表可读性等问题仍需要看 PDF/预览图判断。
 - 对长文档会生成很多 PNG，最终交付给主管时可只发送 DOCX、PDF、`format_report.md` 和联系表；完整 `previews/` 留在本地或压缩后按需发送。

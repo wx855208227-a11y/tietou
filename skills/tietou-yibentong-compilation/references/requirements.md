@@ -296,6 +296,8 @@ The render bundle must include `output.docx`, `output.pdf`, `previews/page-*.png
 
 The generation loop should focus on: generated catalog appearance, blue heading/catalog text, orphan headings at page bottoms, Tips logo/background grouping, Tips/table/supplement page splits, large blank areas, image/table readability under A4 black-and-white printing, and whether page numbers start from the first正文 page. If any of these issues appear, revise the DOCX generator and rerun the render loop; do not patch only the PDF or preview images.
 
+Known LibreOffice render boundary: the PDF preview may not fully preserve Word/WPS Tips logo VML/textbox rotation, especially the slanted `铁头tips` text inside the bow. If Word/WPS displays the Tips bow and slanted logo correctly, record the PDF mismatch as a renderer artifact and do not change the DOCX generator solely for that PDF difference. Use PDF/contact sheets for Tips block position, page split, background box, table/image fit, and whitespace checks.
+
 ## Self-Check And Two-File Delivery
 
 Every delivery should go through self-check first, then provide two files unless the leader asks for a different format.
