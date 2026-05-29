@@ -9,7 +9,7 @@ Use this skill for all 铁头一本通 compilation, rewriting, review, and manag
 
 ## Required References
 
-Read [requirements.md](references/requirements.md) before producing or reviewing 一本通 content. Keep this SKILL.md loaded for workflow discipline; use the reference for detailed rules.
+Read [requirements.md](references/requirements.md) before producing or reviewing 一本通 content. For DOCX formatting, cover/catalog/page-number/title-style requirements, also read [format-standard.md](references/format-standard.md). Keep this SKILL.md loaded for workflow discipline; use the references for detailed rules.
 
 The original source PDF is stored in the `agiamason/tietou` project repository at `docs/yibentong/一本通编制要求及细则.pdf`. Start from this skill and its distilled reference; open the PDF only when exact original wording, screenshots, or formatting examples are needed. If the PDF is image-heavy, use `intern-agent-pdf-ocr-batch` and inspect it in small batches.
 

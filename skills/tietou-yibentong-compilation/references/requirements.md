@@ -271,6 +271,7 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 ## Overall Formatting
 
 - After compiling正文, Tips, and supplementary content, adjust format and apply title levels before final review.
+- DOCX formatting, cover, catalog, title styles, page setup, and page-number implementation must also follow `references/format-standard.md`, extracted from the supervisor-provided 一本通格式样板.
 - Recommended final order: apply title levels, mark second/third-level page references, mark true-question markers, mark importance levels, add page numbers, generate catalog, add cover.
 - Cover, catalog, and page-number standards should follow the user-provided human sample `27深大普心一本通（最新版）(1).docx` when available; verify school, year, subject, and reference textbooks for the current project.
 - Full document line spacing: 1.5.
