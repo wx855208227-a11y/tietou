@@ -60,6 +60,10 @@ After screening, rebuild the section around answerable layers rather than textbo
 
 Each numbered point should carry one memorisable scoring point. If a paragraph contains several answer points, split it into `1.` / `（1）` / `①` layers. If a paragraph only explains background, compress it to one short sentence or remove it.
 
+Supervisor feedback standard: good 分点分层 is not paragraph splitting. A good structure first names the upper-level answer dimension, then breaks it into scoring points. Use labels such as `定义`, `特点`, `影响因素`, `贡献`, `意义`, `评价`, `原因`, `表现`, `适用范围`, `操作要点`, or `易混点`, and then expand with `1.` / `（1）` / `①` layers. A bad structure simply cuts textbook prose into shorter paragraphs without extracting categories, answer dimensions, or scoring logic; revise such sections before delivery.
+
+When a section already has a good layered shell, still screen each subpoint for exam value. Delete or weaken tails that only add low-yield background, quantities, or process details and cannot become a scoring point. Do not bold or underline such tails. The retained sentence should carry the examinable core, not every fact in the textbook.
+
 ### Compression Benchmark
 
 Use supplied high-quality 一本通 samples as the benchmark. For textbook history/development chapters, aggressive compression is expected: preserve people, years, named works/tests, and contributions; remove most story-like narration. If a compiled section is more than about twice the density of the human sample for the same source, review for over-retention.
@@ -78,6 +82,8 @@ For a textbook chapter such as `心理测量和测验的历史回顾`, the expec
 Remove or heavily compress long accounts of social context, institutional history, broad reflections, and policy discussion unless the user explicitly asks for a detailed history version.
 
 For psychology考研 materials, `中国/中国古代/我国历史发展` content is non-core by default when there is no target-school true-question evidence. Process it conservatively: mark as 二级/三级, compress to high-level clues, or delete low-yield details according to examability. In student-facing wording, use expressions such as `了解即可`; avoid wording like `不展开背诵` or other process-oriented editorial notes. If the target school has tested the exact point, mark that point 一级 and add the true-question marker.
+
+Do not add student-facing editorial reminders such as `本部分属于低频历史内容`, `正文保留主线即可`, or similar process notes in the finished正文. Importance levels already carry the learning expectation: 三级 normally means 了解即可. If a reminder is needed for the manager, put it in the review file, not in the student-facing DOCX.
 
 ## Importance Levels
 
@@ -190,6 +196,7 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - Prefer a visual, flowchart, timeline, tree diagram, or model diagram when the content is sequential, hierarchical, causal, procedural, structural, or spatial, such as development stages, scale/test编制流程, classification systems, theory mechanisms, decision paths, or multi-step application procedures.
 - If a section is labeled `图示`, `流程图`, `时间线`, or `图片`, render it as an actual image, Word drawing, or diagram-style object. Do not use a normal table under a `图示` heading. If the content is best rendered as a table, label it as `易混辨析`, `对比表`, or another table-appropriate heading instead.
 - Design every visual for final black-and-white printing. Use grayscale or pure black/white, large readable type at the final inserted Word size, thick borders/arrows, clear numbering, and sufficient spacing. Do not rely on color differences alone. Before delivery, inspect the visual itself and confirm it remains legible when scaled to the document width.
+- For comparison tables that are substantively appropriate, prioritize A4 black-and-white readability: clear borders, stable column widths, enough row height, readable font at final print size, short cells, and no dependence on colored fills. If a table becomes crowded, simplify dimensions or split it; do not keep a visually dense table just because the comparison idea is correct.
 - Do not add a separate image caption below inserted visuals unless the leader explicitly requests one. The Tips title should carry the function of the visual.
 - Do not make a table or visual for a single standalone point, a simple one-dimensional list, a linear paragraph that is already clear, too many low-yield rows, or any format that would visually overemphasize low-frequency details.
 - Do not add decorative tables. A comparison must reduce confusion, compress repeated prose, or improve answer organization.
@@ -213,7 +220,8 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - Life-close examples should use experiences most Chinese students have lived through, such as school exams, class ranking, choosing courses, family communication, shopping, social media, commuting, job interviews, or everyday interpersonal situations. Use exaggeration, metaphor, or contrast when it strengthens memory, but keep the psychological meaning accurate.
 - Avoid obscure examples, irrelevant examples, forced analogies, or explaining one unfamiliar concept with another unfamiliar concept. If a knowledge point does not suit a clear example, skip the example.
 - Tips should be `textbook experiment adaptation`, `supplementary content in Tips form`, `summary visual/comparison aid`, or `concrete example for understanding`. Do not use Tips for true-question reminders, answer strategies, broad summaries, motivational notes, or loose chapter-level comments. Put those in正文, 易混点, or delivery notes when needed.
-- For history/factual 三级 points, usually do not create Tips. Keep the正文 concise and use `了解即可` when appropriate.
+- For history/factual 三级 points, usually do not create Tips. If the content is a simple factual development line or人物贡献 list and has no real理解门槛, do not force an example. Keep the正文 concise and let the level marking indicate low priority.
+- Distinguish `补充内容` from ordinary Tips. `补充内容：xxxx` is only for missing knowledge points or examinable content added from another traceable source. Translation reminders, alternative names, mnemonic notes, or small wording alerts can be Tips, but should be titled `铁头小提示` or another non-supplement title, not `补充内容`.
 - Tips spacing and style:
   - Leave one blank line before and after a Tips block.
   - The sample uses a visual `铁头tips` label, often implemented with a small textbox/shape; when generating DOCX programmatically, use a consistent visible `铁头tips` label and keep the content immediately below it.
@@ -252,6 +260,7 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
   - `①`: indent one level.
   - `A.`: use only if the hierarchy needs another level; indent two levels.
   - `a.`: if `A.` is used, indent three levels.
+- Do not stop hierarchy mechanically at `一、` / `（一）` / `1.` when the content has deeper answer layers. If a `1.` point contains multiple subpoints, continue with `（1）`; if a `（1）` point still contains parallel items, continue with `①`; only use `A.` / `a.` when the previous levels are insufficient. The goal is to show scoring hierarchy clearly, not to minimize numbering depth.
 
 ## Punctuation And Sentence Layering
 
