@@ -4,7 +4,7 @@
 - branch: work/20260527-docx-render-preview-gate
 - branch_slug: work__20260527-docx-render-preview-gate
 - created_utc: 2026-06-18T09:40:24Z
-- status: active
+- status: complete
 
 ## Description
 为华东347《心理测量》第三章一本通编制做证据核查和重点层级建议，只产出审核素材文件，不改正文成品。
@@ -14,22 +14,24 @@
 为华东347《心理测量》第三章一本通编制做证据核查和重点层级建议，只产出审核素材文件，不改正文成品。
 
 ### Assigned Scope
-- TODO: summarize the agreed scope before delegating or implementing.
+- Produce one evidence-review notes file for ECNU 347 Measurement Psychology chapter 3. Do not edit yibentong body/draft outputs.
 
 ### Deliverables
-- TODO: list expected files, artifacts, decisions, or reports.
+- `outputs/ecnu-347/measurement-psychology/chapter-03-evidence-worker-notes.md`
 
 ### Validation Plan
-- TODO: list tests, commands, source checks, or review criteria.
+- Check textbook OCR/PDF chapter range, ECNU 2019-2026 question hits, 2025 outline, and HF public question-bank evidence. Verify only the notes file was added for this task.
 
 ### Constraints And Non-Goals
-- TODO: list constraints such as no restart, no unrelated refactors, file ownership, or deployment limits.
+- Do not modify yibentong body/draft files. Do not revert unrelated dirty worktree changes.
 
 ### Claimed Output
-- TODO: fill when reporting completion.
+- Completed evidence-review notes with textbook structure/page range, ECNU true-question hits, HF evidence, level suggestions, and uncertainties.
 
 ### Artifacts And Evidence
-- TODO: fill with changed files, commits, generated artifacts, logs, screenshots, or test output.
+- Added `outputs/ecnu-347/measurement-psychology/chapter-03-evidence-worker-notes.md`.
+- Validation: read back notes file; checked `git status` and confirmed no body/draft file was edited by this task.
 
 ## Steps
 - 2026-06-18T09:40:24Z: task created
+- 2026-06-18T10:20:00Z: completed chapter 3 evidence notes and validation
