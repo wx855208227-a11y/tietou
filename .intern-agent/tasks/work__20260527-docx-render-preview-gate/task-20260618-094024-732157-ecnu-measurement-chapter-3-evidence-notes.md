@@ -35,3 +35,4 @@
 ## Steps
 - 2026-06-18T09:40:24Z: task created
 - 2026-06-18T10:20:00Z: completed chapter 3 evidence notes and validation
+- 2026-06-19T10:07:49Z: feedback rework: rebuilt ECNU measurement chapters 1-3 v2 with printed-page labels and student-facing cleanup

@@ -7,7 +7,8 @@ Source PDF: `docs/yibentong/一本通编制要求及细则.pdf` in the `agiamaso
 ## Materials
 
 - 主体材料: 铁头一本通. If the subject has no existing 一本通, use the electronic textbook as the主体材料.
-- 辅助材料: official/electronic reference textbook, target院校官方考纲, target院校历年真题, optional 312历年真题, optional 泛347历年真题库, and leader-provided published textbook/academic literature sources. Online文库、咨询号、无出处网络总结, and unsourced notes cannot be used as authoritative supplementary sources.
+- 辅助材料: official/electronic reference textbook, target院校官方考纲, target院校历年真题, optional 312历年真题, optional 泛347历年真题库, HF公共题库文件夹中的312统考与头部347院校真题/答案/解析, and leader-provided published textbook/academic literature sources. Online文库、咨询号、无出处网络总结, and unsourced notes cannot be used as authoritative supplementary sources.
+- HF公共题库是后续可考性判断的重要素材库。读取时不要只看关键词: 尽量结构化识别具体题目、答案、解析、题型、院校、年份、科目、对应知识点和命中方式。头部347院校重点包括但不限于华南师范、华东师范、北京师范大学、北京大学、西南大学；312统考真题也应作为公共高频证据。
 - Use external material for comparison, not blind copying. Use the textbook as the authority for wording, definitions, structure, and source verification.
 - Evidence priority for 347 school-specific work: target-school true questions > target-school official outline > assigned textbook structure and wording > auxiliary 312/泛347 true-question evidence > other external materials.
 
@@ -31,7 +32,7 @@ Source PDF: `docs/yibentong/一本通编制要求及细则.pdf` in the `agiamaso
    - Add true-question markers at the matching title or location.
    - If a true-question point is missing, locate it in the textbook, add it as正文, and mark it 一级.
    - All true-question knowledge points are 一级.
-   - Use 312 and 泛347真题 only as auxiliary evidence for examability, common question forms, and 强二级 review; they do not create target-school真题 markers.
+   - Use 312 and 泛347/头部347院校真题 as auxiliary evidence for examability, common question forms, 强二级 review, and under the public-question upgrade rule, possible 一级 judgment. They do not create target-school真题 markers.
 5. Final format and typo pass.
 
 ## Textbook-Based 347 一本通 Compilation Standard
@@ -61,6 +62,8 @@ After screening, rebuild the section around answerable layers rather than textbo
 Each numbered point should carry one memorisable scoring point. If a paragraph contains several answer points, split it into `1.` / `（1）` / `①` layers. If a paragraph only explains background, compress it to one short sentence or remove it.
 
 Supervisor feedback standard: good 分点分层 is not paragraph splitting. A good structure first names the upper-level answer dimension, then breaks it into scoring points. Use labels such as `定义`, `特点`, `影响因素`, `贡献`, `意义`, `评价`, `原因`, `表现`, `适用范围`, `操作要点`, or `易混点`, and then expand with `1.` / `（1）` / `①` layers. A bad structure simply cuts textbook prose into shorter paragraphs without extracting categories, answer dimensions, or scoring logic; revise such sections before delivery.
+
+When a point contains several reasons, limitations, advantages, or scale/test features, each subpoint should usually begin with a short summary label, such as `施测规模有限`, `测验要求相对更高`, `含义`, `特点`, `计算特点`, or `适用范围`, followed by a colon and the explanation. Where the logic naturally converges, add a concise conclusion sentence beginning with `因此` or `所以`. Do not force labels when the content is only a single simple fact, but do not leave multi-point textbook prose as unlabeled paragraph splits.
 
 When a section already has a good layered shell, still screen each subpoint for exam value. Delete or weaken tails that only add low-yield background, quantities, or process details and cannot become a scoring point. Do not bold or underline such tails. The retained sentence should carry the examinable core, not every fact in the textbook.
 
@@ -98,14 +101,14 @@ Do not add student-facing editorial reminders such as `本部分属于低频历�
 
 - 一级: high-frequency points that are very likely to appear in real exams, including points directly tested in target-school true questions and concrete core knowledge points inside the official outline scope, especially definitions, core classifications, major theories, representative scales/tests, procedures, formulas, reliability/validity indexes, and high-yield comparisons.
 - 二级: medium-frequency points that are reasonably likely to appear in real exams, including important textbook content that supports 一级 clusters or has clear examinability, but is not directly true-question-covered and is less central than core definitions/classifications/theories.
-- 强二级: a manual-review subset inside 二级. Use this label in the manager review file, not in the finished正文 title; in the finished product it remains marked 二级 unless the leader confirms upgrade. Typical cases include: official-outline-covered points with a stable question form but no direct true-question hit; textbook major subpoints that strongly support a 一级 cluster; points adjacent to repeated true-question themes; and points that could plausibly be upgraded to 一级 based on the leader's school-specific judgment.
+- 强二级: a manual-review subset inside 二级. Use this label in the manager review file, not in the finished正文 title; in the finished product it remains marked 二级 unless the leader confirms upgrade or the public-question upgrade rule justifies automatic upgrade. Typical cases include: official-outline-covered points with a stable question form but no direct true-question hit; textbook major subpoints that strongly support a 一级 cluster; points adjacent to repeated true-question themes; and points that could plausibly be upgraded to 一级 based on the leader's school-specific judgment.
 - 三级: low-frequency points that can still be tested but would usually be偏、怪、难, or near the edge of the normal scope, including background, low-frequency history, broad development overview, minor scale descriptions, or content mainly for understanding.
 - 中国/中国古代/我国历史发展类内容在没有目标院校真题支撑时，默认不作为重点。可按教材地位和可考性压缩为二级或三级；弱可考的细节可删除。正文表述用“了解即可”等学生视角措辞，不写“不展开背诵”等编制过程话术。只有被目标院校真题实质考过的具体点才升为一级。
 - Official outline evidence identifies important clusters. Do not automatically mark every subpoint under an outline-covered chapter as 一级.
 - Official-outline-covered content should be at least 二级 by default. The main exception is 中国/中国古代/我国发展史等中国背景类内容: when there is no target-school true-question evidence, these can be marked 三级 or compressed according to examability.
 - True-question evidence must be substantive. Only mark `【xx年真题】` when that exact knowledge point or its answer substance was tested; do not mark because the same person, school, or general topic appeared in another context.
 - A lower-level title can be more important than its parent. For example, a parent history section may be 三级 while a specific figure/test inside it is 二级 or 一级.
-- Every compilation delivery should separately list all 强二级 points for leader review. The list should include: knowledge point, textbook page/chapter location, current suggested level, reason for 强二级, possible question type, and whether it is a candidate for upgrade to 一级.
+- Every compilation delivery should separately list all remaining 强二级 points for leader review. The list should include: knowledge point, textbook page/chapter location, current suggested level, reason for 强二级, public-question evidence if any, possible question type, and whether it is a candidate for upgrade to 一级. Points automatically upgraded to 一级 by public-question evidence should be listed in the 一级依据表 with source school/year/type, not hidden.
 
 ### Official Outline Three-Ring Rule
 
@@ -134,7 +137,7 @@ Before writing the chapter正文, create an internal chapter evidence table. Use
 - Knowledge point and textbook page/chapter location.
 - Whether the point is in the official outline, and which outline cluster it belongs to.
 - Target-school true-question evidence: year, question type, and answer substance.
-- Auxiliary 312/泛347 evidence: source, frequency clue, and whether it only supports 强二级.
+- Auxiliary 312/泛347/top-school 347 evidence: source school or exam, year, question type, question stem/answer substance, frequency clue, and whether it supports 强二级 or 一级 upgrade.
 - Likely question type: choice, judgment, term explanation, short answer, essay, material/case analysis, experiment design, or calculation/application.
 - Suggested level: 一级, 二级, 强二级 candidate, or 三级, with one short reason.
 - Treatment decision: expand, keep concise, compress, delete, supplement, table, visual, or Tips.
@@ -169,7 +172,10 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 
 - 312真题: good evidence for common psychology exam core concepts, standardized question forms, measurement/statistics/experiment applications, and stable high-yield definitions or comparisons.
 - 泛347真题: good evidence for self命题院校 preferences, common applied/case/essay forms, and knowledge points repeatedly tested across schools.
+- Head-school 347 evidence: questions from high-level 347 schools such as 华南师范、华东师范、北京师范大学、北京大学、西南大学 are especially important for judging whether a point is genuinely exam-friendly in self命题 contexts. Record the school, year, type, question stem, answer/analysis substance, and mapped knowledge point when available.
 - Auxiliary evidence can upgrade a point from ordinary 二级 to 强二级, or support a recommendation to upgrade to 一级 when it is also outline-covered and textbook-core.
+- Public-question upgrade rule: if a knowledge point is highly suitable for exam questions, has clear scoring points and stable question forms, is textbook-core or official-outline-relevant, and has appeared in 312历年真题 or the head-school 347 true-question library, it can be judged 一级 even without target-school true-question evidence. In the finished product, mark it as 一级 and provide the judged likely question type, but do not add target-school真题 markers. In the manager review file, list the public-question sources and why it was upgraded.
+- Remaining cases should stay 强二级 for manual review when public-question evidence is weak, only keyword-level, from a non-core subpoint, not school-style matched, or would cause disproportionate content expansion.
 - Auxiliary evidence should not override the target school's own true questions, should not reorganize the textbook, and should not be marked as target-school真题 evidence.
 
 ## Content Rewriting
@@ -191,7 +197,7 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - Add comparison tables, flowcharts, or simple visual summaries when they help students compare and remember. Use tables for conceptual distinctions; use flowcharts for development sequences, procedures, and causal chains; use images only when they clarify spatial, process, or structure relations better than text.
 - Present summary visuals, flowcharts, timelines, and comparison tables as `铁头tips` extensions placed directly after the relevant knowledge point. They are learning aids for梳理 and辨析, not standalone正文 sections.
 - Good comparison candidates include: similar definitions, paired methods, scale/test variants, adjacent theories, people with overlapping historical contributions, formulas/indexes with similar uses, and concepts that target-school or auxiliary true questions often confuse.
-- A comparison table should include stable comparison dimensions such as `核心含义`, `关键词`, `适用对象/场景`, `代表人物/量表`, `易混点`, and `记忆抓手`. Keep cells short and exam-facing.
+- A comparison table should include stable comparison dimensions such as `核心含义`, `关键词`, `适用对象/场景`, `代表人物/量表`, `易混点`, and `关键差异`. Keep cells short and exam-facing.
 - Prefer a table when the content is parallel and comparable across stable dimensions, such as concept distinctions, theory/person/scale comparisons, method advantages and disadvantages, applicable scenes, representative examples, formulas, indexes, or likely compare-and-contrast exam questions.
 - Prefer a visual, flowchart, timeline, tree diagram, or model diagram when the content is sequential, hierarchical, causal, procedural, structural, or spatial, such as development stages, scale/test编制流程, classification systems, theory mechanisms, decision paths, or multi-step application procedures.
 - If a section is labeled `图示`, `流程图`, `时间线`, or `图片`, render it as an actual image, Word drawing, or diagram-style object. Do not use a normal table under a `图示` heading. If the content is best rendered as a table, label it as `易混辨析`, `对比表`, or another table-appropriate heading instead.
@@ -210,6 +216,7 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - If keywords are too dense in one sentence, do not bold every keyword; underline the key phrase/sentence segment that carries the complete point instead.
 - Underlines should not be too long; keep each underline within about 1.5 lines. Avoid reflexively underlining whole sentences when a shorter clause is enough.
 - Do not mix bold and underline randomly. Use bold for isolated terms; use underline for relational judgments, definitions, causal links, contribution statements, steps, or comparison conclusions.
+- When a sentence mainly lists exam keywords, mark the keywords separately rather than underlining the whole sentence. For example, in scale definitions, terms such as `参照点`, `单位`, `连续体`, and `事物属性` should normally be bold keywords; in zero-point distinctions, `无` and `人为规定` should be bold keywords. Whole-sentence underlining is reserved for compact relational judgments that cannot be reduced to several terms.
 
 ## Tips
 
@@ -224,8 +231,9 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - Distinguish `补充内容` from ordinary Tips. `补充内容：xxxx` is only for missing knowledge points or examinable content added from another traceable source. Translation reminders, alternative names, mnemonic notes, or small wording alerts can be Tips, but should be titled `铁头小提示` or another non-supplement title, not `补充内容`.
 - Tips spacing and style:
   - Leave one blank line before and after a Tips block.
-  - The sample uses a visual `铁头tips` label, often implemented with a small textbox/shape; when generating DOCX programmatically, use a consistent visible `铁头tips` label and keep the content immediately below it.
-  - If Tips has a title, bold and center it; if not, no title treatment is needed.
+  - The visual `铁头tips` label/logo should be placed inside the upper-left corner of the Tips box. Do not place a separate floating label above the box when it causes layout instability.
+  - Tips titles should state only the content function, such as `四种量表水平易混辨析P54-P55`; do not write `铁头tips：` or `铁头小提示：` again in the title when the logo already identifies the block.
+  - If Tips has a title, bold and center it below the logo; if not, no title treatment is needed.
   - Examples should use `例如` and leave two spaces after it when the final document style requires it.
   - If two Tips blocks are adjacent, leave two blank lines between them.
   - If a Tips block is based on a textbook experiment, mark the lower-right page reference as `【科目+Pxx】`.
@@ -254,6 +262,15 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - 一级标题: `第X 章 ×××××`; one space between chapter number and title; 宋体三号加粗居中.
 - 二级标题: `一、×××××`; use 顿号, no extra space; 宋体四号加粗.
 - 三级标题: `（一）×××××`; no 顿号 and no extra space; 宋体小四加粗.
+- Textbook structural titles must match the textbook wording as fully as possible. Do not simplify titles such as `四种测量水平和测量量表`, `斯比量表第四版（SB4）`, or `韦克斯勒儿童智力量表修订版（WISC-R）` into shorter internal abbreviations unless the textbook itself uses that abbreviation as the title.
+- Page labels must use the textbook's printed page number shown in the book page header/footer, not the PDF file page number that includes cover, catalog, or front matter. If the printed page cannot be verified, mark the uncertainty in the review file rather than guessing.
+
+Supervisor feedback on page labels and student-facing content:
+- Never derive textbook page labels by subtracting a fixed offset from PDF page order, rendered image filenames, or OCR page sequence.
+- For each content unit, first locate the corresponding textbook PDF/page image, then read the printed page number shown in that page image's header/footer/page-number block. Use that printed number as `Pxx`.
+- If a printed page number cannot be verified from the page image or local OCR/crop evidence, do not guess in the finished正文; record the uncertainty in the manager review file.
+- Finished正文 should not contain compilation traces or study-method language, including 学习方法、背诵建议、应试提示、答题口径、记忆抓手、学习提示、泛化说明、编制说明, or phrases such as 教材从/教材怎么/本部分如何编制. The default assumption is that正文 is textbook-based; do not repeatedly state it.
+
 - Deeper numbering:
   - `1.××××`: digit plus period; usually bold; leave one blank line before the next same-level item unless the content is very short or has no lower level.
   - `（1）××××`: no indent; no blank line between same-level titles.
