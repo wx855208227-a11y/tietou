@@ -22,25 +22,25 @@ ANSWER_FILL = "E7E6E6"
 CATALOG_PAGE_MAP = {
     "第一章 心理学研究的对象、方法及其学科发展": 1,
     "一、心理学的含义、诞生与研究对象": 1,
-    "二、现代心理学的主要流派": 1,
-    "三、观察法、相关研究法与实验法": 2,
-    "四、测验法、信效度与投射法": 3,
-    "五、心理学的主要分支": 4,
-    "第二章 心理和行为的生物学基础": 5,
-    "一、神经元、神经冲动与突触": 5,
-    "二、神经系统的构成与功能": 5,
-    "三、大脑皮层主要区域及其功能": 6,
-    "四、大脑两半球的功能分工": 7,
-    "五、丘脑、下丘脑与边缘系统": 7,
-    "六、脑功能的主要学说": 8,
-    "第三章 条件反射和学习": 9,
-    "一、学习、反射与高级神经活动基础": 9,
-    "二、经典条件反射及其基本规律": 9,
-    "三、操作条件反射：强化、惩罚与行为调控": 10,
-    "四、经典条件反射与操作条件反射的比较": 11,
-    "五、学习的认知理论": 12,
-    "六、观察学习": 12,
-    "七、格雷的强化敏感性理论": 14,
+    "二、现代心理学的主要流派": 2,
+    "三、观察法、相关研究法与实验法": 3,
+    "四、测验法、信效度与投射法": 4,
+    "五、心理学的主要分支": 5,
+    "第二章 心理和行为的生物学基础": 6,
+    "一、神经元、神经冲动与突触": 6,
+    "二、神经系统的构成与功能": 7,
+    "三、大脑皮层主要区域及其功能": 8,
+    "四、大脑两半球的功能分工": 9,
+    "五、丘脑、下丘脑与边缘系统": 9,
+    "六、脑功能的主要学说": 10,
+    "第三章 条件反射和学习": 12,
+    "一、学习、反射与高级神经活动基础": 12,
+    "二、经典条件反射及其基本规律": 13,
+    "三、操作条件反射：强化、惩罚与行为调控": 14,
+    "四、经典条件反射与操作条件反射的比较": 15,
+    "五、学习的认知理论": 16,
+    "六、观察学习": 17,
+    "七、格雷的强化敏感性理论": 18,
 }
 
 
@@ -251,7 +251,7 @@ def add_inline_runs(paragraph, text: str, size: float = 12) -> None:
         run.underline = is_underlined
 
 
-def add_heading(document: Document, level: int, text: str, page_break_before: bool = False) -> None:
+def add_heading(document: Document, level: int, text: str, page_break_before: bool = False):
     paragraph = document.add_paragraph(style=f"Heading {level}")
     paragraph.paragraph_format.first_line_indent = Cm(0)
     paragraph.paragraph_format.keep_with_next = True
@@ -274,9 +274,15 @@ def add_heading(document: Document, level: int, text: str, page_break_before: bo
             shade_paragraph(paragraph, GRAY_FILL)
     run = paragraph.add_run(text)
     set_run_font(run, size=font_size, bold=True)
+    return paragraph
 
 
-def add_list_paragraph(document: Document, raw_line: str, underline_core: bool) -> None:
+def add_list_paragraph(
+    document: Document,
+    raw_line: str,
+    underline_core: bool,
+    keep_with_next: bool = False,
+):
     leading_spaces = len(raw_line) - len(raw_line.lstrip(" "))
     stripped = raw_line.strip()
     displayed = "• " + stripped[2:] if stripped.startswith("- ") else stripped
@@ -286,7 +292,9 @@ def add_list_paragraph(document: Document, raw_line: str, underline_core: bool) 
     paragraph.paragraph_format.line_spacing = 1.5
     paragraph.paragraph_format.space_after = Pt(2)
     paragraph.paragraph_format.widow_control = True
+    paragraph.paragraph_format.keep_with_next = keep_with_next
     add_inline_runs(paragraph, displayed)
+    return paragraph
 
 
 def add_body_paragraph(document: Document, text: str, underline_core: bool) -> None:
@@ -378,6 +386,7 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     configure_body_header_footer(body_section)
 
     answer_section_active = False
+    question_block_active = False
     first_chapter = True
     line_index = first_chapter_index
     while line_index < len(lines):
@@ -398,26 +407,37 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
             add_heading(document, 1, stripped[2:].strip(), page_break_before=not first_chapter)
             first_chapter = False
             answer_section_active = False
+            question_block_active = False
         elif stripped.startswith("## "):
             heading_text = stripped[3:].strip()
             add_heading(
                 document,
                 2,
                 heading_text,
-                page_break_before=heading_text.startswith("七、格雷的强化敏感性理论"),
+                page_break_before=(
+                    heading_text.startswith("二、神经系统的构成与功能")
+                    or heading_text.startswith("七、格雷的强化敏感性理论")
+                ),
             )
             answer_section_active = False
+            question_block_active = False
         elif stripped.startswith("### "):
             heading_text = stripped[4:].strip()
             add_heading(document, 3, heading_text)
             answer_section_active = False
+            question_block_active = heading_text == "押题题目"
         elif stripped.startswith("> "):
             paragraph = document.add_paragraph()
             shade_paragraph(paragraph, LIGHT_GRAY_FILL)
             paragraph.paragraph_format.first_line_indent = Cm(0)
             add_inline_runs(paragraph, stripped[2:].strip())
         elif stripped.startswith("- ") or re.match(r"^\s*\d+\.\s", raw_line):
-            add_list_paragraph(document, raw_line, answer_section_active)
+            add_list_paragraph(
+                document,
+                raw_line,
+                answer_section_active,
+                keep_with_next=question_block_active,
+            )
         else:
             if re.match(r"^\*\*【(?:总|分)", stripped):
                 answer_section_active = True
