@@ -23,7 +23,7 @@ CATALOG_PAGE_MAP = {
     "一、心理学的含义、诞生与研究对象": 1,
     "二、现代心理学的主要流派": 2,
     "三、观察法、相关研究法与实验法": 3,
-    "四、测验法、信效度与投射法": 5,
+    "四、测验法、信效度与投射法": 4,
     "五、心理学的主要分支": 5,
     "第二章 心理和行为的生物学基础": 7,
     "一、神经元、神经冲动与突触": 7,
@@ -32,15 +32,15 @@ CATALOG_PAGE_MAP = {
     "四、大脑两半球的功能分工": 9,
     "五、丘脑、下丘脑与边缘系统": 10,
     "六、脑功能的主要学说": 11,
-    "第三章 条件反射和学习": 12,
-    "一、学习、反射与高级神经活动基础": 12,
-    "二、经典条件反射及其基本规律": 13,
-    "三、操作条件反射：强化、惩罚与行为调控": 14,
-    "四、经典条件反射与操作条件反射的比较": 15,
-    "五、学习的认知理论": 16,
-    "六、观察学习": 17,
-    "七、补充内容：格雷的强化敏感性理论": 18,
-    "考前使用顺序": 19,
+    "第三章 条件反射和学习": 13,
+    "一、学习、反射与高级神经活动基础": 13,
+    "二、经典条件反射及其基本规律": 14,
+    "三、操作条件反射：强化、惩罚与行为调控": 15,
+    "四、经典条件反射与操作条件反射的比较": 16,
+    "五、学习的认知理论": 17,
+    "六、观察学习": 18,
+    "七、补充内容：格雷的强化敏感性理论": 19,
+    "考前使用顺序": 21,
 }
 
 
@@ -178,8 +178,8 @@ def add_cover(document: Document, title: str, subtitle: str, source_note: str) -
     table.style = "Table Grid"
     labels = [
         "适用阶段：考前最后冲刺",
-        "核心形态：多种考法 + 一份综合答案",
-        "答题逻辑：名词解释背 A｜简答背 A+B｜论述背 A+B+C/D",
+        "核心形态：多种考法 + 一份总—分—总母答案",
+        "答题逻辑：名词解释取定义句｜简答取总起+对应分点｜论述写完整母答案",
     ]
     for row, label in zip(table.rows, labels):
         shade_cell(row.cells[0], LIGHT_GRAY_FILL)
@@ -256,63 +256,31 @@ def add_catalog(document: Document, lines: list[str]) -> None:
         set_run_font(run, size=11, bold=is_chapter)
 
 
-def markdown_tokens(text: str) -> list[tuple[str, bool]]:
-    tokens: list[tuple[str, bool]] = []
+def markdown_tokens(text: str) -> list[tuple[str, bool, bool]]:
+    tokens: list[tuple[str, bool, bool]] = []
     cursor = 0
-    for match in re.finditer(r"\*\*(.*?)\*\*", text):
+    for match in re.finditer(r"\*\*.*?\*\*|\+\+.*?\+\+", text):
         if match.start() > cursor:
-            tokens.append((text[cursor:match.start()], False))
-        tokens.append((match.group(1), True))
+            tokens.append((text[cursor:match.start()], False, False))
+        marked = match.group(0)
+        if marked.startswith("**"):
+            tokens.append((marked[2:-2], True, False))
+        else:
+            tokens.append((marked[2:-2], False, True))
         cursor = match.end()
     if cursor < len(text):
-        tokens.append((text[cursor:], False))
+        tokens.append((text[cursor:], False, False))
     return tokens
 
 
-def core_span(display_text: str) -> tuple[int, int] | None:
-    if not display_text.strip():
-        return None
-    colon_index = display_text.find("：")
-    start = colon_index + 1 if 0 <= colon_index <= 28 else 0
-    while start < len(display_text) and display_text[start] in " 　":
-        start += 1
-    sentence_end = display_text.find("。", start)
-    end = sentence_end if sentence_end != -1 else len(display_text)
-    if end - start > 72:
-        candidates = [display_text.find(mark, start + 20, start + 72) for mark in ("；", "，")]
-        candidates = [candidate for candidate in candidates if candidate != -1]
-        end = min(candidates) if candidates else start + 72
-    return (start, end) if end > start else None
-
-
-def add_inline_runs(paragraph, text: str, size: float = 12, underline_core: bool = False) -> None:
+def add_inline_runs(paragraph, text: str, size: float = 12) -> None:
     tokens = markdown_tokens(text)
-    display_text = "".join(content for content, _ in tokens)
-    underline_span = core_span(display_text) if underline_core else None
-    display_offset = 0
-
-    for content, is_bold in tokens:
-        token_start = display_offset
-        token_end = display_offset + len(content)
-        boundaries = {token_start, token_end}
-        if underline_span:
-            boundaries.update(
-                boundary
-                for boundary in underline_span
-                if token_start < boundary < token_end
-            )
-        ordered = sorted(boundaries)
-        for boundary_index in range(len(ordered) - 1):
-            part_start = ordered[boundary_index]
-            part_end = ordered[boundary_index + 1]
-            part = content[part_start - token_start:part_end - token_start]
-            if not part:
-                continue
-            run = paragraph.add_run(part)
-            set_run_font(run, size=size, bold=is_bold)
-            if underline_span and not is_bold:
-                run.underline = part_start >= underline_span[0] and part_end <= underline_span[1]
-        display_offset = token_end
+    for content, is_bold, is_underlined in tokens:
+        if not content:
+            continue
+        run = paragraph.add_run(content)
+        set_run_font(run, size=size, bold=is_bold)
+        run.underline = is_underlined
 
 
 def add_heading(document: Document, level: int, text: str, page_break_before: bool = False) -> None:
@@ -350,7 +318,7 @@ def add_list_paragraph(document: Document, raw_line: str, underline_core: bool) 
     paragraph.paragraph_format.line_spacing = 1.5
     paragraph.paragraph_format.space_after = Pt(2)
     paragraph.paragraph_format.widow_control = True
-    add_inline_runs(paragraph, displayed, underline_core=underline_core)
+    add_inline_runs(paragraph, displayed)
 
 
 def add_body_paragraph(document: Document, text: str, underline_core: bool) -> None:
@@ -358,14 +326,17 @@ def add_body_paragraph(document: Document, text: str, underline_core: bool) -> N
     paragraph.paragraph_format.line_spacing = 1.5
     paragraph.paragraph_format.space_after = Pt(3)
     paragraph.paragraph_format.widow_control = True
-    if text.startswith("**【A") or text.startswith("**【B") or text.startswith("**【C") or text.startswith("**【D"):
+    if re.match(r"^\*\*【(?:总|分)", text):
         shade_paragraph(paragraph, ANSWER_FILL)
         paragraph.paragraph_format.first_line_indent = Cm(0)
         paragraph.paragraph_format.keep_with_next = True
+    elif text.startswith("**【答题调用】") or text.startswith("**【容量建议】"):
+        shade_paragraph(paragraph, LIGHT_GRAY_FILL)
+        paragraph.paragraph_format.first_line_indent = Cm(0)
     elif text.startswith("**真题依据**") or text.startswith("**考纲依据**"):
         shade_paragraph(paragraph, LIGHT_GRAY_FILL)
         paragraph.paragraph_format.first_line_indent = Cm(0)
-    add_inline_runs(paragraph, text, underline_core=underline_core)
+    add_inline_runs(paragraph, text)
 
 
 def split_table_row(line: str) -> list[str]:
@@ -479,7 +450,7 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
         elif stripped.startswith("- ") or re.match(r"^\s*\d+\.\s", raw_line):
             add_list_paragraph(document, raw_line, answer_section_active)
         else:
-            if any(stripped.startswith(f"**【{letter}") for letter in "ABCD"):
+            if re.match(r"^\*\*【(?:总|分)", stripped):
                 answer_section_active = True
                 add_body_paragraph(document, stripped, False)
             else:
