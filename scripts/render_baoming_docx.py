@@ -39,8 +39,7 @@ CATALOG_PAGE_MAP = {
     "四、经典条件反射与操作条件反射的比较": 16,
     "五、学习的认知理论": 17,
     "六、观察学习": 18,
-    "七、补充内容：格雷的强化敏感性理论": 19,
-    "考前使用顺序": 21,
+    "七、格雷的强化敏感性理论": 19,
 }
 
 
@@ -151,7 +150,8 @@ def configure_body_header_footer(section) -> None:
     page_number_type.set(qn("w:start"), "1")
 
 
-def add_cover(document: Document, title: str, subtitle: str, source_note: str) -> None:
+def add_cover(document: Document, title: str, subtitle: str) -> None:
+    document.add_paragraph()
     document.add_paragraph()
     document.add_paragraph()
     title_paragraph = document.add_paragraph(style="Title")
@@ -174,50 +174,11 @@ def add_cover(document: Document, title: str, subtitle: str, source_note: str) -
     set_run_font(subtitle_run, "微软雅黑", 16, True)
 
     document.add_paragraph()
-    table = document.add_table(rows=3, cols=1)
-    table.style = "Table Grid"
-    labels = [
-        "适用阶段：考前最后冲刺",
-        "核心形态：多种考法 + 一份总—分—总母答案",
-        "答题逻辑：名词解释取定义句｜简答取总起+对应分点｜论述写完整母答案",
-    ]
-    for row, label in zip(table.rows, labels):
-        shade_cell(row.cells[0], LIGHT_GRAY_FILL)
-        paragraph = row.cells[0].paragraphs[0]
-        paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        paragraph.paragraph_format.first_line_indent = Cm(0)
-        run = paragraph.add_run(label)
-        set_run_font(run, "宋体", 12, True)
-
-    note_paragraph = document.add_paragraph()
-    note_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    note_paragraph.paragraph_format.first_line_indent = Cm(0)
-    note_run = note_paragraph.add_run(source_note)
-    set_run_font(note_run, size=10)
-
     edition_paragraph = document.add_paragraph()
     edition_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     edition_paragraph.paragraph_format.first_line_indent = Cm(0)
     edition_run = edition_paragraph.add_run("前三章｜2026")
     set_run_font(edition_run, "微软雅黑", 11, True)
-    document.add_page_break()
-
-
-def add_usage_guide(document: Document, lines: list[str]) -> None:
-    title = document.add_paragraph()
-    title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    title.paragraph_format.first_line_indent = Cm(0)
-    title.paragraph_format.space_after = Pt(14)
-    title_run = title.add_run("使用说明")
-    set_run_font(title_run, "宋体", 16, True)
-    for raw_line in lines:
-        stripped = raw_line.strip()
-        if not stripped or stripped == "---" or stripped.startswith("### "):
-            continue
-        if stripped.startswith("- "):
-            add_list_paragraph(document, raw_line, False)
-        else:
-            add_body_paragraph(document, stripped, False)
     document.add_page_break()
 
 
@@ -230,8 +191,6 @@ def add_catalog(document: Document, lines: list[str]) -> None:
     set_run_font(title_run, "宋体", 26, True)
 
     for line in lines:
-        if line.startswith("# 内部审校说明"):
-            break
         if line.startswith("# ") and not line.startswith("## "):
             heading = line[2:].strip()
             if heading.startswith("华东师范大学"):
@@ -392,8 +351,6 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
-    source_note = lines[4].removeprefix("> ").strip()
-
     document = Document()
     configure_styles(document)
     configure_page(document.sections[0])
@@ -401,11 +358,10 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     document.core_properties.title = title
     document.core_properties.subject = "华东师范大学347心理学导论考前冲刺"
     document.core_properties.author = "铁头心理学考研"
-    add_cover(document, title, subtitle, source_note)
+    add_cover(document, title, subtitle)
     first_chapter_index = next(
         index for index, line in enumerate(lines) if line.startswith("# 第一章 ")
     )
-    add_usage_guide(document, lines[5:first_chapter_index])
     add_catalog(document, lines)
 
     body_section = document.add_section(WD_SECTION.NEW_PAGE)
@@ -418,8 +374,6 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     while line_index < len(lines):
         raw_line = lines[line_index]
         stripped = raw_line.strip()
-        if stripped.startswith("# 内部审校说明"):
-            break
         if not stripped or stripped == "---":
             line_index += 1
             continue
