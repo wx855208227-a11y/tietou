@@ -14,6 +14,7 @@ from docx.shared import Cm, Pt, RGBColor
 
 
 BLACK = RGBColor(0, 0, 0)
+TAG_GRAY = RGBColor(89, 89, 89)
 GRAY_FILL = "D9D9D9"
 LIGHT_GRAY_FILL = "F2F2F2"
 ANSWER_FILL = "E7E6E6"
@@ -21,25 +22,25 @@ ANSWER_FILL = "E7E6E6"
 CATALOG_PAGE_MAP = {
     "第一章 心理学研究的对象、方法及其学科发展": 1,
     "一、心理学的含义、诞生与研究对象": 1,
-    "二、现代心理学的主要流派": 2,
-    "三、观察法、相关研究法与实验法": 3,
-    "四、测验法、信效度与投射法": 4,
-    "五、心理学的主要分支": 5,
-    "第二章 心理和行为的生物学基础": 7,
-    "一、神经元、神经冲动与突触": 7,
-    "二、神经系统的构成与功能": 7,
-    "三、大脑皮层主要区域及其功能": 8,
-    "四、大脑两半球的功能分工": 9,
-    "五、丘脑、下丘脑与边缘系统": 10,
-    "六、脑功能的主要学说": 11,
-    "第三章 条件反射和学习": 13,
-    "一、学习、反射与高级神经活动基础": 13,
-    "二、经典条件反射及其基本规律": 14,
-    "三、操作条件反射：强化、惩罚与行为调控": 15,
-    "四、经典条件反射与操作条件反射的比较": 16,
-    "五、学习的认知理论": 17,
-    "六、观察学习": 18,
-    "七、格雷的强化敏感性理论": 19,
+    "二、现代心理学的主要流派": 1,
+    "三、观察法、相关研究法与实验法": 2,
+    "四、测验法、信效度与投射法": 3,
+    "五、心理学的主要分支": 4,
+    "第二章 心理和行为的生物学基础": 5,
+    "一、神经元、神经冲动与突触": 5,
+    "二、神经系统的构成与功能": 5,
+    "三、大脑皮层主要区域及其功能": 6,
+    "四、大脑两半球的功能分工": 7,
+    "五、丘脑、下丘脑与边缘系统": 7,
+    "六、脑功能的主要学说": 8,
+    "第三章 条件反射和学习": 9,
+    "一、学习、反射与高级神经活动基础": 9,
+    "二、经典条件反射及其基本规律": 9,
+    "三、操作条件反射：强化、惩罚与行为调控": 10,
+    "四、经典条件反射与操作条件反射的比较": 11,
+    "五、学习的认知理论": 12,
+    "六、观察学习": 12,
+    "七、格雷的强化敏感性理论": 14,
 }
 
 
@@ -237,6 +238,14 @@ def add_inline_runs(paragraph, text: str, size: float = 12) -> None:
     for content, is_bold, is_underlined in tokens:
         if not content:
             continue
+        tag_match = re.match(r"(【题[①②③④⑤]+】)(.*)", content)
+        if tag_match:
+            tag_text, content = tag_match.groups()
+            tag_run = paragraph.add_run(tag_text + (" " if content else ""))
+            set_run_font(tag_run, size=9.5, bold=True)
+            tag_run.font.color.rgb = TAG_GRAY
+            if not content:
+                continue
         run = paragraph.add_run(content)
         set_run_font(run, size=size, bold=is_bold)
         run.underline = is_underlined
@@ -390,7 +399,13 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
             first_chapter = False
             answer_section_active = False
         elif stripped.startswith("## "):
-            add_heading(document, 2, stripped[3:].strip())
+            heading_text = stripped[3:].strip()
+            add_heading(
+                document,
+                2,
+                heading_text,
+                page_break_before=heading_text.startswith("七、格雷的强化敏感性理论"),
+            )
             answer_section_active = False
         elif stripped.startswith("### "):
             heading_text = stripped[4:].strip()
