@@ -21,26 +21,41 @@ ANSWER_FILL = "E7E6E6"
 
 CATALOG_PAGE_MAP = {
     "第一章 心理学研究的对象、方法及其学科发展": 1,
-    "一、心理学的含义、诞生与研究对象": 1,
-    "二、现代心理学的主要流派": 2,
-    "三、观察法、相关研究法与实验法": 3,
-    "四、测验法、信效度与投射法": 4,
-    "五、心理学的主要分支": 5,
-    "第二章 心理和行为的生物学基础": 6,
-    "一、神经元、神经冲动与突触": 6,
-    "二、神经系统的构成与功能": 7,
-    "三、大脑皮层主要区域及其功能": 8,
-    "四、大脑两半球的功能分工": 9,
-    "五、丘脑、下丘脑与边缘系统": 9,
-    "六、脑功能的主要学说": 10,
-    "第三章 条件反射和学习": 12,
-    "一、学习、反射与高级神经活动基础": 12,
-    "二、经典条件反射及其基本规律": 13,
-    "三、操作条件反射：强化、惩罚与行为调控": 14,
-    "四、经典条件反射与操作条件反射的比较": 15,
-    "五、学习的认知理论": 16,
-    "六、观察学习": 17,
-    "七、格雷的强化敏感性理论": 18,
+    "一、心理学的含义与研究对象": 1,
+    "二、科学心理学的诞生": 1,
+    "三、构造主义与机能主义": 2,
+    "四、行为主义": 3,
+    "五、格式塔心理学": 3,
+    "六、精神分析学派": 4,
+    "七、人本主义心理学": 5,
+    "八、认知心理学": 5,
+    "九、观察法、相关研究法与实验法": 6,
+    "十、实验变量": 7,
+    "十一、测验法与信效度": 7,
+    "十二、投射法与投射测验": 8,
+    "十三、心理学的主要分支": 9,
+    "第二章 心理和行为的生物学基础": 10,
+    "一、神经元": 10,
+    "二、神经冲动与突触传递": 10,
+    "三、神经系统的构成与功能": 11,
+    "四、大脑皮层的感觉区与运动区": 12,
+    "五、大脑皮层的言语区与联合区": 12,
+    "六、大脑两半球的功能分工": 13,
+    "七、丘脑与下丘脑": 14,
+    "八、边缘系统、海马与杏仁核": 14,
+    "九、脑功能的主要学说": 15,
+    "第三章 条件反射和学习": 17,
+    "一、学习的含义与特征": 17,
+    "二、反射、反射弧与反射类型": 17,
+    "三、经典条件反射": 18,
+    "四、经典条件反射的基本规律": 19,
+    "五、信号系统与高级神经活动": 20,
+    "六、操作条件反射与行为调控": 21,
+    "七、经典条件反射与操作条件反射的比较": 22,
+    "八、顿悟学习": 23,
+    "九、目的行为学习理论": 23,
+    "十、观察学习": 24,
+    "十一、格雷的强化敏感性理论": 25,
 }
 
 
@@ -218,18 +233,31 @@ def add_catalog(document: Document, lines: list[str]) -> None:
 
 def markdown_tokens(text: str) -> list[tuple[str, bool, bool]]:
     tokens: list[tuple[str, bool, bool]] = []
+    buffer: list[str] = []
+    is_bold = False
+    is_underlined = False
     cursor = 0
-    for match in re.finditer(r"\*\*.*?\*\*|\+\+.*?\+\+", text):
-        if match.start() > cursor:
-            tokens.append((text[cursor:match.start()], False, False))
-        marked = match.group(0)
-        if marked.startswith("**"):
-            tokens.append((marked[2:-2], True, False))
-        else:
-            tokens.append((marked[2:-2], False, True))
-        cursor = match.end()
-    if cursor < len(text):
-        tokens.append((text[cursor:], False, False))
+
+    def flush_buffer() -> None:
+        if buffer:
+            tokens.append(("".join(buffer), is_bold, is_underlined))
+            buffer.clear()
+
+    while cursor < len(text):
+        marker = text[cursor:cursor + 2]
+        if marker == "**":
+            flush_buffer()
+            is_bold = not is_bold
+            cursor += 2
+            continue
+        if marker == "++":
+            flush_buffer()
+            is_underlined = not is_underlined
+            cursor += 2
+            continue
+        buffer.append(text[cursor])
+        cursor += 1
+    flush_buffer()
     return tokens
 
 
@@ -410,15 +438,7 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
             question_block_active = False
         elif stripped.startswith("## "):
             heading_text = stripped[3:].strip()
-            add_heading(
-                document,
-                2,
-                heading_text,
-                page_break_before=(
-                    heading_text.startswith("二、神经系统的构成与功能")
-                    or heading_text.startswith("七、格雷的强化敏感性理论")
-                ),
-            )
+            add_heading(document, 2, heading_text)
             answer_section_active = False
             question_block_active = False
         elif stripped.startswith("### "):
