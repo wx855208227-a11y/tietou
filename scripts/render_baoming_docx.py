@@ -19,6 +19,11 @@ GRAY_FILL = "D9D9D9"
 LIGHT_GRAY_FILL = "F2F2F2"
 ANSWER_FILL = "E7E6E6"
 
+COMPACT_UNIT_PREFIXES = (
+    "十、观察学习",
+    "十一、格雷的强化敏感性理论",
+)
+
 CATALOG_PAGE_MAP = {
     "第一章 心理学研究的对象、方法及其学科发展": 1,
     "一、心理学的含义与研究对象": 1,
@@ -44,18 +49,18 @@ CATALOG_PAGE_MAP = {
     "七、丘脑与下丘脑": 14,
     "八、边缘系统、海马与杏仁核": 14,
     "九、脑功能的主要学说": 15,
-    "第三章 条件反射和学习": 17,
-    "一、学习的含义与特征": 17,
-    "二、反射、反射弧与反射类型": 17,
-    "三、经典条件反射": 18,
-    "四、经典条件反射的基本规律": 19,
-    "五、信号系统与高级神经活动": 20,
-    "六、操作条件反射与行为调控": 21,
-    "七、经典条件反射与操作条件反射的比较": 22,
-    "八、顿悟学习": 23,
-    "九、目的行为学习理论": 23,
-    "十、观察学习": 24,
-    "十一、格雷的强化敏感性理论": 25,
+    "第三章 条件反射和学习": 16,
+    "一、学习的含义与特征": 16,
+    "二、反射、反射弧与反射类型": 16,
+    "三、经典条件反射": 17,
+    "四、经典条件反射的基本规律": 18,
+    "五、信号系统与高级神经活动": 19,
+    "六、操作条件反射与行为调控": 20,
+    "七、经典条件反射与操作条件反射的比较": 21,
+    "八、顿悟学习": 22,
+    "九、目的行为学习理论": 22,
+    "十、观察学习": 23,
+    "十一、格雷的强化敏感性理论": 24,
 }
 
 
@@ -310,6 +315,7 @@ def add_list_paragraph(
     raw_line: str,
     underline_core: bool,
     keep_with_next: bool = False,
+    compact: bool = False,
 ):
     leading_spaces = len(raw_line) - len(raw_line.lstrip(" "))
     stripped = raw_line.strip()
@@ -318,17 +324,22 @@ def add_list_paragraph(
     paragraph.paragraph_format.left_indent = Cm(0.75 + min(leading_spaces // 2, 3) * 0.42)
     paragraph.paragraph_format.first_line_indent = Cm(-0.48)
     paragraph.paragraph_format.line_spacing = 1.5
-    paragraph.paragraph_format.space_after = Pt(2)
+    paragraph.paragraph_format.space_after = Pt(0 if compact else 2)
     paragraph.paragraph_format.widow_control = True
     paragraph.paragraph_format.keep_with_next = keep_with_next
     add_inline_runs(paragraph, displayed)
     return paragraph
 
 
-def add_body_paragraph(document: Document, text: str, underline_core: bool) -> None:
+def add_body_paragraph(
+    document: Document,
+    text: str,
+    underline_core: bool,
+    compact: bool = False,
+) -> None:
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.line_spacing = 1.5
-    paragraph.paragraph_format.space_after = Pt(3)
+    paragraph.paragraph_format.space_after = Pt(0 if compact else 3)
     paragraph.paragraph_format.widow_control = True
     if re.match(r"^\*\*【(?:总|分)", text):
         shade_paragraph(paragraph, ANSWER_FILL)
@@ -415,6 +426,7 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
 
     answer_section_active = False
     question_block_active = False
+    compact_unit_active = False
     first_chapter = True
     line_index = first_chapter_index
     while line_index < len(lines):
@@ -438,12 +450,19 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
             question_block_active = False
         elif stripped.startswith("## "):
             heading_text = stripped[3:].strip()
-            add_heading(document, 2, heading_text)
+            heading = add_heading(document, 2, heading_text)
+            compact_unit_active = heading_text.startswith(COMPACT_UNIT_PREFIXES)
+            if compact_unit_active:
+                heading.paragraph_format.space_before = Pt(6)
+                heading.paragraph_format.space_after = Pt(2)
             answer_section_active = False
             question_block_active = False
         elif stripped.startswith("### "):
             heading_text = stripped[4:].strip()
-            add_heading(document, 3, heading_text)
+            heading = add_heading(document, 3, heading_text)
+            if compact_unit_active:
+                heading.paragraph_format.space_before = Pt(4)
+                heading.paragraph_format.space_after = Pt(2)
             answer_section_active = False
             question_block_active = heading_text == "押题题目"
         elif stripped.startswith("> "):
@@ -457,13 +476,19 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
                 raw_line,
                 answer_section_active,
                 keep_with_next=question_block_active,
+                compact=compact_unit_active,
             )
         else:
             if re.match(r"^\*\*【(?:总|分)", stripped):
                 answer_section_active = True
-                add_body_paragraph(document, stripped, False)
+                add_body_paragraph(document, stripped, False, compact_unit_active)
             else:
-                add_body_paragraph(document, stripped, answer_section_active)
+                add_body_paragraph(
+                    document,
+                    stripped,
+                    answer_section_active,
+                    compact_unit_active,
+                )
         line_index += 1
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
