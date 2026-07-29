@@ -40,6 +40,8 @@ BONUS_TAGS = {
 
 COMPACT_UNIT_PREFIXES = (
     "九、脑功能的主要学说",
+    "四、经典条件反射的基本规律",
+    "五、信号系统与高级神经活动",
     "六、操作条件反射与行为调控",
     "十、观察学习",
     "十一、格雷的强化敏感性理论",
@@ -495,11 +497,11 @@ def add_list_paragraph(
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.left_indent = Cm(0.75 + min(leading_spaces // 2, 3) * 0.42)
     paragraph.paragraph_format.first_line_indent = Cm(-0.48)
-    paragraph.paragraph_format.line_spacing = 1.25 if card and compact else 1.35 if card else 1.5
+    paragraph.paragraph_format.line_spacing = 1.18 if card and compact else 1.35 if card else 1.5
     paragraph.paragraph_format.space_after = Pt(0 if compact or card else 2)
     paragraph.paragraph_format.widow_control = True
     paragraph.paragraph_format.keep_with_next = keep_with_next
-    add_inline_runs(paragraph, displayed)
+    add_inline_runs(paragraph, displayed, size=11 if card and compact else 12)
     return paragraph
 
 
@@ -511,7 +513,7 @@ def add_body_paragraph(
     card: bool = False,
 ) -> None:
     paragraph = document.add_paragraph()
-    paragraph.paragraph_format.line_spacing = 1.25 if card and compact else 1.35 if card else 1.5
+    paragraph.paragraph_format.line_spacing = 1.18 if card and compact else 1.35 if card else 1.5
     paragraph.paragraph_format.space_after = Pt(0 if compact else 1 if card else 3)
     paragraph.paragraph_format.widow_control = True
     if re.match(r"^\*\*【(?:总|分)", text):
@@ -529,7 +531,7 @@ def add_body_paragraph(
         paragraph.paragraph_format.first_line_indent = Cm(0)
         paragraph.paragraph_format.space_before = Pt(2)
         paragraph.paragraph_format.space_after = Pt(2)
-    add_inline_runs(paragraph, text)
+    add_inline_runs(paragraph, text, size=11 if card and compact else 12)
 
 
 def split_table_row(line: str) -> list[str]:
