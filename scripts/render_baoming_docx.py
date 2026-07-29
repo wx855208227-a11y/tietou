@@ -18,17 +18,24 @@ TAG_GRAY = RGBColor(89, 89, 89)
 GRAY_FILL = "D9D9D9"
 LIGHT_GRAY_FILL = "F2F2F2"
 ANSWER_FILL = "E7E6E6"
+BONUS_FILL = "FFF2CC"
 CARD_SPECS = {
-    "name": ("DDEBF7", "5B9BD5", "① 名解核心", "写定义、对象和关键特征"),
-    "opening": ("EDEDED", "7F7F7F", "① 答题总起", "先用一句话直接点题"),
-    "short": ("E2F0D9", "70AD47", "② 简答采分点", "写①＋②｜按题号选取对应分点"),
-    "essay": ("FCE4D6", "ED7D31", "③ 论述加分", "写①＋②＋③｜补比较、评价、应用或例证"),
+    "name": ("DDEBF7", "5B9BD5", "① 名解采分点", "名解写①｜简答、论述也从①起笔"),
+    "opening": ("EDEDED", "7F7F7F", "① 共同起笔", "简答、论述先写本框"),
+    "short": ("E2F0D9", "70AD47", "② 简答·论述共用采分点", "简答写①＋②｜论述也先写①＋②"),
+    "essay": ("FCE4D6", "ED7D31", "③ 论述新增采分点", "论述在①＋②后再写③"),
 }
 TIER_TAGS = {
-    "名解核心": "name",
+    "名解采分点": "name",
     "答题总起": "opening",
-    "简答采分点": "short",
-    "论述加分": "essay",
+    "共用采分点": "short",
+    "论述新增采分点": "essay",
+}
+BONUS_TAGS = {
+    "名解加分项": "★ 名解加分项",
+    "起笔加分项": "★ 起笔加分项",
+    "共用加分项": "★ 共用加分项｜简答、论述均可选",
+    "论述加分项": "★ 论述加分项",
 }
 
 COMPACT_UNIT_PREFIXES = (
@@ -304,7 +311,7 @@ def add_catalog(document: Document, lines: list[str]) -> None:
     legend.paragraph_format.space_after = Pt(0)
     shade_paragraph(legend, GRAY_FILL)
     legend_run = legend.add_run(
-        "3秒用法｜先确认题号，再按题号取分点：名解写①；简答写①＋②；论述写①＋②＋③。"
+        "3秒用法｜名解写①；简答写①＋②；论述写①＋②＋③；每档★加分项按题干选写。"
     )
     set_run_font(legend_run, size=10, bold=True)
 
@@ -313,8 +320,8 @@ def add_catalog(document: Document, lines: list[str]) -> None:
     note.paragraph_format.space_after = Pt(0)
     shade_paragraph(note, LIGHT_GRAY_FILL)
     note_run = note.add_run(
-        "【题①②】用于按题选分点；括号内例证和可选扩充可灵活处理；"
-        "背诵检索串只背、不写。没有论述证据的单元不设置③。"
+        "②是简答、论述共用骨架，不需要背两套；③只写论述新增内容；"
+        "没有论述题的单元不设③；背诵主线只用于组织复述，不写入答卷。"
     )
     set_run_font(note_run, size=9.5)
 
@@ -427,13 +434,37 @@ def find_tier(text: str) -> tuple[str, str] | None:
     return None
 
 
+def find_bonus(text: str) -> tuple[str, str] | None:
+    for tag, label in BONUS_TAGS.items():
+        if f"【{tag}】" in text:
+            return tag, label
+    return None
+
+
 def remove_display_tag(text: str, tag: str) -> str:
     return re.sub(rf"(?:\*\*)?【{re.escape(tag)}】(?:\*\*)?", "", text).strip()
 
 
-def add_retrieval_banner(document: Document, text: str) -> None:
-    chain = text.split("【背诵检索串】", 1)[1]
-    chain = chain.replace("**", "").strip("　 ")
+def add_bonus_banner(container, text: str, tag: str, label: str) -> None:
+    content = remove_display_tag(text, tag)
+    paragraph = container.add_paragraph()
+    paragraph.paragraph_format.first_line_indent = Cm(0)
+    paragraph.paragraph_format.line_spacing = 1.15
+    paragraph.paragraph_format.space_before = Pt(3)
+    paragraph.paragraph_format.space_after = Pt(2)
+    shade_paragraph(paragraph, BONUS_FILL)
+    set_paragraph_border(paragraph, "BF9000", "6")
+    label_run = paragraph.add_run(f"{label}｜")
+    set_run_font(label_run, "微软雅黑", 9.5, True)
+    first_content_run = len(paragraph.runs)
+    add_inline_runs(paragraph, content, size=9.5)
+    for run in paragraph.runs[first_content_run:]:
+        run.font.color.rgb = TAG_GRAY
+
+
+def add_memory_route_banner(document: Document, text: str) -> None:
+    route = text.split("【背诵主线】", 1)[1]
+    route = route.replace("**", "").strip("　 ")
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.first_line_indent = Cm(0)
     paragraph.paragraph_format.line_spacing = 1.15
@@ -441,11 +472,11 @@ def add_retrieval_banner(document: Document, text: str) -> None:
     paragraph.paragraph_format.space_after = Pt(4)
     shade_paragraph(paragraph, LIGHT_GRAY_FILL)
     set_paragraph_border(paragraph, "7F7F7F", "6")
-    label_run = paragraph.add_run("背诵检索串｜")
+    label_run = paragraph.add_run("背诵主线｜")
     set_run_font(label_run, "微软雅黑", 9.5, True)
-    chain_run = paragraph.add_run(chain)
-    set_run_font(chain_run, size=9.5)
-    note_run = paragraph.add_run("　（只背，不写入答卷）")
+    route_run = paragraph.add_run(route)
+    set_run_font(route_run, size=9.5)
+    note_run = paragraph.add_run("　（按此顺序复述，不写入答卷）")
     set_run_font(note_run, size=9, bold=True)
     note_run.font.color.rgb = TAG_GRAY
 
@@ -493,7 +524,7 @@ def add_body_paragraph(
     elif text.startswith("**真题依据**") or text.startswith("**考纲依据**"):
         shade_paragraph(paragraph, LIGHT_GRAY_FILL)
         paragraph.paragraph_format.first_line_indent = Cm(0)
-    elif "【背诵检索串】" in text:
+    elif "【背诵主线】" in text:
         shade_paragraph(paragraph, LIGHT_GRAY_FILL)
         paragraph.paragraph_format.first_line_indent = Cm(0)
         paragraph.paragraph_format.space_before = Pt(2)
@@ -615,8 +646,8 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
             answer_container = document
             question_block_active = heading_text == "押题题目"
         else:
-            if answer_mode and "【背诵检索串】" in stripped:
-                add_retrieval_banner(document, stripped)
+            if answer_mode and "【背诵主线】" in stripped:
+                add_memory_route_banner(document, stripped)
                 answer_container = document
                 line_index += 1
                 continue
@@ -628,6 +659,13 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
                 cleaned = remove_display_tag(stripped, tag)
                 raw_line = cleaned
                 stripped = cleaned.strip()
+
+            bonus_match = find_bonus(stripped) if answer_mode else None
+            if bonus_match:
+                tag, label = bonus_match
+                add_bonus_banner(answer_container, stripped, tag, label)
+                line_index += 1
+                continue
 
             target = answer_container if answer_mode else document
             if stripped.startswith("| ") or stripped.startswith("|"):
