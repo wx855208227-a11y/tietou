@@ -18,12 +18,11 @@ TAG_GRAY = RGBColor(89, 89, 89)
 GRAY_FILL = "D9D9D9"
 LIGHT_GRAY_FILL = "F2F2F2"
 ANSWER_FILL = "E7E6E6"
-STOP_FILL = "FFF2CC"
 CARD_SPECS = {
-    "name": ("DDEBF7", "5B9BD5", "① 名解", "只写本框｜简答、论述也从这里起笔"),
-    "opening": ("EDEDED", "7F7F7F", "① 起笔", "简答、论述先写本框"),
-    "short": ("E2F0D9", "70AD47", "② 简答", "写①＋②｜看到“15分题到此停笔”就停"),
-    "essay": ("FCE4D6", "ED7D31", "③ 论述", "写①＋②＋③｜按标示分值停笔"),
+    "name": ("DDEBF7", "5B9BD5", "① 名解核心", "写定义、对象和关键特征"),
+    "opening": ("EDEDED", "7F7F7F", "① 答题总起", "先用一句话直接点题"),
+    "short": ("E2F0D9", "70AD47", "② 简答采分点", "写①＋②｜按题号选取对应分点"),
+    "essay": ("FCE4D6", "ED7D31", "③ 论述加分", "写①＋②＋③｜补比较、评价、应用或例证"),
 }
 TIER_TAGS = {
     "名解核心": "name",
@@ -312,8 +311,8 @@ def add_catalog(document: Document, lines: list[str]) -> None:
     note.paragraph_format.space_after = Pt(0)
     shade_paragraph(note, LIGHT_GRAY_FILL)
     note_run = note.add_run(
-        "看到“到此停笔”立即停；【题①②】用于按题选分点；背诵检索串只背、不写。"
-        "没有论述证据的单元不设置③。"
+        "【题①②】用于按题选分点；括号内例证和可选扩充可灵活处理；"
+        "背诵检索串只背、不写。没有论述证据的单元不设置③。"
     )
     set_run_font(note_run, size=9.5)
 
@@ -428,26 +427,6 @@ def find_stop(text: str) -> str | None:
 
 def remove_display_tag(text: str, tag: str) -> str:
     return re.sub(rf"(?:\*\*)?【{re.escape(tag)}】(?:\*\*)?", "", text).strip()
-
-
-def add_stop_banner(document: Document, stop: str, continues: bool) -> None:
-    parts = stop.split("｜", 1)
-    finished_score = parts[0].removesuffix("分到此")
-    message = f"{finished_score}分题：到此停笔"
-    if len(parts) == 2:
-        continue_score = parts[1].removesuffix("分继续")
-        message += f"　｜　{continue_score}分题：继续写③"
-
-    paragraph = document.add_paragraph()
-    paragraph.paragraph_format.first_line_indent = Cm(0)
-    paragraph.paragraph_format.line_spacing = 1.0
-    paragraph.paragraph_format.space_before = Pt(3)
-    paragraph.paragraph_format.space_after = Pt(3)
-    paragraph.paragraph_format.keep_with_next = continues
-    shade_paragraph(paragraph, STOP_FILL)
-    set_paragraph_border(paragraph, "BF9000", "8")
-    run = paragraph.add_run(message)
-    set_run_font(run, "微软雅黑", 10, True)
 
 
 def add_retrieval_banner(document: Document, text: str) -> None:
@@ -632,9 +611,6 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
             question_block_active = heading_text == "押题题目"
         else:
             if answer_mode and "【背诵检索串】" in stripped:
-                stop = find_stop(stripped)
-                if stop:
-                    add_stop_banner(document, stop, continues=True)
                 add_retrieval_banner(document, stripped)
                 answer_container = document
                 line_index += 1
@@ -644,8 +620,6 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
             if tier_match:
                 tag, tier = tier_match
                 stop = find_stop(stripped)
-                if stop:
-                    add_stop_banner(document, stop, continues=True)
                 answer_container = add_answer_card(document, tier)
                 cleaned = remove_display_tag(stripped, tag)
                 if stop:
