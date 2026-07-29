@@ -18,6 +18,19 @@ TAG_GRAY = RGBColor(89, 89, 89)
 GRAY_FILL = "D9D9D9"
 LIGHT_GRAY_FILL = "F2F2F2"
 ANSWER_FILL = "E7E6E6"
+STOP_FILL = "FFF2CC"
+CARD_SPECS = {
+    "name": ("DDEBF7", "5B9BD5", "① 名解", "只写本框｜简答、论述也从这里起笔"),
+    "opening": ("EDEDED", "7F7F7F", "① 起笔", "简答、论述先写本框"),
+    "short": ("E2F0D9", "70AD47", "② 简答", "写①＋②｜看到“15分题到此停笔”就停"),
+    "essay": ("FCE4D6", "ED7D31", "③ 论述", "写①＋②＋③｜按标示分值停笔"),
+}
+TIER_TAGS = {
+    "名解核心": "name",
+    "答题总起": "opening",
+    "简答必写": "short",
+    "论述展开": "essay",
+}
 
 COMPACT_UNIT_PREFIXES = (
     "十、观察学习",
@@ -27,40 +40,40 @@ COMPACT_UNIT_PREFIXES = (
 CATALOG_PAGE_MAP = {
     "第一章 心理学研究的对象、方法及其学科发展": 1,
     "一、心理学的含义与研究对象": 1,
-    "二、科学心理学的诞生": 1,
-    "三、构造主义与机能主义": 2,
-    "四、行为主义": 3,
-    "五、格式塔心理学": 3,
-    "六、精神分析学派": 4,
-    "七、人本主义心理学": 5,
-    "八、认知心理学": 6,
-    "九、观察法、相关研究法与实验法": 6,
-    "十、实验变量": 7,
-    "十一、测验法与信效度": 8,
-    "十二、投射法与投射测验": 8,
-    "十三、心理学的主要分支": 9,
-    "第二章 心理和行为的生物学基础": 11,
-    "一、神经元": 11,
-    "二、神经冲动与突触传递": 11,
-    "三、神经系统的构成与功能": 12,
-    "四、大脑皮层的感觉区与运动区": 13,
-    "五、大脑皮层的言语区与联合区": 14,
-    "六、大脑两半球的功能分工": 14,
-    "七、丘脑与下丘脑": 15,
-    "八、边缘系统、海马与杏仁核": 16,
-    "九、脑功能的主要学说": 16,
-    "第三章 条件反射和学习": 18,
-    "一、学习的含义与特征": 18,
-    "二、反射、反射弧与反射类型": 18,
-    "三、经典条件反射": 19,
-    "四、经典条件反射的基本规律": 20,
-    "五、信号系统与高级神经活动": 21,
-    "六、操作条件反射与行为调控": 22,
-    "七、经典条件反射与操作条件反射的比较": 23,
-    "八、顿悟学习": 24,
-    "九、目的行为学习理论": 24,
-    "十、观察学习": 25,
-    "十一、格雷的强化敏感性理论": 26,
+    "二、科学心理学的诞生": 2,
+    "三、构造主义与机能主义": 3,
+    "四、行为主义": 4,
+    "五、格式塔心理学": 5,
+    "六、精神分析学派": 6,
+    "七、人本主义心理学": 7,
+    "八、认知心理学": 8,
+    "九、观察法、相关研究法与实验法": 9,
+    "十、实验变量": 10,
+    "十一、测验法与信效度": 11,
+    "十二、投射法与投射测验": 12,
+    "十三、心理学的主要分支": 13,
+    "第二章 心理和行为的生物学基础": 14,
+    "一、神经元": 14,
+    "二、神经冲动与突触传递": 15,
+    "三、神经系统的构成与功能": 16,
+    "四、大脑皮层的感觉区与运动区": 17,
+    "五、大脑皮层的言语区与联合区": 18,
+    "六、大脑两半球的功能分工": 19,
+    "七、丘脑与下丘脑": 20,
+    "八、边缘系统、海马与杏仁核": 21,
+    "九、脑功能的主要学说": 22,
+    "第三章 条件反射和学习": 23,
+    "一、学习的含义与特征": 23,
+    "二、反射、反射弧与反射类型": 24,
+    "三、经典条件反射": 25,
+    "四、经典条件反射的基本规律": 26,
+    "五、信号系统与高级神经活动": 27,
+    "六、操作条件反射与行为调控": 28,
+    "七、经典条件反射与操作条件反射的比较": 30,
+    "八、顿悟学习": 31,
+    "九、目的行为学习理论": 32,
+    "十、观察学习": 33,
+    "十一、格雷的强化敏感性理论": 34,
 }
 
 
@@ -89,6 +102,55 @@ def shade_cell(cell, fill: str) -> None:
         shading = OxmlElement("w:shd")
         properties.append(shading)
     shading.set(qn("w:fill"), fill)
+
+
+def set_cell_border(cell, color: str, size: str = "10") -> None:
+    properties = cell._tc.get_or_add_tcPr()
+    borders = properties.find(qn("w:tcBorders"))
+    if borders is None:
+        borders = OxmlElement("w:tcBorders")
+        properties.append(borders)
+    for edge_name in ("top", "left", "bottom", "right"):
+        edge = borders.find(qn(f"w:{edge_name}"))
+        if edge is None:
+            edge = OxmlElement(f"w:{edge_name}")
+            borders.append(edge)
+        edge.set(qn("w:val"), "single")
+        edge.set(qn("w:sz"), size)
+        edge.set(qn("w:space"), "0")
+        edge.set(qn("w:color"), color)
+
+
+def set_cell_margins(cell, top: int = 90, start: int = 120, bottom: int = 90, end: int = 120) -> None:
+    properties = cell._tc.get_or_add_tcPr()
+    margins = properties.find(qn("w:tcMar"))
+    if margins is None:
+        margins = OxmlElement("w:tcMar")
+        properties.append(margins)
+    for name, value in (("top", top), ("start", start), ("bottom", bottom), ("end", end)):
+        margin = margins.find(qn(f"w:{name}"))
+        if margin is None:
+            margin = OxmlElement(f"w:{name}")
+            margins.append(margin)
+        margin.set(qn("w:w"), str(value))
+        margin.set(qn("w:type"), "dxa")
+
+
+def set_paragraph_border(paragraph, color: str, size: str = "8") -> None:
+    properties = paragraph._p.get_or_add_pPr()
+    borders = properties.find(qn("w:pBdr"))
+    if borders is None:
+        borders = OxmlElement("w:pBdr")
+        properties.append(borders)
+    for edge_name in ("top", "left", "bottom", "right"):
+        edge = borders.find(qn(f"w:{edge_name}"))
+        if edge is None:
+            edge = OxmlElement(f"w:{edge_name}")
+            borders.append(edge)
+        edge.set(qn("w:val"), "single")
+        edge.set(qn("w:sz"), size)
+        edge.set(qn("w:space"), "3")
+        edge.set(qn("w:color"), color)
 
 
 def set_update_fields(document: Document) -> None:
@@ -239,12 +301,21 @@ def add_catalog(document: Document, lines: list[str]) -> None:
     legend.paragraph_format.first_line_indent = Cm(0)
     legend.paragraph_format.space_before = Pt(8)
     legend.paragraph_format.space_after = Pt(0)
-    shade_paragraph(legend, LIGHT_GRAY_FILL)
+    shade_paragraph(legend, GRAY_FILL)
     legend_run = legend.add_run(
-        "使用图例｜名解核心：定义及题干对应分点；简答必写：基础得分点；"
-        "论述展开：高分题续写；背诵检索串：仅用于闭卷复述，不写入答卷。"
+        "零学习成本用法｜名解写①；简答写①＋②；论述写①＋②＋③。"
     )
-    set_run_font(legend_run, size=9.5)
+    set_run_font(legend_run, size=10, bold=True)
+
+    note = document.add_paragraph()
+    note.paragraph_format.first_line_indent = Cm(0)
+    note.paragraph_format.space_after = Pt(0)
+    shade_paragraph(note, LIGHT_GRAY_FILL)
+    note_run = note.add_run(
+        "看到“到此停笔”立即停；【题①②】用于按题选分点；背诵检索串只背、不写。"
+        "没有论述证据的单元不设置③。"
+    )
+    set_run_font(note_run, size=9.5)
 
 
 def markdown_tokens(text: str) -> list[tuple[str, bool, bool]]:
@@ -321,12 +392,90 @@ def add_heading(document: Document, level: int, text: str, page_break_before: bo
     return paragraph
 
 
+def add_answer_card(document: Document, tier: str):
+    fill, border, label, instruction = CARD_SPECS[tier]
+    table = document.add_table(rows=1, cols=1)
+    table.autofit = True
+    cell = table.cell(0, 0)
+    set_cell_border(cell, border)
+    set_cell_margins(cell)
+
+    header = cell.paragraphs[0]
+    header.paragraph_format.first_line_indent = Cm(0)
+    header.paragraph_format.line_spacing = 1.0
+    header.paragraph_format.space_after = Pt(4)
+    header.paragraph_format.keep_with_next = True
+    shade_paragraph(header, fill)
+    label_run = header.add_run(label)
+    set_run_font(label_run, "微软雅黑", 11, True)
+    instruction_run = header.add_run(f"　{instruction}")
+    set_run_font(instruction_run, "宋体", 9.5, True)
+    instruction_run.font.color.rgb = TAG_GRAY
+    return cell
+
+
+def find_tier(text: str) -> tuple[str, str] | None:
+    for tag, tier in TIER_TAGS.items():
+        if f"【{tag}】" in text:
+            return tag, tier
+    return None
+
+
+def find_stop(text: str) -> str | None:
+    match = re.search(r"【([^】]*分到此(?:｜[^】]*分继续)?)】", text)
+    return match.group(1) if match else None
+
+
+def remove_display_tag(text: str, tag: str) -> str:
+    return re.sub(rf"(?:\*\*)?【{re.escape(tag)}】(?:\*\*)?", "", text).strip()
+
+
+def add_stop_banner(document: Document, stop: str, continues: bool) -> None:
+    parts = stop.split("｜", 1)
+    finished_score = parts[0].removesuffix("分到此")
+    message = f"{finished_score}分题：到此停笔"
+    if len(parts) == 2:
+        continue_score = parts[1].removesuffix("分继续")
+        message += f"　｜　{continue_score}分题：继续写③"
+
+    paragraph = document.add_paragraph()
+    paragraph.paragraph_format.first_line_indent = Cm(0)
+    paragraph.paragraph_format.line_spacing = 1.0
+    paragraph.paragraph_format.space_before = Pt(3)
+    paragraph.paragraph_format.space_after = Pt(3)
+    paragraph.paragraph_format.keep_with_next = continues
+    shade_paragraph(paragraph, STOP_FILL)
+    set_paragraph_border(paragraph, "BF9000", "8")
+    run = paragraph.add_run(message)
+    set_run_font(run, "微软雅黑", 10, True)
+
+
+def add_retrieval_banner(document: Document, text: str) -> None:
+    chain = text.split("【背诵检索串】", 1)[1]
+    chain = chain.replace("**", "").strip("　 ")
+    paragraph = document.add_paragraph()
+    paragraph.paragraph_format.first_line_indent = Cm(0)
+    paragraph.paragraph_format.line_spacing = 1.15
+    paragraph.paragraph_format.space_before = Pt(2)
+    paragraph.paragraph_format.space_after = Pt(4)
+    shade_paragraph(paragraph, LIGHT_GRAY_FILL)
+    set_paragraph_border(paragraph, "7F7F7F", "6")
+    label_run = paragraph.add_run("背诵检索串｜")
+    set_run_font(label_run, "微软雅黑", 9.5, True)
+    chain_run = paragraph.add_run(chain)
+    set_run_font(chain_run, size=9.5)
+    note_run = paragraph.add_run("　（只背，不写入答卷）")
+    set_run_font(note_run, size=9, bold=True)
+    note_run.font.color.rgb = TAG_GRAY
+
+
 def add_list_paragraph(
     document: Document,
     raw_line: str,
     underline_core: bool,
     keep_with_next: bool = False,
     compact: bool = False,
+    card: bool = False,
 ):
     leading_spaces = len(raw_line) - len(raw_line.lstrip(" "))
     stripped = raw_line.strip()
@@ -334,8 +483,8 @@ def add_list_paragraph(
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.left_indent = Cm(0.75 + min(leading_spaces // 2, 3) * 0.42)
     paragraph.paragraph_format.first_line_indent = Cm(-0.48)
-    paragraph.paragraph_format.line_spacing = 1.5
-    paragraph.paragraph_format.space_after = Pt(0 if compact else 2)
+    paragraph.paragraph_format.line_spacing = 1.35 if card else 1.5
+    paragraph.paragraph_format.space_after = Pt(0 if compact or card else 2)
     paragraph.paragraph_format.widow_control = True
     paragraph.paragraph_format.keep_with_next = keep_with_next
     add_inline_runs(paragraph, displayed)
@@ -347,10 +496,11 @@ def add_body_paragraph(
     text: str,
     underline_core: bool,
     compact: bool = False,
+    card: bool = False,
 ) -> None:
     paragraph = document.add_paragraph()
-    paragraph.paragraph_format.line_spacing = 1.5
-    paragraph.paragraph_format.space_after = Pt(0 if compact else 3)
+    paragraph.paragraph_format.line_spacing = 1.35 if card else 1.5
+    paragraph.paragraph_format.space_after = Pt(0 if compact else 1 if card else 3)
     paragraph.paragraph_format.widow_control = True
     if re.match(r"^\*\*【(?:总|分)", text):
         shade_paragraph(paragraph, ANSWER_FILL)
@@ -440,7 +590,8 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     configure_page(body_section)
     configure_body_header_footer(body_section)
 
-    answer_section_active = False
+    answer_mode = False
+    answer_container = document
     question_block_active = False
     compact_unit_active = False
     first_chapter = True
@@ -451,18 +602,11 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
         if not stripped or stripped == "---":
             line_index += 1
             continue
-        if stripped.startswith("| ") or stripped.startswith("|"):
-            table_lines: list[str] = []
-            while line_index < len(lines) and lines[line_index].strip().startswith("|"):
-                table_lines.append(lines[line_index].strip())
-                line_index += 1
-            add_table(document, table_lines)
-            answer_section_active = False
-            continue
         if stripped.startswith("# "):
             add_heading(document, 1, stripped[2:].strip(), page_break_before=not first_chapter)
             first_chapter = False
-            answer_section_active = False
+            answer_mode = False
+            answer_container = document
             question_block_active = False
         elif stripped.startswith("## "):
             heading_text = stripped[3:].strip()
@@ -471,42 +615,73 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
             if compact_unit_active:
                 heading.paragraph_format.space_before = Pt(6)
                 heading.paragraph_format.space_after = Pt(2)
-            answer_section_active = False
+            answer_mode = False
+            answer_container = document
             question_block_active = False
         elif stripped.startswith("### "):
             heading_text = stripped[4:].strip()
-            heading = add_heading(document, 3, heading_text)
+            displayed_heading = (
+                "综合答案｜按框调用" if heading_text == "综合答案" else heading_text
+            )
+            heading = add_heading(document, 3, displayed_heading)
             if compact_unit_active:
                 heading.paragraph_format.space_before = Pt(4)
                 heading.paragraph_format.space_after = Pt(2)
-            answer_section_active = False
+            answer_mode = heading_text == "综合答案"
+            answer_container = document
             question_block_active = heading_text == "押题题目"
-        elif stripped.startswith("> "):
-            paragraph = document.add_paragraph()
-            shade_paragraph(paragraph, LIGHT_GRAY_FILL)
-            paragraph.paragraph_format.first_line_indent = Cm(0)
-            add_inline_runs(paragraph, stripped[2:].strip())
-        elif stripped.startswith("- ") or re.match(
-            r"^(?:\*\*【[^】]+】\*\*\s*)*\d+\.\s",
-            stripped,
-        ):
-            add_list_paragraph(
-                document,
-                raw_line,
-                answer_section_active,
-                keep_with_next=question_block_active,
-                compact=compact_unit_active,
-            )
         else:
-            if re.match(r"^\*\*【(?:总|分)", stripped):
-                answer_section_active = True
-                add_body_paragraph(document, stripped, False, compact_unit_active)
+            if answer_mode and "【背诵检索串】" in stripped:
+                stop = find_stop(stripped)
+                if stop:
+                    add_stop_banner(document, stop, continues=True)
+                add_retrieval_banner(document, stripped)
+                answer_container = document
+                line_index += 1
+                continue
+
+            tier_match = find_tier(stripped) if answer_mode else None
+            if tier_match:
+                tag, tier = tier_match
+                stop = find_stop(stripped)
+                if stop:
+                    add_stop_banner(document, stop, continues=True)
+                answer_container = add_answer_card(document, tier)
+                cleaned = remove_display_tag(stripped, tag)
+                if stop:
+                    cleaned = remove_display_tag(cleaned, stop)
+                raw_line = cleaned
+                stripped = cleaned.strip()
+
+            target = answer_container if answer_mode else document
+            if stripped.startswith("| ") or stripped.startswith("|"):
+                table_lines: list[str] = []
+                while line_index < len(lines) and lines[line_index].strip().startswith("|"):
+                    table_lines.append(lines[line_index].strip())
+                    line_index += 1
+                add_table(target, table_lines)
+                continue
+            if stripped.startswith("> "):
+                paragraph = target.add_paragraph()
+                shade_paragraph(paragraph, LIGHT_GRAY_FILL)
+                paragraph.paragraph_format.first_line_indent = Cm(0)
+                add_inline_runs(paragraph, stripped[2:].strip())
+            elif stripped.startswith("- ") or re.match(r"^\d+\.\s", stripped):
+                add_list_paragraph(
+                    target,
+                    raw_line,
+                    False,
+                    keep_with_next=question_block_active,
+                    compact=compact_unit_active,
+                    card=answer_mode,
+                )
             else:
                 add_body_paragraph(
-                    document,
+                    target,
                     stripped,
-                    answer_section_active,
+                    False,
                     compact_unit_active,
+                    card=answer_mode,
                 )
         line_index += 1
 
