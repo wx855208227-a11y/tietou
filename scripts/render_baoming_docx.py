@@ -32,6 +32,8 @@ TIER_TAGS = {
 }
 
 COMPACT_UNIT_PREFIXES = (
+    "九、脑功能的主要学说",
+    "六、操作条件反射与行为调控",
     "十、观察学习",
     "十一、格雷的强化敏感性理论",
 )
@@ -68,11 +70,11 @@ CATALOG_PAGE_MAP = {
     "四、经典条件反射的基本规律": 26,
     "五、信号系统与高级神经活动": 27,
     "六、操作条件反射与行为调控": 28,
-    "七、经典条件反射与操作条件反射的比较": 30,
-    "八、顿悟学习": 31,
-    "九、目的行为学习理论": 32,
-    "十、观察学习": 33,
-    "十一、格雷的强化敏感性理论": 34,
+    "七、经典条件反射与操作条件反射的比较": 29,
+    "八、顿悟学习": 30,
+    "九、目的行为学习理论": 31,
+    "十、观察学习": 32,
+    "十一、格雷的强化敏感性理论": 33,
 }
 
 
@@ -462,7 +464,7 @@ def add_list_paragraph(
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.left_indent = Cm(0.75 + min(leading_spaces // 2, 3) * 0.42)
     paragraph.paragraph_format.first_line_indent = Cm(-0.48)
-    paragraph.paragraph_format.line_spacing = 1.35 if card else 1.5
+    paragraph.paragraph_format.line_spacing = 1.25 if card and compact else 1.35 if card else 1.5
     paragraph.paragraph_format.space_after = Pt(0 if compact or card else 2)
     paragraph.paragraph_format.widow_control = True
     paragraph.paragraph_format.keep_with_next = keep_with_next
@@ -478,7 +480,7 @@ def add_body_paragraph(
     card: bool = False,
 ) -> None:
     paragraph = document.add_paragraph()
-    paragraph.paragraph_format.line_spacing = 1.35 if card else 1.5
+    paragraph.paragraph_format.line_spacing = 1.25 if card and compact else 1.35 if card else 1.5
     paragraph.paragraph_format.space_after = Pt(0 if compact else 1 if card else 3)
     paragraph.paragraph_format.widow_control = True
     if re.match(r"^\*\*【(?:总|分)", text):
