@@ -235,6 +235,17 @@ def add_catalog(document: Document, lines: list[str]) -> None:
         run = paragraph.add_run(f"{heading}\t{CATALOG_PAGE_MAP[heading]}")
         set_run_font(run, size=11, bold=is_chapter)
 
+    legend = document.add_paragraph()
+    legend.paragraph_format.first_line_indent = Cm(0)
+    legend.paragraph_format.space_before = Pt(8)
+    legend.paragraph_format.space_after = Pt(0)
+    shade_paragraph(legend, LIGHT_GRAY_FILL)
+    legend_run = legend.add_run(
+        "使用图例｜名解核心：定义及题干对应分点；简答必写：基础得分点；"
+        "论述展开：高分题续写；背诵检索串：仅用于闭卷复述，不写入答卷。"
+    )
+    set_run_font(legend_run, size=9.5)
+
 
 def markdown_tokens(text: str) -> list[tuple[str, bool, bool]]:
     tokens: list[tuple[str, bool, bool]] = []
@@ -271,17 +282,17 @@ def add_inline_runs(paragraph, text: str, size: float = 12) -> None:
     for content, is_bold, is_underlined in tokens:
         if not content:
             continue
-        tag_match = re.match(r"(【题[①②③④⑤]+】)(.*)", content)
-        if tag_match:
-            tag_text, content = tag_match.groups()
-            tag_run = paragraph.add_run(tag_text + (" " if content else ""))
-            set_run_font(tag_run, size=9.5, bold=True)
-            tag_run.font.color.rgb = TAG_GRAY
-            if not content:
+        for part in re.split(r"(【[^】]+】)", content):
+            if not part:
                 continue
-        run = paragraph.add_run(content)
-        set_run_font(run, size=size, bold=is_bold)
-        run.underline = is_underlined
+            if re.fullmatch(r"【[^】]+】", part):
+                tag_run = paragraph.add_run(part)
+                set_run_font(tag_run, size=9.5, bold=True)
+                tag_run.font.color.rgb = TAG_GRAY
+                continue
+            run = paragraph.add_run(part)
+            set_run_font(run, size=size, bold=is_bold)
+            run.underline = is_underlined
 
 
 def add_heading(document: Document, level: int, text: str, page_break_before: bool = False):
@@ -351,6 +362,11 @@ def add_body_paragraph(
     elif text.startswith("**真题依据**") or text.startswith("**考纲依据**"):
         shade_paragraph(paragraph, LIGHT_GRAY_FILL)
         paragraph.paragraph_format.first_line_indent = Cm(0)
+    elif "【背诵检索串】" in text:
+        shade_paragraph(paragraph, LIGHT_GRAY_FILL)
+        paragraph.paragraph_format.first_line_indent = Cm(0)
+        paragraph.paragraph_format.space_before = Pt(2)
+        paragraph.paragraph_format.space_after = Pt(2)
     add_inline_runs(paragraph, text)
 
 
@@ -470,7 +486,10 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
             shade_paragraph(paragraph, LIGHT_GRAY_FILL)
             paragraph.paragraph_format.first_line_indent = Cm(0)
             add_inline_runs(paragraph, stripped[2:].strip())
-        elif stripped.startswith("- ") or re.match(r"^\s*\d+\.\s", raw_line):
+        elif stripped.startswith("- ") or re.match(
+            r"^(?:\*\*【[^】]+】\*\*\s*)*\d+\.\s",
+            stripped,
+        ):
             add_list_paragraph(
                 document,
                 raw_line,
