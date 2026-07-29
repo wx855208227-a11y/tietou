@@ -27,8 +27,8 @@ CARD_SPECS = {
 TIER_TAGS = {
     "名解核心": "name",
     "答题总起": "opening",
-    "简答必写": "short",
-    "论述展开": "essay",
+    "简答采分点": "short",
+    "论述加分": "essay",
 }
 
 COMPACT_UNIT_PREFIXES = (
@@ -302,7 +302,7 @@ def add_catalog(document: Document, lines: list[str]) -> None:
     legend.paragraph_format.space_after = Pt(0)
     shade_paragraph(legend, GRAY_FILL)
     legend_run = legend.add_run(
-        "零学习成本用法｜名解写①；简答写①＋②；论述写①＋②＋③。"
+        "3秒用法｜先确认题号，再按题号取分点：名解写①；简答写①＋②；论述写①＋②＋③。"
     )
     set_run_font(legend_run, size=10, bold=True)
 
@@ -352,13 +352,18 @@ def add_inline_runs(paragraph, text: str, size: float = 12) -> None:
     for content, is_bold, is_underlined in tokens:
         if not content:
             continue
-        for part in re.split(r"(【[^】]+】)", content):
+        for part in re.split(r"(【[^】]+】|（(?:例如|可选扩充)：[^）]*）)", content):
             if not part:
                 continue
             if re.fullmatch(r"【[^】]+】", part):
                 tag_run = paragraph.add_run(part)
                 set_run_font(tag_run, size=9.5, bold=True)
                 tag_run.font.color.rgb = TAG_GRAY
+                continue
+            if re.fullmatch(r"（(?:例如|可选扩充)：[^）]*）", part):
+                optional_run = paragraph.add_run(part)
+                set_run_font(optional_run, size=9.5, bold=False)
+                optional_run.font.color.rgb = TAG_GRAY
                 continue
             run = paragraph.add_run(part)
             set_run_font(run, size=size, bold=is_bold)
@@ -418,11 +423,6 @@ def find_tier(text: str) -> tuple[str, str] | None:
         if f"【{tag}】" in text:
             return tag, tier
     return None
-
-
-def find_stop(text: str) -> str | None:
-    match = re.search(r"【([^】]*分到此(?:｜[^】]*分继续)?)】", text)
-    return match.group(1) if match else None
 
 
 def remove_display_tag(text: str, tag: str) -> str:
@@ -599,9 +599,12 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
             question_block_active = False
         elif stripped.startswith("### "):
             heading_text = stripped[4:].strip()
-            displayed_heading = (
-                "综合答案｜按框调用" if heading_text == "综合答案" else heading_text
-            )
+            if heading_text == "综合答案":
+                displayed_heading = "综合答案｜按框调用"
+            elif heading_text == "押题题目":
+                displayed_heading = "押题题目｜先确认题号"
+            else:
+                displayed_heading = heading_text
             heading = add_heading(document, 3, displayed_heading)
             if compact_unit_active:
                 heading.paragraph_format.space_before = Pt(4)
@@ -619,11 +622,8 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
             tier_match = find_tier(stripped) if answer_mode else None
             if tier_match:
                 tag, tier = tier_match
-                stop = find_stop(stripped)
                 answer_container = add_answer_card(document, tier)
                 cleaned = remove_display_tag(stripped, tag)
-                if stop:
-                    cleaned = remove_display_tag(cleaned, stop)
                 raw_line = cleaned
                 stripped = cleaned.strip()
 
