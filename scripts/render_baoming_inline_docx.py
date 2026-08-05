@@ -71,6 +71,10 @@ CATALOG_PAGE_MAP = {
     "十一、格雷的强化敏感性理论": 20,
 }
 
+V3_CATALOG_OVERRIDES = {
+    "七、经典条件反射与操作条件反射的比较": 18,
+}
+
 
 def add_inline_runs(paragraph, content: str, size: float = 12, optional: bool = False) -> None:
     for text, is_bold, is_underlined in markdown_tokens(content):
@@ -95,7 +99,7 @@ def add_inline_runs(paragraph, content: str, size: float = 12, optional: bool = 
                     run.font.color.rgb = OPTIONAL_GRAY
 
 
-def add_catalog(document: Document, lines: list[str]) -> None:
+def add_catalog(document: Document, lines: list[str], page_map: dict[str, int]) -> None:
     title = document.add_paragraph()
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
     title.paragraph_format.first_line_indent = Cm(0)
@@ -113,7 +117,7 @@ def add_catalog(document: Document, lines: list[str]) -> None:
             is_chapter = False
         else:
             continue
-        if heading not in CATALOG_PAGE_MAP:
+        if heading not in page_map:
             continue
         paragraph = document.add_paragraph()
         paragraph.paragraph_format.first_line_indent = Cm(0)
@@ -124,7 +128,7 @@ def add_catalog(document: Document, lines: list[str]) -> None:
             Cm(15.8), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.DOTS
         )
         set_run_font(
-            paragraph.add_run(f"{heading}\t{CATALOG_PAGE_MAP[heading]}"),
+            paragraph.add_run(f"{heading}\t{page_map[heading]}"),
             size=11,
             bold=is_chapter,
         )
@@ -185,6 +189,7 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
+    page_map = CATALOG_PAGE_MAP | (V3_CATALOG_OVERRIDES if subtitle.endswith("V3") else {})
     document = Document()
     configure_styles(document)
     configure_page(document.sections[0])
@@ -196,7 +201,7 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     first_chapter_index = next(
         index for index, line in enumerate(lines) if line.startswith("# 第一章 ")
     )
-    add_catalog(document, lines)
+    add_catalog(document, lines, page_map)
 
     body_section = document.add_section(WD_SECTION.NEW_PAGE)
     configure_page(body_section)
