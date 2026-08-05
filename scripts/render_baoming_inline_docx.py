@@ -22,12 +22,51 @@ from render_baoming_docx import (
     set_update_fields,
     shade_paragraph,
 )
-from render_baoming_mother_docx import CATALOG_PAGE_MAP, COMPACT_UNIT_PREFIXES
+from render_baoming_mother_docx import COMPACT_UNIT_PREFIXES
 
 
 TAG_GRAY = RGBColor(89, 89, 89)
 OPTIONAL_GRAY = RGBColor(96, 96, 96)
 DEFINITION_TAG_RE = re.compile(r"【名词解释：[^】]+】")
+
+CATALOG_PAGE_MAP = {
+    "第一章 心理学研究的对象、方法及其学科发展": 1,
+    "一、心理学的含义与研究对象": 1,
+    "二、科学心理学的诞生": 1,
+    "三、构造主义与机能主义": 2,
+    "四、行为主义": 2,
+    "五、格式塔心理学": 3,
+    "六、精神分析学派": 3,
+    "七、人本主义心理学": 4,
+    "八、认知心理学": 5,
+    "九、观察法、相关研究法与实验法": 5,
+    "十、实验变量": 6,
+    "十一、测验法与信效度": 7,
+    "十二、投射法与投射测验": 7,
+    "十三、心理学的主要分支": 8,
+    "第二章 心理和行为的生物学基础": 9,
+    "一、神经元": 9,
+    "二、神经冲动与突触传递": 9,
+    "三、神经系统的构成与功能": 10,
+    "四、大脑皮层的感觉区与运动区": 11,
+    "五、大脑皮层的言语区与联合区": 11,
+    "六、大脑两半球的功能分工": 12,
+    "七、丘脑与下丘脑": 12,
+    "八、边缘系统、海马与杏仁核": 13,
+    "九、脑功能的主要学说": 13,
+    "第三章 条件反射和学习": 15,
+    "一、学习的含义与特征": 15,
+    "二、反射、反射弧与反射类型": 15,
+    "三、经典条件反射": 16,
+    "四、经典条件反射的基本规律": 16,
+    "五、信号系统与高级神经活动": 17,
+    "六、操作条件反射与行为调控": 18,
+    "七、经典条件反射与操作条件反射的比较": 18,
+    "八、顿悟学习": 19,
+    "九、目的行为学习理论": 20,
+    "十、观察学习": 20,
+    "十一、格雷的强化敏感性理论": 21,
+}
 
 
 def add_inline_runs(paragraph, content: str, size: float = 12, optional: bool = False) -> None:
@@ -37,14 +76,16 @@ def add_inline_runs(paragraph, content: str, size: float = 12, optional: bool = 
         for part in re.split(r"(【[^】]+】)", text):
             if not part:
                 continue
-            run = paragraph.add_run(part)
             if DEFINITION_TAG_RE.fullmatch(part):
+                run = paragraph.add_run("\u2060".join(part))
                 set_run_font(run, "宋体", 9.5, True)
                 run.font.highlight_color = WD_COLOR_INDEX.YELLOW
             elif re.fullmatch(r"【[^】]+】", part):
+                run = paragraph.add_run(part)
                 set_run_font(run, "宋体", 9.5, True)
                 run.font.color.rgb = TAG_GRAY
             else:
+                run = paragraph.add_run(part)
                 set_run_font(run, "宋体", 9.5 if optional else size, is_bold)
                 run.underline = is_underlined
                 if optional:
