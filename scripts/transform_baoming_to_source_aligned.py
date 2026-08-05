@@ -239,6 +239,13 @@ def transform_unit(name: str, lines: list[str]) -> list[str]:
     cleaned = [line for line in lines if not normalize_existing_bonus(line)]
     transformed = [apply_body_replacements(canonicalize_definition(line)) for line in cleaned]
 
+    if name == "十三、心理学的主要分支":
+        transformed = [
+            line
+            for line in transformed
+            if not line.startswith("不同分支分别从**一般规律、生理基础、毕生发展")
+        ]
+
     if name == "一、心理学的含义与研究对象":
         for index, line in enumerate(transformed):
             if "【名词解释：心理学】" in line:

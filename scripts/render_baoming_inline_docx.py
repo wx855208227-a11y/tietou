@@ -28,6 +28,9 @@ from render_baoming_mother_docx import COMPACT_UNIT_PREFIXES
 TAG_GRAY = RGBColor(89, 89, 89)
 OPTIONAL_GRAY = RGBColor(96, 96, 96)
 DEFINITION_TAG_RE = re.compile(r"【名词解释：[^】]+】")
+INLINE_COMPACT_UNIT_PREFIXES = COMPACT_UNIT_PREFIXES + (
+    "十三、心理学的主要分支",
+)
 
 CATALOG_PAGE_MAP = {
     "第一章 心理学研究的对象、方法及其学科发展": 1,
@@ -38,34 +41,34 @@ CATALOG_PAGE_MAP = {
     "五、格式塔心理学": 3,
     "六、精神分析学派": 3,
     "七、人本主义心理学": 4,
-    "八、认知心理学": 5,
+    "八、认知心理学": 4,
     "九、观察法、相关研究法与实验法": 5,
     "十、实验变量": 6,
-    "十一、测验法与信效度": 7,
+    "十一、测验法与信效度": 6,
     "十二、投射法与投射测验": 7,
-    "十三、心理学的主要分支": 8,
-    "第二章 心理和行为的生物学基础": 9,
-    "一、神经元": 9,
-    "二、神经冲动与突触传递": 9,
-    "三、神经系统的构成与功能": 10,
-    "四、大脑皮层的感觉区与运动区": 11,
-    "五、大脑皮层的言语区与联合区": 11,
-    "六、大脑两半球的功能分工": 12,
-    "七、丘脑与下丘脑": 12,
-    "八、边缘系统、海马与杏仁核": 13,
-    "九、脑功能的主要学说": 13,
-    "第三章 条件反射和学习": 15,
-    "一、学习的含义与特征": 15,
-    "二、反射、反射弧与反射类型": 15,
-    "三、经典条件反射": 16,
-    "四、经典条件反射的基本规律": 16,
-    "五、信号系统与高级神经活动": 17,
-    "六、操作条件反射与行为调控": 18,
-    "七、经典条件反射与操作条件反射的比较": 18,
-    "八、顿悟学习": 19,
-    "九、目的行为学习理论": 20,
-    "十、观察学习": 20,
-    "十一、格雷的强化敏感性理论": 21,
+    "十三、心理学的主要分支": 7,
+    "第二章 心理和行为的生物学基础": 8,
+    "一、神经元": 8,
+    "二、神经冲动与突触传递": 8,
+    "三、神经系统的构成与功能": 9,
+    "四、大脑皮层的感觉区与运动区": 10,
+    "五、大脑皮层的言语区与联合区": 10,
+    "六、大脑两半球的功能分工": 11,
+    "七、丘脑与下丘脑": 11,
+    "八、边缘系统、海马与杏仁核": 12,
+    "九、脑功能的主要学说": 12,
+    "第三章 条件反射和学习": 14,
+    "一、学习的含义与特征": 14,
+    "二、反射、反射弧与反射类型": 14,
+    "三、经典条件反射": 15,
+    "四、经典条件反射的基本规律": 15,
+    "五、信号系统与高级神经活动": 16,
+    "六、操作条件反射与行为调控": 17,
+    "七、经典条件反射与操作条件反射的比较": 17,
+    "八、顿悟学习": 18,
+    "九、目的行为学习理论": 19,
+    "十、观察学习": 19,
+    "十一、格雷的强化敏感性理论": 20,
 }
 
 
@@ -159,6 +162,8 @@ def add_list_paragraph(document: Document, raw_line: str, answer_mode: bool, com
     paragraph.paragraph_format.space_after = Pt(0 if answer_mode else 1)
     paragraph.paragraph_format.widow_control = True
     paragraph.paragraph_format.keep_with_next = not answer_mode
+    if "【加分项：" in stripped:
+        paragraph.paragraph_format.keep_together = True
     add_inline_runs(paragraph, stripped, size=10.5 if not answer_mode else 11.5)
 
 
@@ -168,6 +173,8 @@ def add_body_paragraph(document: Document, content: str, compact: bool) -> None:
     paragraph.paragraph_format.line_spacing = 1.18 if optional else 1.25 if compact else 1.4
     paragraph.paragraph_format.space_after = Pt(1)
     paragraph.paragraph_format.widow_control = True
+    if "【名词解释：" in content or "【加分项：" in content:
+        paragraph.paragraph_format.keep_together = True
     if optional:
         paragraph.paragraph_format.first_line_indent = Cm(0)
         paragraph.paragraph_format.space_before = Pt(1)
@@ -212,7 +219,7 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
         elif stripped.startswith("## "):
             heading_text = stripped[3:].strip()
             heading = add_heading(document, 2, heading_text)
-            compact_unit = heading_text.startswith(COMPACT_UNIT_PREFIXES)
+            compact_unit = heading_text.startswith(INLINE_COMPACT_UNIT_PREFIXES)
             if compact_unit:
                 heading.paragraph_format.space_before = Pt(7)
                 heading.paragraph_format.space_after = Pt(3)
