@@ -50,40 +50,40 @@ COMPACT_UNIT_PREFIXES = (
 CATALOG_PAGE_MAP = {
     "第一章 心理学研究的对象、方法及其学科发展": 1,
     "一、心理学的含义与研究对象": 1,
-    "二、科学心理学的诞生": 2,
-    "三、构造主义与机能主义": 3,
-    "四、行为主义": 4,
-    "五、格式塔心理学": 5,
-    "六、精神分析学派": 6,
-    "七、人本主义心理学": 7,
-    "八、认知心理学": 8,
-    "九、观察法、相关研究法与实验法": 9,
-    "十、实验变量": 10,
-    "十一、测验法与信效度": 11,
-    "十二、投射法与投射测验": 12,
-    "十三、心理学的主要分支": 13,
-    "第二章 心理和行为的生物学基础": 14,
-    "一、神经元": 14,
-    "二、神经冲动与突触传递": 15,
-    "三、神经系统的构成与功能": 16,
-    "四、大脑皮层的感觉区与运动区": 17,
-    "五、大脑皮层的言语区与联合区": 18,
-    "六、大脑两半球的功能分工": 19,
-    "七、丘脑与下丘脑": 20,
-    "八、边缘系统、海马与杏仁核": 21,
-    "九、脑功能的主要学说": 22,
-    "第三章 条件反射和学习": 23,
-    "一、学习的含义与特征": 23,
-    "二、反射、反射弧与反射类型": 24,
-    "三、经典条件反射": 25,
-    "四、经典条件反射的基本规律": 26,
-    "五、信号系统与高级神经活动": 27,
-    "六、操作条件反射与行为调控": 28,
-    "七、经典条件反射与操作条件反射的比较": 29,
-    "八、顿悟学习": 30,
-    "九、目的行为学习理论": 31,
-    "十、观察学习": 32,
-    "十一、格雷的强化敏感性理论": 33,
+    "二、科学心理学的诞生": 1,
+    "三、构造主义与机能主义": 2,
+    "四、行为主义": 3,
+    "五、格式塔心理学": 4,
+    "六、精神分析学派": 4,
+    "七、人本主义心理学": 5,
+    "八、认知心理学": 6,
+    "九、观察法、相关研究法与实验法": 7,
+    "十、实验变量": 8,
+    "十一、测验法与信效度": 9,
+    "十二、投射法与投射测验": 10,
+    "十三、心理学的主要分支": 10,
+    "第二章 心理和行为的生物学基础": 12,
+    "一、神经元": 12,
+    "二、神经冲动与突触传递": 12,
+    "三、神经系统的构成与功能": 13,
+    "四、大脑皮层的感觉区与运动区": 14,
+    "五、大脑皮层的言语区与联合区": 15,
+    "六、大脑两半球的功能分工": 16,
+    "七、丘脑与下丘脑": 16,
+    "八、边缘系统、海马与杏仁核": 17,
+    "九、脑功能的主要学说": 18,
+    "第三章 条件反射和学习": 19,
+    "一、学习的含义与特征": 19,
+    "二、反射、反射弧与反射类型": 19,
+    "三、经典条件反射": 20,
+    "四、经典条件反射的基本规律": 21,
+    "五、信号系统与高级神经活动": 22,
+    "六、操作条件反射与行为调控": 23,
+    "七、经典条件反射与操作条件反射的比较": 24,
+    "八、顿悟学习": 24,
+    "九、目的行为学习理论": 25,
+    "十、观察学习": 26,
+    "十一、格雷的强化敏感性理论": 27,
 }
 
 
@@ -146,59 +146,50 @@ def add_catalog(document: Document, lines: list[str]) -> None:
     )
 
 
-def add_mother_answer_card(document: Document):
-    table = document.add_table(rows=1, cols=1)
-    table.autofit = True
-    cell = table.cell(0, 0)
-    set_cell_border(cell, MOTHER_BORDER)
-    set_cell_margins(cell, top=90, start=135, bottom=100, end=135)
-    header = cell.paragraphs[0]
+def add_mother_answer_header(document: Document) -> None:
+    header = document.add_paragraph()
     header.paragraph_format.first_line_indent = Cm(0)
     header.paragraph_format.line_spacing = 1.0
     header.paragraph_format.space_after = Pt(5)
     header.paragraph_format.keep_with_next = True
     shade_paragraph(header, MOTHER_FILL)
+    set_paragraph_border(header, MOTHER_BORDER, "8")
     set_run_font(header.add_run("综合母答案"), "微软雅黑", 11, True)
     instruction = header.add_run("　背一份｜根据题干删减、重组和调整详略")
     set_run_font(instruction, "宋体", 9.5, True)
     instruction.font.color.rgb = TAG_GRAY
-    return cell
 
 
-def add_definition_box(parent, tagged_line: str):
-    table = parent.add_table(rows=1, cols=1)
-    table.autofit = True
-    cell = table.cell(0, 0)
-    set_cell_border(cell, DEFINITION_BORDER, "8")
-    set_cell_margins(cell, top=65, start=105, bottom=65, end=105)
-    paragraph = cell.paragraphs[0]
+def add_definition_banner(document: Document, tagged_line: str):
+    paragraph = document.add_paragraph()
     paragraph.paragraph_format.first_line_indent = Cm(0)
     paragraph.paragraph_format.line_spacing = 1.2
     paragraph.paragraph_format.space_after = Pt(1)
     shade_paragraph(paragraph, DEFINITION_FILL)
+    set_paragraph_border(paragraph, DEFINITION_BORDER, "6")
     set_run_font(paragraph.add_run("【名词解释】｜"), "微软雅黑", 10, True)
     content = re.sub(r"(?:\*\*)?【名词解释】(?:\*\*)?\s*", "", tagged_line)
     add_inline_runs(paragraph, content, size=11)
-    return cell
+    return paragraph
 
 
-def add_flexible_box(parent):
-    table = parent.add_table(rows=1, cols=1)
-    table.autofit = True
-    cell = table.cell(0, 0)
-    set_cell_border(cell, FLEXIBLE_BORDER, "8")
-    set_cell_margins(cell, top=65, start=105, bottom=65, end=105)
-    header = cell.paragraphs[0]
+def add_flexible_banner(document: Document) -> None:
+    header = document.add_paragraph()
     header.paragraph_format.first_line_indent = Cm(0)
     header.paragraph_format.line_spacing = 1.0
     header.paragraph_format.space_after = Pt(2)
     header.paragraph_format.keep_with_next = True
     shade_paragraph(header, FLEXIBLE_FILL)
+    set_paragraph_border(header, FLEXIBLE_BORDER, "6")
     set_run_font(header.add_run("【灵活扩充】"), "微软雅黑", 10, True)
     note = header.add_run("　按题干和时间选写，不替代基础采分点")
     set_run_font(note, "宋体", 9, True)
     note.font.color.rgb = TAG_GRAY
-    return cell
+
+
+def shade_tagged_paragraph(paragraph, fill: str, border: str) -> None:
+    shade_paragraph(paragraph, fill)
+    set_paragraph_border(paragraph, border, "4")
 
 
 def render_markdown(markdown_path: Path, output_path: Path) -> None:
@@ -223,9 +214,9 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     configure_body_header_footer(body_section)
 
     answer_mode = False
-    mother_container = document
     answer_container = document
     in_definition = False
+    in_flexible = False
     question_block_active = False
     compact_unit_active = False
     first_chapter = True
@@ -235,7 +226,6 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
         stripped = raw_line.strip()
         if not stripped:
             if answer_mode and in_definition:
-                answer_container = mother_container
                 in_definition = False
             line_index += 1
             continue
@@ -247,6 +237,8 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
             first_chapter = False
             answer_mode = False
             answer_container = document
+            in_definition = False
+            in_flexible = False
             question_block_active = False
         elif stripped.startswith("## "):
             heading_text = stripped[3:].strip()
@@ -257,14 +249,17 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
                 heading.paragraph_format.space_after = Pt(2)
             answer_mode = False
             answer_container = document
+            in_definition = False
+            in_flexible = False
             question_block_active = False
         elif stripped.startswith("### "):
             heading_text = stripped[4:].strip()
             if heading_text == "综合母答案":
-                mother_container = add_mother_answer_card(document)
-                answer_container = mother_container
+                add_mother_answer_header(document)
+                answer_container = document
                 answer_mode = True
                 in_definition = False
+                in_flexible = False
                 question_block_active = False
             else:
                 displayed = "押题题目｜可能问法" if heading_text == "押题题目" else heading_text
@@ -277,13 +272,15 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
                 question_block_active = heading_text == "押题题目"
         else:
             if answer_mode and "【名词解释】" in stripped:
-                answer_container = add_definition_box(mother_container, stripped)
+                add_definition_banner(document, stripped)
                 in_definition = True
+                in_flexible = False
                 line_index += 1
                 continue
             if answer_mode and "【灵活扩充】" in stripped:
-                answer_container = add_flexible_box(mother_container)
+                add_flexible_banner(document)
                 in_definition = False
+                in_flexible = True
                 line_index += 1
                 continue
 
@@ -309,17 +306,30 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
                     compact=compact_unit_active,
                     card=answer_mode,
                 )
-                if answer_mode and stripped.startswith("- "):
+                if answer_mode and in_definition:
+                    shade_tagged_paragraph(paragraph, DEFINITION_FILL, DEFINITION_BORDER)
+                if answer_mode and in_flexible:
+                    shade_tagged_paragraph(paragraph, FLEXIBLE_FILL, FLEXIBLE_BORDER)
                     for run in paragraph.runs:
                         run.font.color.rgb = TAG_GRAY
             else:
-                add_body_paragraph(
-                    target,
-                    stripped,
-                    False,
-                    compact_unit_active,
-                    card=answer_mode,
+                paragraph = target.add_paragraph()
+                paragraph.paragraph_format.line_spacing = (
+                    1.18 if answer_mode and compact_unit_active else 1.35 if answer_mode else 1.5
                 )
+                paragraph.paragraph_format.space_after = Pt(
+                    0 if compact_unit_active else 1 if answer_mode else 3
+                )
+                paragraph.paragraph_format.widow_control = True
+                add_inline_runs(
+                    paragraph,
+                    stripped,
+                    size=11 if answer_mode and compact_unit_active else 12,
+                )
+                if answer_mode and in_definition:
+                    shade_tagged_paragraph(paragraph, DEFINITION_FILL, DEFINITION_BORDER)
+                if answer_mode and in_flexible:
+                    shade_tagged_paragraph(paragraph, FLEXIBLE_FILL, FLEXIBLE_BORDER)
         line_index += 1
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
