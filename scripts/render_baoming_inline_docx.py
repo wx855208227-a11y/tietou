@@ -133,7 +133,7 @@ def add_catalog(document: Document, lines: list[str]) -> None:
     shade_paragraph(note, LIGHT_GRAY_FILL)
     set_run_font(
         note.add_run(
-            "直接用法｜整篇顺背；名词解释提取黄色标签前的定义；括号内加分项按题干和时间灵活选写。"
+            "直接用法｜整篇顺背；名词解释提取黄色标签前的定义；【加分项】已放在对应位置，按题干和时间灵活选写。"
         ),
         size=9.5,
         bold=True,
