@@ -94,7 +94,8 @@ def add_inline_runs(paragraph, content: str, size: float = 12, optional: bool = 
             else:
                 run = paragraph.add_run(part)
                 set_run_font(run, "宋体", 9.5 if optional else size, is_bold)
-                run.underline = is_underlined
+                if is_underlined:
+                    run.underline = True
                 if optional:
                     run.font.color.rgb = OPTIONAL_GRAY
 
