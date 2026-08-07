@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import re
 import zipfile
+from collections import Counter
 from pathlib import Path
 
 import fitz
@@ -30,6 +31,19 @@ def is_black(color) -> bool:
 
 
 def main() -> None:
+    questions = [item for _, units in CHAPTERS for unit in units for item in unit.questions]
+    module_uses = Counter(
+        module
+        for item in questions
+        for module in (*item.leads, *item.points, *item.bonus_points)
+    )
+    common_uses = sum(count for count in module_uses.values() if count > 1)
+    supplement_uses = sum(count for count in module_uses.values() if count == 1)
+    point_bonus_uses = sum(
+        count for module, count in module_uses.items() if "【采分点加分】" in module
+    )
+    answer_bonus_blocks = sum(bool(item.bonus_points) for item in questions)
+
     with zipfile.ZipFile(DOCX) as archive:
         xml = archive.read("word/document.xml")
     root = etree.fromstring(xml)
@@ -41,14 +55,33 @@ def main() -> None:
     assert not root.findall(f".//{{{W_NS}}}u"), "DOCX contains underline"
     assert not root.findall(f".//{{{W_NS}}}highlight"), "DOCX contains highlight"
     assert not root.findall(f".//{{{W_NS}}}shd"), "DOCX contains shading"
-    docx_text = "".join(node.text or "" for node in root.findall(f".//{{{W_NS}}}t"))
+    docx_text = "".join(node.text or "" for node in root.findall(f".//{{{W_NS}}}t")).replace("\u2060", "")
     assert "**" not in docx_text
     assert "答题思路" not in docx_text
-    assert docx_text.count("押题") == 63  # 62题＋目录用法提示1处
+    assert docx_text.count("押题") == 62
     assert docx_text.count("答案") >= 63
+    assert docx_text.count("【共用】") == common_uses + 1  # 目录说明1处
+    assert docx_text.count("【本题补充】") == supplement_uses + 1
+    assert docx_text.count("【采分点加分】") == point_bonus_uses + 1
+    assert docx_text.count("【整体加分】") == answer_bonus_blocks + 1
+
+    later_question_spacing: list[int] = []
+    for paragraph in root.findall(f".//{{{W_NS}}}p"):
+        paragraph_text = "".join(
+            node.text or "" for node in paragraph.findall(f".//{{{W_NS}}}t")
+        ).replace("\u2060", "")
+        if not re.match(r"^押题(?:2|3)【", paragraph_text):
+            continue
+        spacing = paragraph.find(
+            f"./{{{W_NS}}}pPr/{{{W_NS}}}spacing"
+        )
+        assert spacing is not None
+        later_question_spacing.append(int(spacing.get(f"{{{W_NS}}}before")))
+    assert len(later_question_spacing) == 29
+    assert min(later_question_spacing) >= 200  # 10pt，明显大于答案内部段间距
 
     document = fitz.open(PDF)
-    assert len(document) == 23
+    assert len(document) == 25
     page_texts: list[str] = []
     image_blocks = 0
     overflow_blocks = 0
@@ -92,9 +125,13 @@ def main() -> None:
     assert non_black_drawings == 0
     assert non_gray_pixels == 0
     assert "**" not in full_text
-    assert full_text.count("押题") == 63
+    assert full_text.count("押题") == 62
     assert full_text.count("答案") >= 63
     assert full_text.count("【名词解释：") == 123
+    assert full_text.count("【共用】") == common_uses + 1
+    assert full_text.count("【本题补充】") == supplement_uses + 1
+    assert full_text.count("【采分点加分】") == point_bonus_uses + 1
+    assert full_text.count("【整体加分】") == answer_bonus_blocks + 1
     assert all(page.get_text().strip() for page in document)
 
     body_pages = page_texts[2:]
