@@ -244,6 +244,9 @@ V12_CATALOG_PAGE_MAP = {
     "十一、格雷的强化敏感性理论": 19,
 }
 
+# V13经PDF正文逐页复核，仅“人本主义心理学”因扩容分行前移一页。
+V13_CATALOG_PAGE_MAP = V12_CATALOG_PAGE_MAP | {"七、人本主义心理学": 3}
+
 
 def force_monochrome_title_style(document: Document) -> None:
     """Remove the built-in theme accent from the cover title rule."""
@@ -263,6 +266,23 @@ def add_inline_runs(
     optional: bool = False,
     monochrome: bool = False,
 ) -> None:
+    expansion_prefix = "【扩容（选用）："
+    if content.startswith(expansion_prefix) and content.endswith("】"):
+        prefix_run = paragraph.add_run(expansion_prefix)
+        set_run_font(prefix_run, "宋体", 9.5, True)
+        inner = content[len(expansion_prefix) : -1]
+        for text, is_bold, is_underlined, is_italic in markdown_tokens(inner):
+            if not text:
+                continue
+            run = paragraph.add_run(text)
+            set_run_font(run, "宋体", 10.5, is_bold)
+            run.italic = is_italic
+            if is_underlined:
+                run.underline = True
+        closing_run = paragraph.add_run("】")
+        set_run_font(closing_run, "宋体", 9.5, True)
+        return
+
     for text, is_bold, is_underlined, is_italic in markdown_tokens(content):
         if not text:
             continue
@@ -299,6 +319,7 @@ def add_catalog(
     study_labels: bool = False,
     study_typography: bool = False,
     direct_without_answer_label: bool = False,
+    selective_expansion: bool = False,
 ) -> None:
     title = document.add_paragraph()
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -342,7 +363,13 @@ def add_catalog(
     else:
         shade_paragraph(note, LIGHT_GRAY_FILL)
     if direct_without_answer_label:
-        note_text = "直接用法｜每道押题下方内容可直接背诵和作答；【名词解释】是可独立提取的完整定义；【加分项】按题干和时间灵活选写。"
+        if selective_expansion:
+            note_text = (
+                "直接用法｜每道押题下方内容可直接背诵和作答；【名词解释】前是可独立提取的完整定义；"
+                "【扩容（选用）】中的内容按题目分值和时间选写。"
+            )
+        else:
+            note_text = "直接用法｜每道押题下方内容可直接背诵和作答；【名词解释】是可独立提取的完整定义；【加分项】按题干和时间灵活选写。"
     elif study_typography:
         note_text = (
             "直接用法｜每题答案均完整呈现；正文中的正体表示多题重复内容，斜体表示只在本题新增的内容；"
@@ -429,12 +456,19 @@ def add_body_paragraph(
     compact: bool,
     monochrome: bool = False,
 ) -> None:
-    optional = content.startswith("（加分项：")
+    optional = content.startswith("（加分项：") or content.startswith("【扩容（选用）：")
+    if optional and document.paragraphs:
+        document.paragraphs[-1].paragraph_format.keep_with_next = True
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.line_spacing = 1.18 if optional else 1.25 if compact else 1.4
     paragraph.paragraph_format.space_after = Pt(1)
     paragraph.paragraph_format.widow_control = True
-    if "【名词解释：" in content or "【采分点加分】" in content or "【加分项】" in content:
+    if (
+        "【名词解释：" in content
+        or "【采分点加分】" in content
+        or "【加分项】" in content
+        or "【扩容（选用）：" in content
+    ):
         paragraph.paragraph_format.keep_together = True
     if content == "**【整体加分】**":
         paragraph.paragraph_format.first_line_indent = Cm(0)
@@ -457,9 +491,11 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
-    question_specific = subtitle.endswith(("V8", "V9", "V10", "V11", "V12"))
-    monochrome = subtitle.endswith(("V7", "V8", "V9", "V10", "V11", "V12"))
-    if subtitle.endswith("V12"):
+    question_specific = subtitle.endswith(("V8", "V9", "V10", "V11", "V12", "V13"))
+    monochrome = subtitle.endswith(("V7", "V8", "V9", "V10", "V11", "V12", "V13"))
+    if subtitle.endswith("V13"):
+        page_map = V13_CATALOG_PAGE_MAP
+    elif subtitle.endswith("V12"):
         page_map = V12_CATALOG_PAGE_MAP
     elif subtitle.endswith("V11"):
         page_map = V11_CATALOG_PAGE_MAP
@@ -500,7 +536,8 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
         question_specific=question_specific,
         study_labels=subtitle.endswith("V10"),
         study_typography=subtitle.endswith("V11"),
-        direct_without_answer_label=subtitle.endswith("V12"),
+        direct_without_answer_label=subtitle.endswith(("V12", "V13")),
+        selective_expansion=subtitle.endswith("V13"),
     )
 
     body_section = document.add_section(WD_SECTION.NEW_PAGE)
@@ -551,13 +588,13 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
                         document,
                         displayed,
                         monochrome=monochrome,
-                        large_between_question_gap=subtitle.endswith(("V9", "V10", "V11", "V12")),
+                        large_between_question_gap=subtitle.endswith(("V9", "V10", "V11", "V12", "V13")),
                     )
                 else:
                     heading = add_heading(document, 3, displayed)
                     heading.paragraph_format.space_before = Pt(5)
                     heading.paragraph_format.space_after = Pt(2)
-                answer_mode = subtitle.endswith("V12") and displayed.startswith("押题")
+                answer_mode = subtitle.endswith(("V12", "V13")) and displayed.startswith("押题")
         elif stripped.startswith("|"):
             table_lines: list[str] = []
             while line_index < len(lines) and lines[line_index].strip().startswith("|"):
