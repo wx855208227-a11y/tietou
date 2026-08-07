@@ -7,9 +7,11 @@ from pathlib import Path
 from docx import Document
 from docx.enum.section import WD_SECTION
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_COLOR_INDEX, WD_TAB_ALIGNMENT, WD_TAB_LEADER
+from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, RGBColor
 
 from render_baoming_docx import (
+    BLACK,
     LIGHT_GRAY_FILL,
     add_cover,
     add_heading,
@@ -18,6 +20,7 @@ from render_baoming_docx import (
     configure_page,
     configure_styles,
     markdown_tokens,
+    set_paragraph_border,
     set_run_font,
     set_update_fields,
     shade_paragraph,
@@ -114,8 +117,29 @@ V6_CATALOG_PAGE_MAP = {
     "十一、格雷的强化敏感性理论": 17,
 }
 
+# The verified V7 body pagination is unchanged from V6: 17 body pages after
+# the cover and catalog.
+V7_CATALOG_PAGE_MAP = V6_CATALOG_PAGE_MAP.copy()
 
-def add_inline_runs(paragraph, content: str, size: float = 12, optional: bool = False) -> None:
+
+def force_monochrome_title_style(document: Document) -> None:
+    """Remove the built-in theme accent from the cover title rule."""
+    properties = document.styles["Title"]._element.get_or_add_pPr()
+    borders = properties.find(qn("w:pBdr"))
+    if borders is None:
+        return
+    for edge in borders:
+        edge.set(qn("w:color"), "000000")
+        edge.attrib.pop(qn("w:themeColor"), None)
+
+
+def add_inline_runs(
+    paragraph,
+    content: str,
+    size: float = 12,
+    optional: bool = False,
+    monochrome: bool = False,
+) -> None:
     for text, is_bold, is_underlined in markdown_tokens(content):
         if not text:
             continue
@@ -125,21 +149,27 @@ def add_inline_runs(paragraph, content: str, size: float = 12, optional: bool = 
             if DEFINITION_TAG_RE.fullmatch(part):
                 run = paragraph.add_run("\u2060".join(part))
                 set_run_font(run, "宋体", 9.5, True)
-                run.font.highlight_color = WD_COLOR_INDEX.YELLOW
+                if not monochrome:
+                    run.font.highlight_color = WD_COLOR_INDEX.YELLOW
             elif re.fullmatch(r"【[^】]+】", part):
                 run = paragraph.add_run(part)
                 set_run_font(run, "宋体", 9.5, True)
-                run.font.color.rgb = TAG_GRAY
+                run.font.color.rgb = BLACK if monochrome else TAG_GRAY
             else:
                 run = paragraph.add_run(part)
                 set_run_font(run, "宋体", 9.5 if optional else size, is_bold)
                 if is_underlined:
                     run.underline = True
                 if optional:
-                    run.font.color.rgb = OPTIONAL_GRAY
+                    run.font.color.rgb = BLACK if monochrome else OPTIONAL_GRAY
 
 
-def add_catalog(document: Document, lines: list[str], page_map: dict[str, int]) -> None:
+def add_catalog(
+    document: Document,
+    lines: list[str],
+    page_map: dict[str, int],
+    monochrome: bool = False,
+) -> None:
     title = document.add_paragraph()
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
     title.paragraph_format.first_line_indent = Cm(0)
@@ -177,10 +207,13 @@ def add_catalog(document: Document, lines: list[str], page_map: dict[str, int]) 
     note.paragraph_format.first_line_indent = Cm(0)
     note.paragraph_format.space_before = Pt(8)
     note.paragraph_format.space_after = Pt(0)
-    shade_paragraph(note, LIGHT_GRAY_FILL)
+    if monochrome:
+        set_paragraph_border(note, "000000", size="8")
+    else:
+        shade_paragraph(note, LIGHT_GRAY_FILL)
     set_run_font(
         note.add_run(
-            "直接用法｜整篇顺背；名词解释提取黄色标签前的定义；【加分项】已放在对应位置，按题干和时间灵活选写。"
+            "直接用法｜题目问什么，就写综合答案中的同名小标题；名词解释提取【名词解释】标注前的定义；【加分项】按题干和时间灵活选写。"
         ),
         size=9.5,
         bold=True,
@@ -197,7 +230,13 @@ def add_answer_heading(document: Document) -> None:
     set_run_font(paragraph.add_run("综合答案"), "宋体", 11, True)
 
 
-def add_list_paragraph(document: Document, raw_line: str, answer_mode: bool, compact: bool) -> None:
+def add_list_paragraph(
+    document: Document,
+    raw_line: str,
+    answer_mode: bool,
+    compact: bool,
+    monochrome: bool = False,
+) -> None:
     stripped = raw_line.strip()
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.left_indent = Cm(0.75)
@@ -208,10 +247,20 @@ def add_list_paragraph(document: Document, raw_line: str, answer_mode: bool, com
     paragraph.paragraph_format.keep_with_next = not answer_mode
     if "【加分项：" in stripped:
         paragraph.paragraph_format.keep_together = True
-    add_inline_runs(paragraph, stripped, size=10.5 if not answer_mode else 11.5)
+    add_inline_runs(
+        paragraph,
+        stripped,
+        size=10.5 if not answer_mode else 11.5,
+        monochrome=monochrome,
+    )
 
 
-def add_body_paragraph(document: Document, content: str, compact: bool) -> None:
+def add_body_paragraph(
+    document: Document,
+    content: str,
+    compact: bool,
+    monochrome: bool = False,
+) -> None:
     optional = content.startswith("（加分项：")
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.line_spacing = 1.18 if optional else 1.25 if compact else 1.4
@@ -222,19 +271,30 @@ def add_body_paragraph(document: Document, content: str, compact: bool) -> None:
     if optional:
         paragraph.paragraph_format.first_line_indent = Cm(0)
         paragraph.paragraph_format.space_before = Pt(1)
-    add_inline_runs(paragraph, content, size=11.5, optional=optional)
+    add_inline_runs(
+        paragraph,
+        content,
+        size=11.5,
+        optional=optional,
+        monochrome=monochrome,
+    )
 
 
 def render_markdown(markdown_path: Path, output_path: Path) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
-    if subtitle.endswith("V6"):
+    monochrome = subtitle.endswith("V7")
+    if monochrome:
+        page_map = V7_CATALOG_PAGE_MAP
+    elif subtitle.endswith("V6"):
         page_map = V6_CATALOG_PAGE_MAP
     else:
         page_map = CATALOG_PAGE_MAP | (V3_CATALOG_OVERRIDES if subtitle.endswith("V3") else {})
     document = Document()
     configure_styles(document)
+    if monochrome:
+        force_monochrome_title_style(document)
     configure_page(document.sections[0])
     set_update_fields(document)
     document.core_properties.title = title
@@ -244,7 +304,7 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     first_chapter_index = next(
         index for index, line in enumerate(lines) if line.startswith("# 第一章 ")
     )
-    add_catalog(document, lines, page_map)
+    add_catalog(document, lines, page_map, monochrome=monochrome)
 
     body_section = document.add_section(WD_SECTION.NEW_PAGE)
     configure_page(body_section)
@@ -291,9 +351,20 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
             add_table(document, table_lines)
             continue
         elif re.match(r"^\d+\.\s", stripped):
-            add_list_paragraph(document, raw_line, answer_mode, compact_unit)
+            add_list_paragraph(
+                document,
+                raw_line,
+                answer_mode,
+                compact_unit,
+                monochrome=monochrome,
+            )
         else:
-            add_body_paragraph(document, stripped, compact_unit)
+            add_body_paragraph(
+                document,
+                stripped,
+                compact_unit,
+                monochrome=monochrome,
+            )
         line_index += 1
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
