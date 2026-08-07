@@ -291,7 +291,7 @@ def add_question_heading(
         add_inline_runs(paragraph, content, size=11.5, monochrome=monochrome)
         return paragraph
     paragraph.paragraph_format.space_before = Pt(
-        14 if large_between_question_gap and match.group(1) != "押题1" else 5
+        10 if large_between_question_gap and match.group(1) != "押题1" else 5
     )
     set_run_font(paragraph.add_run(match.group(1)), "宋体", 11.5, True)
     set_run_font(paragraph.add_run(match.group(2)), "宋体", 9.5, True)
