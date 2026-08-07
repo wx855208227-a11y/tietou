@@ -57,6 +57,11 @@ def main() -> None:
     )
     roman_uses = sum(count for count in module_uses.values() if count > 1)
     italic_uses = sum(count for count in module_uses.values() if count == 1)
+    italic_keyword_uses = sum(
+        count
+        for module, count in module_uses.items()
+        if count == 1 and "**" in module
+    )
     point_bonus_uses = sum(
         count for module, count in module_uses.items() if "【采分点加分】" in module
     )
@@ -139,7 +144,7 @@ def main() -> None:
     assert actual_paragraphs == expected_paragraphs
     assert sum(count for (_, italic), count in actual_paragraphs.items() if italic) == italic_uses
     assert sum(count for (_, italic), count in actual_paragraphs.items() if not italic) == roman_uses
-    assert italic_bold_paragraphs == italic_uses
+    assert italic_bold_paragraphs == italic_keyword_uses
 
     later_question_spacing: list[int] = []
     for paragraph in root.findall(f".//{{{W_NS}}}p"):
@@ -157,7 +162,15 @@ def main() -> None:
     assert min(later_question_spacing) >= 200  # 10pt，明显大于答案内部段间距
 
     document = fitz.open(PDF)
-    assert len(document) == 25
+    assert len(document) == 24
+    pdf_streams = b"\n".join(
+        document.xref_stream(xref)
+        for page in document
+        for xref in page.get_contents()
+    )
+    synthetic_italic_matrices = len(
+        re.findall(rb"1 0 0\.[0-9]+ 1 [0-9.]+ [0-9.]+ Tm", pdf_streams)
+    )
     page_texts: list[str] = []
     image_blocks = 0
     overflow_blocks = 0
@@ -207,8 +220,8 @@ def main() -> None:
     assert non_black_spans == 0
     assert non_black_drawings == 0
     assert non_gray_pixels == 0
-    assert italic_spans > 0
-    assert bold_italic_spans > 0
+    # LibreOffice用倾斜文字矩阵合成中文斜体，字体标志本身仍为regular。
+    assert synthetic_italic_matrices >= italic_uses
     assert "**" not in full_text
     assert full_text.count("押题") == 62
     assert full_text.count("答案") >= 63
@@ -236,7 +249,7 @@ def main() -> None:
         f"overflow={overflow_blocks} non_black_spans={non_black_spans} "
         f"non_black_drawings={non_black_drawings} non_gray_pixels={non_gray_pixels} "
         f"roman_module_uses={roman_uses} italic_module_uses={italic_uses} "
-        f"italic_spans={italic_spans} bold_italic_spans={bold_italic_spans}"
+        f"synthetic_italic_matrices={synthetic_italic_matrices}"
     )
 
 

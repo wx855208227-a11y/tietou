@@ -202,8 +202,8 @@ V10_CATALOG_PAGE_MAP = {
     "十一、格雷的强化敏感性理论": 22,
 }
 
-# V11只改变字形提示，初次生成沿用V10页码；成品质检会据实际PDF复核。
-V11_CATALOG_PAGE_MAP = V10_CATALOG_PAGE_MAP.copy()
+# V11实际PDF为22页正文；斜体字形使“脑功能的主要学说”前移一页。
+V11_CATALOG_PAGE_MAP = V10_CATALOG_PAGE_MAP | {"九、脑功能的主要学说": 13}
 
 
 def force_monochrome_title_style(document: Document) -> None:
@@ -506,7 +506,7 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
                         document,
                         displayed,
                         monochrome=monochrome,
-                        large_between_question_gap=subtitle.endswith(("V9", "V10")),
+                        large_between_question_gap=subtitle.endswith(("V9", "V10", "V11")),
                     )
                 else:
                     heading = add_heading(document, 3, displayed)
