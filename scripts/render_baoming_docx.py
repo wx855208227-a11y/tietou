@@ -328,16 +328,17 @@ def add_catalog(document: Document, lines: list[str]) -> None:
     set_run_font(note_run, size=9.5)
 
 
-def markdown_tokens(text: str) -> list[tuple[str, bool, bool]]:
-    tokens: list[tuple[str, bool, bool]] = []
+def markdown_tokens(text: str) -> list[tuple[str, bool, bool, bool]]:
+    tokens: list[tuple[str, bool, bool, bool]] = []
     buffer: list[str] = []
     is_bold = False
     is_underlined = False
+    is_italic = False
     cursor = 0
 
     def flush_buffer() -> None:
         if buffer:
-            tokens.append(("".join(buffer), is_bold, is_underlined))
+            tokens.append(("".join(buffer), is_bold, is_underlined, is_italic))
             buffer.clear()
 
     while cursor < len(text):
@@ -352,6 +353,11 @@ def markdown_tokens(text: str) -> list[tuple[str, bool, bool]]:
             is_underlined = not is_underlined
             cursor += 2
             continue
+        if text[cursor] == "_":
+            flush_buffer()
+            is_italic = not is_italic
+            cursor += 1
+            continue
         buffer.append(text[cursor])
         cursor += 1
     flush_buffer()
@@ -360,7 +366,7 @@ def markdown_tokens(text: str) -> list[tuple[str, bool, bool]]:
 
 def add_inline_runs(paragraph, text: str, size: float = 12) -> None:
     tokens = markdown_tokens(text)
-    for content, is_bold, is_underlined in tokens:
+    for content, is_bold, is_underlined, is_italic in tokens:
         if not content:
             continue
         for part in re.split(r"(【[^】]+】|（(?:例如|可选扩充)：[^）]*）)", content):
@@ -370,15 +376,18 @@ def add_inline_runs(paragraph, text: str, size: float = 12) -> None:
                 tag_run = paragraph.add_run(part)
                 set_run_font(tag_run, size=9.5, bold=True)
                 tag_run.font.color.rgb = TAG_GRAY
+                tag_run.italic = is_italic
                 continue
             if re.fullmatch(r"（(?:例如|可选扩充)：[^）]*）", part):
                 optional_run = paragraph.add_run(part)
                 set_run_font(optional_run, size=9.5, bold=False)
                 optional_run.font.color.rgb = TAG_GRAY
+                optional_run.italic = is_italic
                 continue
             run = paragraph.add_run(part)
             set_run_font(run, size=size, bold=is_bold)
             run.underline = is_underlined
+            run.italic = is_italic
 
 
 def add_heading(document: Document, level: int, text: str, page_break_before: bool = False):

@@ -202,6 +202,9 @@ V10_CATALOG_PAGE_MAP = {
     "十一、格雷的强化敏感性理论": 22,
 }
 
+# V11只改变字形提示，初次生成沿用V10页码；成品质检会据实际PDF复核。
+V11_CATALOG_PAGE_MAP = V10_CATALOG_PAGE_MAP.copy()
+
 
 def force_monochrome_title_style(document: Document) -> None:
     """Remove the built-in theme accent from the cover title rule."""
@@ -221,7 +224,7 @@ def add_inline_runs(
     optional: bool = False,
     monochrome: bool = False,
 ) -> None:
-    for text, is_bold, is_underlined in markdown_tokens(content):
+    for text, is_bold, is_underlined, is_italic in markdown_tokens(content):
         if not text:
             continue
         for part in re.split(r"(【[^】]+】)", text):
@@ -230,15 +233,18 @@ def add_inline_runs(
             if DEFINITION_TAG_RE.fullmatch(part):
                 run = paragraph.add_run("\u2060".join(part))
                 set_run_font(run, "宋体", 9.5, True)
+                run.italic = is_italic
                 if not monochrome:
                     run.font.highlight_color = WD_COLOR_INDEX.YELLOW
             elif re.fullmatch(r"【[^】]+】", part):
                 run = paragraph.add_run("\u2060".join(part))
                 set_run_font(run, "宋体", 9.5, True)
+                run.italic = is_italic
                 run.font.color.rgb = BLACK if monochrome else TAG_GRAY
             else:
                 run = paragraph.add_run(part)
                 set_run_font(run, "宋体", 9.5 if optional else size, is_bold)
+                run.italic = is_italic
                 if is_underlined:
                     run.underline = True
                 if optional:
@@ -252,6 +258,7 @@ def add_catalog(
     monochrome: bool = False,
     question_specific: bool = False,
     study_labels: bool = False,
+    study_typography: bool = False,
 ) -> None:
     title = document.add_paragraph()
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -294,7 +301,12 @@ def add_catalog(
         set_paragraph_border(note, "000000", size="8")
     else:
         shade_paragraph(note, LIGHT_GRAY_FILL)
-    if study_labels:
+    if study_typography:
+        note_text = (
+            "直接用法｜每题答案均完整呈现；正文中的正体表示多题重复内容，斜体表示只在本题新增的内容；"
+            "【采分点加分】紧跟对应点选写，【整体加分】位于答案末尾选写。"
+        )
+    elif study_labels:
         note_text = (
             "直接用法｜每题答案均完整呈现；【共用】会在别题原样出现，【本题补充】是本题新增；"
             "【采分点加分】紧跟对应点选写，【整体加分】位于答案末尾选写。"
@@ -303,7 +315,11 @@ def add_catalog(
         note_text = "直接用法｜每道押题下方答案可直接背诵和作答；【名词解释】是可独立提取的完整定义；【加分项】按题干和时间灵活选写。"
     else:
         note_text = "直接用法｜题目问什么，就写综合答案中的同名小标题；名词解释提取【名词解释】标注前的定义；【加分项】按题干和时间灵活选写。"
-    set_run_font(note.add_run(note_text), size=9 if study_labels else 9.5, bold=True)
+    set_run_font(
+        note.add_run(note_text),
+        size=9 if study_labels or study_typography else 9.5,
+        bold=True,
+    )
 
 
 def add_answer_heading(document: Document, text: str = "综合答案") -> None:
@@ -399,9 +415,11 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
-    question_specific = subtitle.endswith(("V8", "V9", "V10"))
-    monochrome = subtitle.endswith(("V7", "V8", "V9", "V10"))
-    if subtitle.endswith("V10"):
+    question_specific = subtitle.endswith(("V8", "V9", "V10", "V11"))
+    monochrome = subtitle.endswith(("V7", "V8", "V9", "V10", "V11"))
+    if subtitle.endswith("V11"):
+        page_map = V11_CATALOG_PAGE_MAP
+    elif subtitle.endswith("V10"):
         page_map = V10_CATALOG_PAGE_MAP
     elif subtitle.endswith("V9"):
         page_map = V9_CATALOG_PAGE_MAP
@@ -437,6 +455,7 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
         monochrome=monochrome,
         question_specific=question_specific,
         study_labels=subtitle.endswith("V10"),
+        study_typography=subtitle.endswith("V11"),
     )
 
     body_section = document.add_section(WD_SECTION.NEW_PAGE)
