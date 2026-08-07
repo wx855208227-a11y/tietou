@@ -160,6 +160,9 @@ V8_CATALOG_PAGE_MAP = {
     "十一、格雷的强化敏感性理论": 21,
 }
 
+# Replaced with the verified V9 body pagination after the first render.
+V9_CATALOG_PAGE_MAP = V8_CATALOG_PAGE_MAP.copy()
+
 
 def force_monochrome_title_style(document: Document) -> None:
     """Remove the built-in theme accent from the cover title rule."""
@@ -272,16 +275,24 @@ def add_answer_heading(document: Document, text: str = "综合答案") -> None:
     set_run_font(paragraph.add_run(text), "宋体", 11, True)
 
 
-def add_question_heading(document: Document, content: str, monochrome: bool = False):
+def add_question_heading(
+    document: Document,
+    content: str,
+    monochrome: bool = False,
+    large_between_question_gap: bool = False,
+):
     paragraph = document.add_paragraph(style="Heading 3")
     paragraph.paragraph_format.first_line_indent = Cm(0)
     paragraph.paragraph_format.keep_with_next = True
-    paragraph.paragraph_format.space_before = Pt(5)
     paragraph.paragraph_format.space_after = Pt(2)
     match = re.match(r"(押题\d+)(【[^】]+】)(.*)", content)
     if match is None:
+        paragraph.paragraph_format.space_before = Pt(5)
         add_inline_runs(paragraph, content, size=11.5, monochrome=monochrome)
         return paragraph
+    paragraph.paragraph_format.space_before = Pt(
+        14 if large_between_question_gap and match.group(1) != "押题1" else 5
+    )
     set_run_font(paragraph.add_run(match.group(1)), "宋体", 11.5, True)
     set_run_font(paragraph.add_run(match.group(2)), "宋体", 9.5, True)
     add_inline_runs(paragraph, match.group(3), size=11.5, monochrome=monochrome)
@@ -342,9 +353,11 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
-    question_specific = subtitle.endswith("V8")
-    monochrome = subtitle.endswith(("V7", "V8"))
-    if question_specific:
+    question_specific = subtitle.endswith(("V8", "V9"))
+    monochrome = subtitle.endswith(("V7", "V8", "V9"))
+    if subtitle.endswith("V9"):
+        page_map = V9_CATALOG_PAGE_MAP
+    elif question_specific:
         page_map = V8_CATALOG_PAGE_MAP
     elif monochrome:
         page_map = V7_CATALOG_PAGE_MAP
@@ -425,6 +438,7 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
                         document,
                         displayed,
                         monochrome=monochrome,
+                        large_between_question_gap=subtitle.endswith("V9"),
                     )
                 else:
                     heading = add_heading(document, 3, displayed)
