@@ -247,6 +247,9 @@ V12_CATALOG_PAGE_MAP = {
 # V13经PDF正文逐页复核，仅“人本主义心理学”因扩容分行前移一页。
 V13_CATALOG_PAGE_MAP = V12_CATALOG_PAGE_MAP | {"七、人本主义心理学": 3}
 
+# V14首次渲染前沿用V13页码，成品生成后再按PDF正文逐页校准。
+V14_CATALOG_PAGE_MAP = V13_CATALOG_PAGE_MAP.copy()
+
 
 def force_monochrome_title_style(document: Document) -> None:
     """Remove the built-in theme accent from the cover title rule."""
@@ -450,6 +453,29 @@ def add_list_paragraph(
     )
 
 
+def add_secondary_list_paragraph(
+    document: Document,
+    raw_line: str,
+    answer_mode: bool,
+    compact: bool,
+    monochrome: bool = False,
+) -> None:
+    """Render （1） child points one level below their parent scoring angle."""
+    stripped = raw_line.strip()
+    paragraph = document.add_paragraph()
+    paragraph.paragraph_format.left_indent = Cm(1.22)
+    paragraph.paragraph_format.first_line_indent = Cm(-0.47)
+    paragraph.paragraph_format.line_spacing = 1.2 if compact else 1.3
+    paragraph.paragraph_format.space_after = Pt(0 if answer_mode else 1)
+    paragraph.paragraph_format.widow_control = True
+    add_inline_runs(
+        paragraph,
+        stripped,
+        size=10.5 if not answer_mode else 11.3,
+        monochrome=monochrome,
+    )
+
+
 def add_body_paragraph(
     document: Document,
     content: str,
@@ -491,9 +517,11 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
-    question_specific = subtitle.endswith(("V8", "V9", "V10", "V11", "V12", "V13"))
-    monochrome = subtitle.endswith(("V7", "V8", "V9", "V10", "V11", "V12", "V13"))
-    if subtitle.endswith("V13"):
+    question_specific = subtitle.endswith(("V8", "V9", "V10", "V11", "V12", "V13", "V14"))
+    monochrome = subtitle.endswith(("V7", "V8", "V9", "V10", "V11", "V12", "V13", "V14"))
+    if subtitle.endswith("V14"):
+        page_map = V14_CATALOG_PAGE_MAP
+    elif subtitle.endswith("V13"):
         page_map = V13_CATALOG_PAGE_MAP
     elif subtitle.endswith("V12"):
         page_map = V12_CATALOG_PAGE_MAP
@@ -536,8 +564,8 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
         question_specific=question_specific,
         study_labels=subtitle.endswith("V10"),
         study_typography=subtitle.endswith("V11"),
-        direct_without_answer_label=subtitle.endswith(("V12", "V13")),
-        selective_expansion=subtitle.endswith("V13"),
+        direct_without_answer_label=subtitle.endswith(("V12", "V13", "V14")),
+        selective_expansion=subtitle.endswith(("V13", "V14")),
     )
 
     body_section = document.add_section(WD_SECTION.NEW_PAGE)
@@ -588,13 +616,13 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
                         document,
                         displayed,
                         monochrome=monochrome,
-                        large_between_question_gap=subtitle.endswith(("V9", "V10", "V11", "V12", "V13")),
+                        large_between_question_gap=subtitle.endswith(("V9", "V10", "V11", "V12", "V13", "V14")),
                     )
                 else:
                     heading = add_heading(document, 3, displayed)
                     heading.paragraph_format.space_before = Pt(5)
                     heading.paragraph_format.space_after = Pt(2)
-                answer_mode = subtitle.endswith(("V12", "V13")) and displayed.startswith("押题")
+                answer_mode = subtitle.endswith(("V12", "V13", "V14")) and displayed.startswith("押题")
         elif stripped.startswith("|"):
             table_lines: list[str] = []
             while line_index < len(lines) and lines[line_index].strip().startswith("|"):
@@ -604,6 +632,14 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
             continue
         elif re.match(r"^\d+\.\s", stripped):
             add_list_paragraph(
+                document,
+                raw_line,
+                answer_mode,
+                compact_unit,
+                monochrome=monochrome,
+            )
+        elif re.match(r"^（\d+）", stripped):
+            add_secondary_list_paragraph(
                 document,
                 raw_line,
                 answer_mode,
