@@ -205,6 +205,45 @@ V10_CATALOG_PAGE_MAP = {
 # V11实际PDF为22页正文；斜体字形使“脑功能的主要学说”前移一页。
 V11_CATALOG_PAGE_MAP = V10_CATALOG_PAGE_MAP | {"九、脑功能的主要学说": 13}
 
+V12_CATALOG_PAGE_MAP = {
+    "第一章 心理学研究的对象、方法及其学科发展": 1,
+    "一、心理学的含义与研究对象": 1,
+    "二、科学心理学的诞生": 1,
+    "三、构造主义与机能主义": 2,
+    "四、行为主义": 2,
+    "五、格式塔心理学": 2,
+    "六、精神分析学派": 3,
+    "七、人本主义心理学": 4,
+    "八、认知心理学": 4,
+    "九、观察法、相关研究法与实验法": 4,
+    "十、实验变量": 5,
+    "十一、测验法与信效度": 5,
+    "十二、投射法与投射测验": 6,
+    "十三、心理学的主要分支": 6,
+    "第二章 心理和行为的生物学基础": 8,
+    "一、神经元": 8,
+    "二、神经冲动与突触传递": 8,
+    "三、神经系统的构成与功能": 9,
+    "四、大脑皮层的感觉区与运动区": 9,
+    "五、大脑皮层的言语区与联合区": 10,
+    "六、大脑两半球的功能分工": 10,
+    "七、丘脑与下丘脑": 11,
+    "八、边缘系统、海马与杏仁核": 11,
+    "九、脑功能的主要学说": 12,
+    "第三章 条件反射和学习": 13,
+    "一、学习的含义与特征": 13,
+    "二、反射、反射弧与反射类型": 13,
+    "三、经典条件反射": 14,
+    "四、经典条件反射的基本规律": 14,
+    "五、信号系统与高级神经活动": 15,
+    "六、操作条件反射与行为调控": 15,
+    "七、经典条件反射与操作条件反射的比较": 16,
+    "八、顿悟学习": 17,
+    "九、目的行为学习理论": 17,
+    "十、观察学习": 18,
+    "十一、格雷的强化敏感性理论": 19,
+}
+
 
 def force_monochrome_title_style(document: Document) -> None:
     """Remove the built-in theme accent from the cover title rule."""
@@ -259,6 +298,7 @@ def add_catalog(
     question_specific: bool = False,
     study_labels: bool = False,
     study_typography: bool = False,
+    direct_without_answer_label: bool = False,
 ) -> None:
     title = document.add_paragraph()
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -301,7 +341,9 @@ def add_catalog(
         set_paragraph_border(note, "000000", size="8")
     else:
         shade_paragraph(note, LIGHT_GRAY_FILL)
-    if study_typography:
+    if direct_without_answer_label:
+        note_text = "直接用法｜每道押题下方内容可直接背诵和作答；【名词解释】是可独立提取的完整定义；【加分项】按题干和时间灵活选写。"
+    elif study_typography:
         note_text = (
             "直接用法｜每题答案均完整呈现；正文中的正体表示多题重复内容，斜体表示只在本题新增的内容；"
             "【采分点加分】紧跟对应点选写，【整体加分】位于答案末尾选写。"
@@ -371,7 +413,7 @@ def add_list_paragraph(
     paragraph.paragraph_format.space_after = Pt(0 if answer_mode else 1)
     paragraph.paragraph_format.widow_control = True
     paragraph.paragraph_format.keep_with_next = not answer_mode
-    if "【采分点加分】" in stripped:
+    if "【采分点加分】" in stripped or "【加分项】" in stripped:
         paragraph.paragraph_format.keep_together = True
     add_inline_runs(
         paragraph,
@@ -392,7 +434,7 @@ def add_body_paragraph(
     paragraph.paragraph_format.line_spacing = 1.18 if optional else 1.25 if compact else 1.4
     paragraph.paragraph_format.space_after = Pt(1)
     paragraph.paragraph_format.widow_control = True
-    if "【名词解释：" in content or "【采分点加分】" in content:
+    if "【名词解释：" in content or "【采分点加分】" in content or "【加分项】" in content:
         paragraph.paragraph_format.keep_together = True
     if content == "**【整体加分】**":
         paragraph.paragraph_format.first_line_indent = Cm(0)
@@ -415,9 +457,11 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
-    question_specific = subtitle.endswith(("V8", "V9", "V10", "V11"))
-    monochrome = subtitle.endswith(("V7", "V8", "V9", "V10", "V11"))
-    if subtitle.endswith("V11"):
+    question_specific = subtitle.endswith(("V8", "V9", "V10", "V11", "V12"))
+    monochrome = subtitle.endswith(("V7", "V8", "V9", "V10", "V11", "V12"))
+    if subtitle.endswith("V12"):
+        page_map = V12_CATALOG_PAGE_MAP
+    elif subtitle.endswith("V11"):
         page_map = V11_CATALOG_PAGE_MAP
     elif subtitle.endswith("V10"):
         page_map = V10_CATALOG_PAGE_MAP
@@ -456,6 +500,7 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
         question_specific=question_specific,
         study_labels=subtitle.endswith("V10"),
         study_typography=subtitle.endswith("V11"),
+        direct_without_answer_label=subtitle.endswith("V12"),
     )
 
     body_section = document.add_section(WD_SECTION.NEW_PAGE)
@@ -506,13 +551,13 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
                         document,
                         displayed,
                         monochrome=monochrome,
-                        large_between_question_gap=subtitle.endswith(("V9", "V10", "V11")),
+                        large_between_question_gap=subtitle.endswith(("V9", "V10", "V11", "V12")),
                     )
                 else:
                     heading = add_heading(document, 3, displayed)
                     heading.paragraph_format.space_before = Pt(5)
                     heading.paragraph_format.space_after = Pt(2)
-                answer_mode = False
+                answer_mode = subtitle.endswith("V12") and displayed.startswith("押题")
         elif stripped.startswith("|"):
             table_lines: list[str] = []
             while line_index < len(lines) and lines[line_index].strip().startswith("|"):
