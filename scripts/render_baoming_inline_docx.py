@@ -163,6 +163,9 @@ V8_CATALOG_PAGE_MAP = {
 # Replaced with the verified V9 body pagination after the first render.
 V9_CATALOG_PAGE_MAP = V8_CATALOG_PAGE_MAP.copy()
 
+# Replaced with verified V10 body pagination after the first render.
+V10_CATALOG_PAGE_MAP = V9_CATALOG_PAGE_MAP.copy()
+
 
 def force_monochrome_title_style(document: Document) -> None:
     """Remove the built-in theme accent from the cover title rule."""
@@ -212,6 +215,7 @@ def add_catalog(
     page_map: dict[str, int],
     monochrome: bool = False,
     question_specific: bool = False,
+    study_labels: bool = False,
 ) -> None:
     title = document.add_paragraph()
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -254,15 +258,16 @@ def add_catalog(
         set_paragraph_border(note, "000000", size="8")
     else:
         shade_paragraph(note, LIGHT_GRAY_FILL)
-    set_run_font(
-        note.add_run(
-            "直接用法｜每道押题下方答案可直接背诵和作答；【名词解释】是可独立提取的完整定义；【加分项】按题干和时间灵活选写。"
-            if question_specific
-            else "直接用法｜题目问什么，就写综合答案中的同名小标题；名词解释提取【名词解释】标注前的定义；【加分项】按题干和时间灵活选写。"
-        ),
-        size=9.5,
-        bold=True,
-    )
+    if study_labels:
+        note_text = (
+            "直接用法｜每题答案均完整呈现；【共用】会在别题原样出现，【本题补充】是本题新增；"
+            "【采分点加分】紧跟对应点选写，【整体加分】位于答案末尾选写。"
+        )
+    elif question_specific:
+        note_text = "直接用法｜每道押题下方答案可直接背诵和作答；【名词解释】是可独立提取的完整定义；【加分项】按题干和时间灵活选写。"
+    else:
+        note_text = "直接用法｜题目问什么，就写综合答案中的同名小标题；名词解释提取【名词解释】标注前的定义；【加分项】按题干和时间灵活选写。"
+    set_run_font(note.add_run(note_text), size=9 if study_labels else 9.5, bold=True)
 
 
 def add_answer_heading(document: Document, text: str = "综合答案") -> None:
@@ -314,7 +319,7 @@ def add_list_paragraph(
     paragraph.paragraph_format.space_after = Pt(0 if answer_mode else 1)
     paragraph.paragraph_format.widow_control = True
     paragraph.paragraph_format.keep_with_next = not answer_mode
-    if "【加分项：" in stripped:
+    if "【采分点加分】" in stripped:
         paragraph.paragraph_format.keep_together = True
     add_inline_runs(
         paragraph,
@@ -335,8 +340,13 @@ def add_body_paragraph(
     paragraph.paragraph_format.line_spacing = 1.18 if optional else 1.25 if compact else 1.4
     paragraph.paragraph_format.space_after = Pt(1)
     paragraph.paragraph_format.widow_control = True
-    if "【名词解释：" in content or "【加分项：" in content:
+    if "【名词解释：" in content or "【采分点加分】" in content:
         paragraph.paragraph_format.keep_together = True
+    if content == "**【整体加分】**":
+        paragraph.paragraph_format.first_line_indent = Cm(0)
+        paragraph.paragraph_format.space_before = Pt(3)
+        paragraph.paragraph_format.space_after = Pt(1)
+        paragraph.paragraph_format.keep_with_next = True
     if optional:
         paragraph.paragraph_format.first_line_indent = Cm(0)
         paragraph.paragraph_format.space_before = Pt(1)
@@ -353,9 +363,11 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
-    question_specific = subtitle.endswith(("V8", "V9"))
-    monochrome = subtitle.endswith(("V7", "V8", "V9"))
-    if subtitle.endswith("V9"):
+    question_specific = subtitle.endswith(("V8", "V9", "V10"))
+    monochrome = subtitle.endswith(("V7", "V8", "V9", "V10"))
+    if subtitle.endswith("V10"):
+        page_map = V10_CATALOG_PAGE_MAP
+    elif subtitle.endswith("V9"):
         page_map = V9_CATALOG_PAGE_MAP
     elif question_specific:
         page_map = V8_CATALOG_PAGE_MAP
@@ -388,6 +400,7 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
         page_map,
         monochrome=monochrome,
         question_specific=question_specific,
+        study_labels=subtitle.endswith("V10"),
     )
 
     body_section = document.add_section(WD_SECTION.NEW_PAGE)
@@ -438,7 +451,7 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
                         document,
                         displayed,
                         monochrome=monochrome,
-                        large_between_question_gap=subtitle.endswith("V9"),
+                        large_between_question_gap=subtitle.endswith(("V9", "V10")),
                     )
                 else:
                     heading = add_heading(document, 3, displayed)
