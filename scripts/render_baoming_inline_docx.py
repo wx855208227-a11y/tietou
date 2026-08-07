@@ -75,6 +75,45 @@ V3_CATALOG_OVERRIDES = {
     "七、经典条件反射与操作条件反射的比较": 18,
 }
 
+V6_CATALOG_PAGE_MAP = {
+    "第一章 心理学研究的对象、方法及其学科发展": 1,
+    "一、心理学的含义与研究对象": 1,
+    "二、科学心理学的诞生": 1,
+    "三、构造主义与机能主义": 2,
+    "四、行为主义": 2,
+    "五、格式塔心理学": 2,
+    "六、精神分析学派": 3,
+    "七、人本主义心理学": 3,
+    "八、认知心理学": 4,
+    "九、观察法、相关研究法与实验法": 4,
+    "十、实验变量": 5,
+    "十一、测验法与信效度": 5,
+    "十二、投射法与投射测验": 6,
+    "十三、心理学的主要分支": 6,
+    "第二章 心理和行为的生物学基础": 7,
+    "一、神经元": 7,
+    "二、神经冲动与突触传递": 7,
+    "三、神经系统的构成与功能": 8,
+    "四、大脑皮层的感觉区与运动区": 8,
+    "五、大脑皮层的言语区与联合区": 9,
+    "六、大脑两半球的功能分工": 9,
+    "七、丘脑与下丘脑": 10,
+    "八、边缘系统、海马与杏仁核": 10,
+    "九、脑功能的主要学说": 11,
+    "第三章 条件反射和学习": 12,
+    "一、学习的含义与特征": 12,
+    "二、反射、反射弧与反射类型": 12,
+    "三、经典条件反射": 13,
+    "四、经典条件反射的基本规律": 13,
+    "五、信号系统与高级神经活动": 14,
+    "六、操作条件反射与行为调控": 14,
+    "七、经典条件反射与操作条件反射的比较": 15,
+    "八、顿悟学习": 15,
+    "九、目的行为学习理论": 16,
+    "十、观察学习": 16,
+    "十一、格雷的强化敏感性理论": 17,
+}
+
 
 def add_inline_runs(paragraph, content: str, size: float = 12, optional: bool = False) -> None:
     for text, is_bold, is_underlined in markdown_tokens(content):
@@ -190,7 +229,10 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
-    page_map = CATALOG_PAGE_MAP | (V3_CATALOG_OVERRIDES if subtitle.endswith("V3") else {})
+    if subtitle.endswith("V6"):
+        page_map = V6_CATALOG_PAGE_MAP
+    else:
+        page_map = CATALOG_PAGE_MAP | (V3_CATALOG_OVERRIDES if subtitle.endswith("V3") else {})
     document = Document()
     configure_styles(document)
     configure_page(document.sections[0])
