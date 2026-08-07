@@ -31,6 +31,7 @@ from render_baoming_mother_docx import COMPACT_UNIT_PREFIXES
 TAG_GRAY = RGBColor(89, 89, 89)
 OPTIONAL_GRAY = RGBColor(96, 96, 96)
 DEFINITION_TAG_RE = re.compile(r"【名词解释：[^】]+】")
+INLINE_EXPANSION_RE = re.compile(r"【扩容（选用）：.*?】")
 INLINE_COMPACT_UNIT_PREFIXES = COMPACT_UNIT_PREFIXES + (
     "十三、心理学的主要分支",
 )
@@ -287,6 +288,46 @@ V14_CATALOG_PAGE_MAP = {
     "十一、格雷的强化敏感性理论": 20,
 }
 
+# V15经首轮PDF正文逐页校准，共28页正文。
+V15_CATALOG_PAGE_MAP = {
+    "第一章 心理学研究的对象、方法及其学科发展": 1,
+    "一、心理学的含义与研究对象": 1,
+    "二、科学心理学的诞生": 2,
+    "三、构造主义与机能主义": 2,
+    "四、行为主义": 3,
+    "五、格式塔心理学": 4,
+    "六、精神分析学派": 4,
+    "七、人本主义心理学": 5,
+    "八、认知心理学": 5,
+    "九、观察法、相关研究法与实验法": 6,
+    "十、实验变量": 7,
+    "十一、测验法与信效度": 8,
+    "十二、投射法与投射测验": 8,
+    "十三、心理学的主要分支": 9,
+    "第二章 心理和行为的生物学基础": 10,
+    "一、神经元": 10,
+    "二、神经冲动与突触传递": 10,
+    "三、神经系统的构成与功能": 11,
+    "四、大脑皮层的感觉区与运动区": 12,
+    "五、大脑皮层的言语区与联合区": 13,
+    "六、大脑两半球的功能分工": 14,
+    "七、丘脑与下丘脑": 14,
+    "八、边缘系统、海马与杏仁核": 15,
+    "九、脑功能的主要学说": 16,
+    "第三章 条件反射和学习": 18,
+    "一、学习的含义与特征": 18,
+    "二、反射、反射弧与反射类型": 18,
+    "三、经典条件反射": 19,
+    "四、经典条件反射的基本规律": 20,
+    "五、信号系统与高级神经活动": 21,
+    "六、操作条件反射与行为调控": 22,
+    "七、经典条件反射与操作条件反射的比较": 23,
+    "八、顿悟学习": 25,
+    "九、目的行为学习理论": 25,
+    "十、观察学习": 26,
+    "十一、格雷的强化敏感性理论": 27,
+}
+
 
 def force_monochrome_title_style(document: Document) -> None:
     """Remove the built-in theme accent from the cover title rule."""
@@ -306,48 +347,55 @@ def add_inline_runs(
     optional: bool = False,
     monochrome: bool = False,
 ) -> None:
-    expansion_prefix = "【扩容（选用）："
-    if content.startswith(expansion_prefix) and content.endswith("】"):
+    def add_expansion_runs(expansion_content: str) -> None:
+        expansion_prefix = "【扩容（选用）："
         prefix_run = paragraph.add_run(expansion_prefix)
-        set_run_font(prefix_run, "宋体", 9.5, True)
-        inner = content[len(expansion_prefix) : -1]
+        set_run_font(prefix_run, "宋体", 9.2, True)
+        inner = expansion_content[len(expansion_prefix) : -1]
         for text, is_bold, is_underlined, is_italic in markdown_tokens(inner):
             if not text:
                 continue
-            run = paragraph.add_run(text)
-            set_run_font(run, "宋体", 10.5, is_bold)
+            run = paragraph.add_run(text.replace("—", "\u2060—\u2060"))
+            set_run_font(run, "宋体", 10.2, is_bold)
             run.italic = is_italic
             if is_underlined:
                 run.underline = True
         closing_run = paragraph.add_run("】")
-        set_run_font(closing_run, "宋体", 9.5, True)
-        return
+        set_run_font(closing_run, "宋体", 9.2, True)
 
-    for text, is_bold, is_underlined, is_italic in markdown_tokens(content):
-        if not text:
-            continue
-        for part in re.split(r"(【[^】]+】)", text):
-            if not part:
+    def add_regular_runs(regular_content: str) -> None:
+        for text, is_bold, is_underlined, is_italic in markdown_tokens(regular_content):
+            if not text:
                 continue
-            if DEFINITION_TAG_RE.fullmatch(part):
-                run = paragraph.add_run("\u2060".join(part))
-                set_run_font(run, "宋体", 9.5, True)
-                run.italic = is_italic
-                if not monochrome:
-                    run.font.highlight_color = WD_COLOR_INDEX.YELLOW
-            elif re.fullmatch(r"【[^】]+】", part):
-                run = paragraph.add_run("\u2060".join(part))
-                set_run_font(run, "宋体", 9.5, True)
-                run.italic = is_italic
-                run.font.color.rgb = BLACK if monochrome else TAG_GRAY
-            else:
-                run = paragraph.add_run(part)
-                set_run_font(run, "宋体", 9.5 if optional else size, is_bold)
-                run.italic = is_italic
-                if is_underlined:
-                    run.underline = True
-                if optional:
-                    run.font.color.rgb = BLACK if monochrome else OPTIONAL_GRAY
+            for part in re.split(r"(【[^】]+】)", text):
+                if not part:
+                    continue
+                if DEFINITION_TAG_RE.fullmatch(part):
+                    run = paragraph.add_run("\u2060".join(part))
+                    set_run_font(run, "宋体", 9.5, True)
+                    run.italic = is_italic
+                    if not monochrome:
+                        run.font.highlight_color = WD_COLOR_INDEX.YELLOW
+                elif re.fullmatch(r"【[^】]+】", part):
+                    run = paragraph.add_run("\u2060".join(part))
+                    set_run_font(run, "宋体", 9.5, True)
+                    run.italic = is_italic
+                    run.font.color.rgb = BLACK if monochrome else TAG_GRAY
+                else:
+                    run = paragraph.add_run(part.replace("—", "\u2060—\u2060"))
+                    set_run_font(run, "宋体", 9.5 if optional else size, is_bold)
+                    run.italic = is_italic
+                    if is_underlined:
+                        run.underline = True
+                    if optional:
+                        run.font.color.rgb = BLACK if monochrome else OPTIONAL_GRAY
+
+    cursor = 0
+    for match in INLINE_EXPANSION_RE.finditer(content):
+        add_regular_runs(content[cursor : match.start()])
+        add_expansion_runs(match.group(0))
+        cursor = match.end()
+    add_regular_runs(content[cursor:])
 
 
 def add_catalog(
@@ -480,7 +528,7 @@ def add_list_paragraph(
     paragraph.paragraph_format.space_after = Pt(0 if answer_mode else 1)
     paragraph.paragraph_format.widow_control = True
     paragraph.paragraph_format.keep_with_next = not answer_mode
-    if "【采分点加分】" in stripped or "【加分项】" in stripped:
+    if any(tag in stripped for tag in ("【采分点加分】", "【加分项】", "【扩容（选用）：", "【名词解释：")):
         paragraph.paragraph_format.keep_together = True
     add_inline_runs(
         paragraph,
@@ -505,6 +553,8 @@ def add_secondary_list_paragraph(
     paragraph.paragraph_format.line_spacing = 1.2 if compact else 1.3
     paragraph.paragraph_format.space_after = Pt(0 if answer_mode else 1)
     paragraph.paragraph_format.widow_control = True
+    if "【扩容（选用）：" in stripped or "【名词解释：" in stripped:
+        paragraph.paragraph_format.keep_together = True
     add_inline_runs(
         paragraph,
         stripped,
@@ -554,9 +604,11 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
-    question_specific = subtitle.endswith(("V8", "V9", "V10", "V11", "V12", "V13", "V14"))
-    monochrome = subtitle.endswith(("V7", "V8", "V9", "V10", "V11", "V12", "V13", "V14"))
-    if subtitle.endswith("V14"):
+    question_specific = subtitle.endswith(("V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15"))
+    monochrome = subtitle.endswith(("V7", "V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15"))
+    if subtitle.endswith("V15"):
+        page_map = V15_CATALOG_PAGE_MAP
+    elif subtitle.endswith("V14"):
         page_map = V14_CATALOG_PAGE_MAP
     elif subtitle.endswith("V13"):
         page_map = V13_CATALOG_PAGE_MAP
@@ -601,8 +653,8 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
         question_specific=question_specific,
         study_labels=subtitle.endswith("V10"),
         study_typography=subtitle.endswith("V11"),
-        direct_without_answer_label=subtitle.endswith(("V12", "V13", "V14")),
-        selective_expansion=subtitle.endswith(("V13", "V14")),
+        direct_without_answer_label=subtitle.endswith(("V12", "V13", "V14", "V15")),
+        selective_expansion=subtitle.endswith(("V13", "V14", "V15")),
     )
 
     body_section = document.add_section(WD_SECTION.NEW_PAGE)
@@ -653,13 +705,13 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
                         document,
                         displayed,
                         monochrome=monochrome,
-                        large_between_question_gap=subtitle.endswith(("V9", "V10", "V11", "V12", "V13", "V14")),
+                        large_between_question_gap=subtitle.endswith(("V9", "V10", "V11", "V12", "V13", "V14", "V15")),
                     )
                 else:
                     heading = add_heading(document, 3, displayed)
                     heading.paragraph_format.space_before = Pt(5)
                     heading.paragraph_format.space_after = Pt(2)
-                answer_mode = subtitle.endswith(("V12", "V13", "V14")) and displayed.startswith("押题")
+                answer_mode = subtitle.endswith(("V12", "V13", "V14", "V15")) and displayed.startswith("押题")
         elif stripped.startswith("|"):
             table_lines: list[str] = []
             while line_index < len(lines) and lines[line_index].strip().startswith("|"):
