@@ -121,6 +121,11 @@ V6_CATALOG_PAGE_MAP = {
 # the cover and catalog.
 V7_CATALOG_PAGE_MAP = V6_CATALOG_PAGE_MAP.copy()
 
+# V8 is substantially longer because every predicted question carries its own
+# answer. These values are replaced with verified PDF pagination after the
+# first render pass.
+V8_CATALOG_PAGE_MAP = V7_CATALOG_PAGE_MAP.copy()
+
 
 def force_monochrome_title_style(document: Document) -> None:
     """Remove the built-in theme accent from the cover title rule."""
@@ -169,6 +174,7 @@ def add_catalog(
     lines: list[str],
     page_map: dict[str, int],
     monochrome: bool = False,
+    question_specific: bool = False,
 ) -> None:
     title = document.add_paragraph()
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -213,21 +219,23 @@ def add_catalog(
         shade_paragraph(note, LIGHT_GRAY_FILL)
     set_run_font(
         note.add_run(
-            "直接用法｜题目问什么，就写综合答案中的同名小标题；名词解释提取【名词解释】标注前的定义；【加分项】按题干和时间灵活选写。"
+            "直接用法｜每道押题下方答案可直接背诵和作答；【名词解释】是可独立提取的完整定义；【加分项】按题干和时间灵活选写。"
+            if question_specific
+            else "直接用法｜题目问什么，就写综合答案中的同名小标题；名词解释提取【名词解释】标注前的定义；【加分项】按题干和时间灵活选写。"
         ),
         size=9.5,
         bold=True,
     )
 
 
-def add_answer_heading(document: Document) -> None:
+def add_answer_heading(document: Document, text: str = "综合答案") -> None:
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.first_line_indent = Cm(0)
     paragraph.paragraph_format.line_spacing = 1.0
     paragraph.paragraph_format.space_before = Pt(4)
     paragraph.paragraph_format.space_after = Pt(5)
     paragraph.paragraph_format.keep_with_next = True
-    set_run_font(paragraph.add_run("综合答案"), "宋体", 11, True)
+    set_run_font(paragraph.add_run(text), "宋体", 11, True)
 
 
 def add_list_paragraph(
@@ -284,8 +292,11 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
-    monochrome = subtitle.endswith("V7")
-    if monochrome:
+    question_specific = subtitle.endswith("V8")
+    monochrome = subtitle.endswith(("V7", "V8"))
+    if question_specific:
+        page_map = V8_CATALOG_PAGE_MAP
+    elif monochrome:
         page_map = V7_CATALOG_PAGE_MAP
     elif subtitle.endswith("V6"):
         page_map = V6_CATALOG_PAGE_MAP
@@ -298,13 +309,23 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     configure_page(document.sections[0])
     set_update_fields(document)
     document.core_properties.title = title
-    document.core_properties.subject = "华东师范大学347心理学导论直背综合答案版"
+    document.core_properties.subject = (
+        "华东师范大学347心理学导论逐题直背答案版"
+        if question_specific
+        else "华东师范大学347心理学导论直背综合答案版"
+    )
     document.core_properties.author = "铁头心理学考研"
     add_cover(document, title, subtitle)
     first_chapter_index = next(
         index for index, line in enumerate(lines) if line.startswith("# 第一章 ")
     )
-    add_catalog(document, lines, page_map, monochrome=monochrome)
+    add_catalog(
+        document,
+        lines,
+        page_map,
+        monochrome=monochrome,
+        question_specific=question_specific,
+    )
 
     body_section = document.add_section(WD_SECTION.NEW_PAGE)
     configure_page(body_section)
@@ -332,6 +353,16 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
                 heading.paragraph_format.space_before = Pt(7)
                 heading.paragraph_format.space_after = Pt(3)
             answer_mode = False
+        elif stripped.startswith("#### "):
+            heading_text = stripped[5:].strip()
+            if heading_text == "答案":
+                add_answer_heading(document, "答案")
+                answer_mode = True
+            else:
+                heading = add_heading(document, 3, heading_text)
+                heading.paragraph_format.space_before = Pt(4)
+                heading.paragraph_format.space_after = Pt(2)
+                answer_mode = False
         elif stripped.startswith("### "):
             heading_text = stripped[4:].strip()
             if heading_text == "综合答案":
