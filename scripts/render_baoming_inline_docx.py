@@ -335,6 +335,8 @@ V16_CATALOG_PAGE_MAP = {
     for title, page in V15_CATALOG_PAGE_MAP.items()
     if title != "十一、格雷的强化敏感性理论"
 } | {
+    "十一、测验法与信效度": 7,
+    "十三、心理学的主要分支": 8,
     "六、操作条件反射的强化、惩罚与强化程序": V15_CATALOG_PAGE_MAP[
         "六、操作条件反射与行为调控"
     ]
