@@ -328,6 +328,19 @@ V15_CATALOG_PAGE_MAP = {
     "十一、格雷的强化敏感性理论": 27,
 }
 
+# V16删除无可复核来源的格雷单元及三处材料外扩题；首次渲染前沿用
+# V15中此前各单元的已核定页码，渲染后再按实际PDF逐页回填。
+V16_CATALOG_PAGE_MAP = {
+    title: page
+    for title, page in V15_CATALOG_PAGE_MAP.items()
+    if title != "十一、格雷的强化敏感性理论"
+} | {
+    "六、操作条件反射的强化、惩罚与强化程序": V15_CATALOG_PAGE_MAP[
+        "六、操作条件反射与行为调控"
+    ]
+}
+V16_CATALOG_PAGE_MAP.pop("六、操作条件反射与行为调控")
+
 
 def force_monochrome_title_style(document: Document) -> None:
     """Remove the built-in theme accent from the cover title rule."""
@@ -604,9 +617,11 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
-    question_specific = subtitle.endswith(("V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15"))
-    monochrome = subtitle.endswith(("V7", "V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15"))
-    if subtitle.endswith("V15"):
+    question_specific = subtitle.endswith(("V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16"))
+    monochrome = subtitle.endswith(("V7", "V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16"))
+    if subtitle.endswith("V16"):
+        page_map = V16_CATALOG_PAGE_MAP
+    elif subtitle.endswith("V15"):
         page_map = V15_CATALOG_PAGE_MAP
     elif subtitle.endswith("V14"):
         page_map = V14_CATALOG_PAGE_MAP
@@ -653,8 +668,8 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
         question_specific=question_specific,
         study_labels=subtitle.endswith("V10"),
         study_typography=subtitle.endswith("V11"),
-        direct_without_answer_label=subtitle.endswith(("V12", "V13", "V14", "V15")),
-        selective_expansion=subtitle.endswith(("V13", "V14", "V15")),
+        direct_without_answer_label=subtitle.endswith(("V12", "V13", "V14", "V15", "V16")),
+        selective_expansion=subtitle.endswith(("V13", "V14", "V15", "V16")),
     )
 
     body_section = document.add_section(WD_SECTION.NEW_PAGE)
@@ -705,13 +720,13 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
                         document,
                         displayed,
                         monochrome=monochrome,
-                        large_between_question_gap=subtitle.endswith(("V9", "V10", "V11", "V12", "V13", "V14", "V15")),
+                        large_between_question_gap=subtitle.endswith(("V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16")),
                     )
                 else:
                     heading = add_heading(document, 3, displayed)
                     heading.paragraph_format.space_before = Pt(5)
                     heading.paragraph_format.space_after = Pt(2)
-                answer_mode = subtitle.endswith(("V12", "V13", "V14", "V15")) and displayed.startswith("押题")
+                answer_mode = subtitle.endswith(("V12", "V13", "V14", "V15", "V16")) and displayed.startswith("押题")
         elif stripped.startswith("|"):
             table_lines: list[str] = []
             while line_index < len(lines) and lines[line_index].strip().startswith("|"):
