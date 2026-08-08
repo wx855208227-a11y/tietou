@@ -46,6 +46,11 @@ COMPACT_UNIT_PREFIXES = (
     "六、操作条件反射与行为调控",
     "十、观察学习",
     "十一、格雷的强化敏感性理论",
+    "十三、心理学的主要分支",
+    "五、情绪智力与不良情绪调节",
+    "五、智力测验",
+    "二、想象",
+    "八、影响人格形成与发展的因素",
 )
 
 CATALOG_PAGE_MAP = {
@@ -178,7 +183,7 @@ def configure_styles(document: Document) -> None:
     normal.font.name = "宋体"
     normal._element.get_or_add_rPr().rFonts.set(qn("w:eastAsia"), "宋体")
     normal.font.size = Pt(12)
-    normal.paragraph_format.line_spacing = 1.5
+    normal.paragraph_format.line_spacing = 1.4
     normal.paragraph_format.first_line_indent = Cm(0.74)
     normal.paragraph_format.space_after = Pt(3)
     normal.paragraph_format.widow_control = True
@@ -525,7 +530,7 @@ def add_list_paragraph(
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.left_indent = Cm(0.75 + min(leading_spaces // 2, 3) * 0.42)
     paragraph.paragraph_format.first_line_indent = Cm(-0.48)
-    paragraph.paragraph_format.line_spacing = 1.18 if card and compact else 1.35 if card else 1.5
+    paragraph.paragraph_format.line_spacing = 1.18 if card and compact else 1.35 if card else 1.4
     paragraph.paragraph_format.space_after = Pt(0 if compact or card else 2)
     paragraph.paragraph_format.widow_control = True
     paragraph.paragraph_format.keep_with_next = keep_with_next
@@ -541,7 +546,7 @@ def add_body_paragraph(
     card: bool = False,
 ) -> None:
     paragraph = document.add_paragraph()
-    paragraph.paragraph_format.line_spacing = 1.18 if card and compact else 1.35 if card else 1.5
+    paragraph.paragraph_format.line_spacing = 1.18 if card and compact else 1.35 if card else 1.4
     paragraph.paragraph_format.space_after = Pt(0 if compact else 1 if card else 3)
     paragraph.paragraph_format.widow_control = True
     if re.match(r"^\*\*【(?:总|分)", text):

@@ -91,7 +91,20 @@ def main() -> None:
     assert len(blocks) == 145, len(blocks)
     assert kinds == {"简答": 107, "论述": 38}, kinds
     expansion_count = body.count("【扩容（选用）：")
-    assert expansion_count == 444, expansion_count
+    assert expansion_count == 438, expansion_count
+
+    # 同一知识单元内、范围相近的同题型答案不得出现两倍以上的容量悬殊。
+    unit_matches = list(re.finditer(r"^## [^\n]+$", body, re.MULTILINE))
+    for index, unit_match in enumerate(unit_matches):
+        unit_end = unit_matches[index + 1].start() if index + 1 < len(unit_matches) else len(body)
+        unit_blocks = question_blocks(body[unit_match.start():unit_end])
+        for kind in ("简答", "论述"):
+            lengths = [
+                visible_length(block, include_expansion=False)
+                for heading, block in unit_blocks if f"【{kind}】" in heading
+            ]
+            if len(lengths) >= 2:
+                assert max(lengths) / min(lengths) <= 2.0, (unit_match.group(0), kind, lengths)
 
     definitions: dict[str, set[str]] = defaultdict(set)
     simple_lengths: list[tuple[int, int, str]] = []
@@ -150,14 +163,19 @@ def main() -> None:
     assert max(item[0] for item in essay_lengths) <= 620
     simple_median = statistics.median(item[0] for item in simple_lengths)
     essay_median = statistics.median(item[0] for item in essay_lengths)
+    simple_full_median = statistics.median(item[1] for item in simple_lengths)
+    essay_full_median = statistics.median(item[1] for item in essay_lengths)
     assert 1.5 <= essay_median / simple_median <= 2.1
+    essay_call_ratio = essay_full_median / simple_median
+    assert 1.8 <= essay_call_ratio <= 2.2
 
     print(
         "全本V3内容与格式验证通过："
         f"{len(chapters)}章、{len(units)}个单元、{len(blocks)}道押题；"
         f"{len(definitions)}个名词解释无异文；{expansion_count}处扩容完成位置检查；"
         f"简答基础容量中位数{simple_median:.0f}字，论述{essay_median:.0f}字，"
-        f"容量比{essay_median / simple_median:.2f}；"
+        f"简答含扩容中位数{simple_full_median:.0f}字，论述含扩容{essay_full_median:.0f}字；"
+        f"论述完整调用／简答基础比{essay_call_ratio:.2f}；"
         f"逐章指标={chapter_metrics}。"
     )
 
