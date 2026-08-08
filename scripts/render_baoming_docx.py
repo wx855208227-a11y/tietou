@@ -243,7 +243,12 @@ def configure_body_header_footer(section) -> None:
     page_number_type.set(qn("w:start"), "1")
 
 
-def add_cover(document: Document, title: str, subtitle: str) -> None:
+def add_cover(
+    document: Document,
+    title: str,
+    subtitle: str,
+    edition: str = "前三章｜2026",
+) -> None:
     document.add_paragraph()
     document.add_paragraph()
     document.add_paragraph()
@@ -270,7 +275,7 @@ def add_cover(document: Document, title: str, subtitle: str) -> None:
     edition_paragraph = document.add_paragraph()
     edition_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     edition_paragraph.paragraph_format.first_line_indent = Cm(0)
-    edition_run = edition_paragraph.add_run("前三章｜2026")
+    edition_run = edition_paragraph.add_run(edition)
     set_run_font(edition_run, "微软雅黑", 11, True)
     document.add_page_break()
 

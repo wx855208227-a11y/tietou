@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 from pathlib import Path
 
@@ -615,13 +616,26 @@ def add_body_paragraph(
     )
 
 
-def render_markdown(markdown_path: Path, output_path: Path) -> None:
+def render_markdown(
+    markdown_path: Path,
+    output_path: Path,
+    page_map_override: dict[str, int] | None = None,
+) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
-    question_specific = subtitle.endswith(("V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16"))
-    monochrome = subtitle.endswith(("V7", "V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16"))
-    if subtitle.endswith("V16"):
+    full_book = subtitle.startswith("全本·逐题直背版")
+    question_specific = full_book or subtitle.endswith(("V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16"))
+    monochrome = full_book or subtitle.endswith(("V7", "V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16"))
+    if page_map_override is not None:
+        page_map = page_map_override
+    elif full_book:
+        page_map = {
+            line.lstrip("# ").strip().split("【", 1)[0]: 0
+            for line in lines
+            if line.startswith(("# 第", "## "))
+        }
+    elif subtitle.endswith("V16"):
         page_map = V16_CATALOG_PAGE_MAP
     elif subtitle.endswith("V15"):
         page_map = V15_CATALOG_PAGE_MAP
@@ -658,7 +672,12 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
         else "华东师范大学347心理学导论直背综合答案版"
     )
     document.core_properties.author = "铁头心理学考研"
-    add_cover(document, title, subtitle)
+    add_cover(
+        document,
+        title,
+        subtitle,
+        edition="全本｜2026" if full_book else "前三章｜2026",
+    )
     first_chapter_index = next(
         index for index, line in enumerate(lines) if line.startswith("# 第一章 ")
     )
@@ -670,8 +689,8 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
         question_specific=question_specific,
         study_labels=subtitle.endswith("V10"),
         study_typography=subtitle.endswith("V11"),
-        direct_without_answer_label=subtitle.endswith(("V12", "V13", "V14", "V15", "V16")),
-        selective_expansion=subtitle.endswith(("V13", "V14", "V15", "V16")),
+        direct_without_answer_label=full_book or subtitle.endswith(("V12", "V13", "V14", "V15", "V16")),
+        selective_expansion=full_book or subtitle.endswith(("V13", "V14", "V15", "V16")),
     )
 
     body_section = document.add_section(WD_SECTION.NEW_PAGE)
@@ -722,13 +741,13 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
                         document,
                         displayed,
                         monochrome=monochrome,
-                        large_between_question_gap=subtitle.endswith(("V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16")),
+                        large_between_question_gap=full_book or subtitle.endswith(("V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16")),
                     )
                 else:
                     heading = add_heading(document, 3, displayed)
                     heading.paragraph_format.space_before = Pt(5)
                     heading.paragraph_format.space_after = Pt(2)
-                answer_mode = subtitle.endswith(("V12", "V13", "V14", "V15", "V16")) and displayed.startswith("押题")
+                answer_mode = (full_book or subtitle.endswith(("V12", "V13", "V14", "V15", "V16"))) and displayed.startswith("押题")
         elif stripped.startswith("|"):
             table_lines: list[str] = []
             while line_index < len(lines) and lines[line_index].strip().startswith("|"):
@@ -769,8 +788,12 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("input", type=Path)
     parser.add_argument("output", type=Path)
+    parser.add_argument("--page-map", type=Path)
     arguments = parser.parse_args()
-    render_markdown(arguments.input, arguments.output)
+    page_map = None
+    if arguments.page_map:
+        page_map = json.loads(arguments.page_map.read_text(encoding="utf-8"))
+    render_markdown(arguments.input, arguments.output, page_map)
 
 
 if __name__ == "__main__":
