@@ -15,7 +15,7 @@ from docx.shared import Cm, Pt, RGBColor
 
 
 BLACK = RGBColor(0, 0, 0)
-TAG_GRAY = RGBColor(89, 89, 89)
+TAG_GRAY = BLACK
 GRAY_FILL = "D9D9D9"
 LIGHT_GRAY_FILL = "F2F2F2"
 ANSWER_FILL = "E7E6E6"
@@ -202,6 +202,10 @@ def configure_styles(document: Document) -> None:
         style.font.color.rgb = BLACK
         style.paragraph_format.keep_with_next = True
         style.paragraph_format.widow_control = True
+        paragraph_properties = style._element.get_or_add_pPr()
+        borders = paragraph_properties.find(qn("w:pBdr"))
+        if borders is not None:
+            paragraph_properties.remove(borders)
 
 
 def configure_page(section) -> None:
@@ -322,7 +326,6 @@ def add_catalog(
     legend.paragraph_format.first_line_indent = Cm(0)
     legend.paragraph_format.space_before = Pt(8)
     legend.paragraph_format.space_after = Pt(0)
-    shade_paragraph(legend, GRAY_FILL)
     legend_run = legend.add_run(
         "使用说明｜每道押题下方即为可直接背写的完整答案；正文优先掌握，方括号内扩容按分值和时间选写。"
     )
@@ -331,7 +334,6 @@ def add_catalog(
     note = document.add_paragraph()
     note.paragraph_format.first_line_indent = Cm(0)
     note.paragraph_format.space_after = Pt(0)
-    shade_paragraph(note, LIGHT_GRAY_FILL)
     note_run = note.add_run(
         "【名词解释：……】位于完整定义句末，可直接提取；全书仅用关键词加粗，"
         "不使用颜色、下划线或斜体。"
@@ -422,8 +424,14 @@ def add_heading(document: Document, level: int, text: str, page_break_before: bo
         if text.startswith("铁头tips"):
             paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
             shade_paragraph(paragraph, GRAY_FILL)
-    run = paragraph.add_run(text)
-    set_run_font(run, size=font_size, bold=True)
+    question_match = re.match(r"^(押题\d+【(?:简答|论述)】)(.*)$", text)
+    if level == 3 and question_match:
+        label_run = paragraph.add_run(question_match.group(1))
+        set_run_font(label_run, size=font_size, bold=True)
+        add_inline_runs(paragraph, question_match.group(2), size=font_size)
+    else:
+        run = paragraph.add_run(text.replace("**", ""))
+        set_run_font(run, size=font_size, bold=True)
     return paragraph
 
 
@@ -665,7 +673,10 @@ def render_markdown(
             else:
                 displayed_heading = heading_text
             heading = add_heading(document, 3, displayed_heading)
-            if compact_unit_active:
+            if heading_text.startswith("押题"):
+                heading.paragraph_format.space_before = Pt(10)
+                heading.paragraph_format.space_after = Pt(4)
+            elif compact_unit_active:
                 heading.paragraph_format.space_before = Pt(4)
                 heading.paragraph_format.space_after = Pt(2)
             answer_mode = heading_text == "综合答案"
@@ -703,7 +714,6 @@ def render_markdown(
                 continue
             if stripped.startswith("> "):
                 paragraph = target.add_paragraph()
-                shade_paragraph(paragraph, LIGHT_GRAY_FILL)
                 paragraph.paragraph_format.first_line_indent = Cm(0)
                 add_inline_runs(paragraph, stripped[2:].strip())
             elif stripped.startswith("- ") or re.match(r"^\d+\.\s", stripped):
