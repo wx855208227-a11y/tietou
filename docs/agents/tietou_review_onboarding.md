@@ -172,24 +172,24 @@ https://huggingface.co/datasets/wx855208227/tietou
 /home/yileiyang/multi_agent/.work/workspaces/github.com/agiamason/tietou/agents/tietou_manager/analysis/hf_tietou_repo
 ```
 
-`tietou_review` 应优先使用自己 agent 目录下的本地镜像：
+`tietou_review` 应优先使用自己 agent 目录下的本地镜像，不要默认跨 agent 读取 `tietou_manager` 的镜像：
 
 ```bash
-mkdir -p "$INTERN_AGENT_ROOT/analysis"
-cd "$INTERN_AGENT_ROOT/analysis"
-git clone https://huggingface.co/datasets/wx855208227/tietou hf_tietou_repo
+mkdir -p "$INTERN_AGENT_AGENT_DIR/analysis"
+cd "$INTERN_AGENT_AGENT_DIR/analysis"
+GIT_LFS_SKIP_SMUDGE=1 git clone https://huggingface.co/datasets/wx855208227/tietou hf_tietou_repo
 cd hf_tietou_repo
-git lfs pull
+git lfs pull --include "索引/*,编制规范/*"
 ```
 
 如果需要鉴权，不要在命令或报告中打印 token。只使用环境变量，例如：
 
 ```bash
-export HF_TOKEN=...
-git clone https://wangxin:${HF_TOKEN}@huggingface.co/datasets/wx855208227/tietou hf_tietou_repo
+test -n "${HF_TOKEN:-}" && echo HF_TOKEN_set || echo HF_TOKEN_unset
+GIT_LFS_SKIP_SMUDGE=1 git clone https://wangxin:${HF_TOKEN}@huggingface.co/datasets/wx855208227/tietou hf_tietou_repo
 ```
 
-如果 `HF_TOKEN` 不存在或 clone/pull 失败，只向 `tietou_manager` 报告“缺少 HF 权限/环境变量”，不要要求主管在群里明文发送 token。
+先拉轻量索引/规范；具体任务再按需拉对应教材、考纲、真题或公共题库目录，不要一开始全量 `git lfs pull`。如果 `HF_TOKEN` 不存在或 clone/pull 失败，只向 `tietou_manager` 报告“缺少 HF 权限/环境变量”，不要要求主管在群里明文发送 token。
 
 已有材料主要目录：
 
@@ -222,7 +222,7 @@ git clone https://wangxin:${HF_TOKEN}@huggingface.co/datasets/wx855208227/tietou
 常用检索：
 
 ```bash
-HF_ROOT="$INTERN_AGENT_ROOT/analysis/hf_tietou_repo"
+HF_ROOT="$INTERN_AGENT_AGENT_DIR/analysis/hf_tietou_repo"
 find "$HF_ROOT" -maxdepth 5 -type f | sed 's#^'"$HF_ROOT"'/##' | sort
 rg -n "华东|测量|信度|效度|比奈|韦克斯勒" "$HF_ROOT/公共题库" "$HF_ROOT/院校资料库"
 ```
