@@ -29,8 +29,16 @@ def main() -> None:
 
     document = fitz.open(arguments.pdf)
     pages = [compact(page.get_text()) for page in document]
-    first_chapter = "第一章心理学研究的对象、方法及其学科发展"
-    body_header = "华东师范大学347｜心理学导论保命手册"
+    markdown_text = arguments.markdown.read_text(encoding="utf-8")
+    title = markdown_text.splitlines()[0].removeprefix("# ").strip()
+    first_chapter_title = next(
+        line.removeprefix("# ").strip()
+        for line in markdown_text.splitlines()
+        if line.startswith("# 第一章 ")
+    )
+    subject_name = "心理测量" if "心理测量" in title else "心理学导论"
+    first_chapter = compact(first_chapter_title)
+    body_header = compact(f"华东师范大学347｜{subject_name}保命手册")
     first_body = next(
         index for index, text in enumerate(pages)
         if first_chapter in text and body_header in text

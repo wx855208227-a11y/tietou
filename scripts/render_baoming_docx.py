@@ -98,6 +98,7 @@ def set_run_font(run, name: str = "宋体", size: float = 12, bold: bool | None 
     run._element.get_or_add_rPr().rFonts.set(qn("w:eastAsia"), name)
     run.font.size = Pt(size)
     run.font.color.rgb = BLACK
+    run.font.italic = False
     if bold is not None:
         run.bold = bold
 
@@ -204,6 +205,7 @@ def configure_styles(document: Document) -> None:
         style._element.get_or_add_rPr().rFonts.set(qn("w:eastAsia"), font_name)
         style.font.size = Pt(font_size)
         style.font.bold = bold
+        style.font.italic = False
         style.font.color.rgb = BLACK
         style.paragraph_format.keep_with_next = True
         style.paragraph_format.widow_control = True
@@ -238,12 +240,15 @@ def add_page_field(paragraph) -> None:
     set_run_font(run, size=12)
 
 
-def configure_body_header_footer(section) -> None:
+def configure_body_header_footer(
+    section,
+    header_text: str = "华东师范大学347｜心理学导论保命手册",
+) -> None:
     section.header.is_linked_to_previous = False
     section.footer.is_linked_to_previous = False
     header = section.header.paragraphs[0]
     header.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    header_run = header.add_run("华东师范大学347｜心理学导论保命手册")
+    header_run = header.add_run(header_text)
     set_run_font(header_run, size=9)
     add_page_field(section.footer.paragraphs[0])
     page_number_type = section._sectPr.find(qn("w:pgNumType"))
@@ -265,12 +270,16 @@ def add_cover(
     title_paragraph = document.add_paragraph(style="Title")
     title_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     title_paragraph.paragraph_format.space_after = Pt(16)
-    if "心理学导论" in title:
-        school_title, manual_title = title.split("心理学导论", 1)
+    subject_name = next(
+        (name for name in ("心理学导论", "心理测量") if name in title),
+        None,
+    )
+    if subject_name:
+        school_title, manual_title = title.split(subject_name, 1)
         title_run = title_paragraph.add_run(school_title.rstrip())
         set_run_font(title_run, "微软雅黑", 24, True)
         title_run.add_break()
-        manual_run = title_paragraph.add_run("心理学导论" + manual_title)
+        manual_run = title_paragraph.add_run(subject_name + manual_title)
         set_run_font(manual_run, "微软雅黑", 24, True)
     else:
         title_run = title_paragraph.add_run(title)

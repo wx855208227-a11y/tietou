@@ -35,6 +35,9 @@ DEFINITION_TAG_RE = re.compile(r"【名词解释：[^】]+】")
 INLINE_EXPANSION_RE = re.compile(r"【扩容（选用）：.*?】")
 INLINE_COMPACT_UNIT_PREFIXES = COMPACT_UNIT_PREFIXES + (
     "十三、心理学的主要分支",
+    "四、影响信度系数的因素",
+    "五、测量的标准误差",
+    "六、概化理论",
 )
 
 CATALOG_PAGE_MAP = {
@@ -676,10 +679,11 @@ def render_markdown(
     configure_page(document.sections[0])
     set_update_fields(document)
     document.core_properties.title = title
+    subject_name = "心理测量" if "心理测量" in title else "心理学导论"
     document.core_properties.subject = (
-        "华东师范大学347心理学导论逐题直背答案版"
+        f"华东师范大学347{subject_name}逐题直背答案版"
         if question_specific
-        else "华东师范大学347心理学导论直背综合答案版"
+        else f"华东师范大学347{subject_name}直背综合答案版"
     )
     document.core_properties.author = "铁头心理学考研"
     add_cover(
@@ -705,7 +709,10 @@ def render_markdown(
 
     body_section = document.add_section(WD_SECTION.NEW_PAGE)
     configure_page(body_section)
-    configure_body_header_footer(body_section)
+    configure_body_header_footer(
+        body_section,
+        f"华东师范大学347｜{subject_name}保命手册",
+    )
 
     answer_mode = False
     compact_unit = False
