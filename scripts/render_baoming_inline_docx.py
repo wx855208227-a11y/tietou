@@ -624,7 +624,9 @@ def render_markdown(
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
-    full_book = subtitle.startswith("全本·逐题直背版")
+    # 全本各迭代版都应使用全本封面、目录和逐题直背版式；版本名不应
+    # 成为版式识别条件。
+    full_book = subtitle.startswith("全本·")
     question_specific = full_book or subtitle.endswith(("V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16"))
     monochrome = full_book or subtitle.endswith(("V7", "V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16"))
     if page_map_override is not None:
