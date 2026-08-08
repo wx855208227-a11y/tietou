@@ -588,6 +588,12 @@ def add_body_paragraph(
     optional = content.startswith("（加分项：") or content.startswith("【扩容（选用）：")
     if optional and document.paragraphs:
         document.paragraphs[-1].paragraph_format.keep_with_next = True
+    summary = content.startswith("综上")
+    if summary and document.paragraphs:
+        # 避免整题总结或“最后一点＋总结”被单独挤到下一页，尤其是下一章
+        # 强制换页时形成大面积空白。最多把前四个相邻采分段与总结成组。
+        for previous in document.paragraphs[-4:]:
+            previous.paragraph_format.keep_with_next = True
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.line_spacing = 1.18 if optional else 1.25 if compact else 1.4
     paragraph.paragraph_format.space_after = Pt(1)
@@ -598,6 +604,8 @@ def add_body_paragraph(
         or "【加分项】" in content
         or "【扩容（选用）：" in content
     ):
+        paragraph.paragraph_format.keep_together = True
+    if summary:
         paragraph.paragraph_format.keep_together = True
     if content == "**【整体加分】**":
         paragraph.paragraph_format.first_line_indent = Cm(0)
