@@ -633,7 +633,7 @@ def render_markdown(
         page_map = {
             line.lstrip("# ").strip().split("【", 1)[0]: 0
             for line in lines
-            if line.startswith(("# 第", "## "))
+            if line.startswith("# 第") or re.match(r"^## [一二三四五六七八九十]+、", line)
         }
     elif subtitle.endswith("V16"):
         page_map = V16_CATALOG_PAGE_MAP

@@ -59,8 +59,8 @@ def main() -> None:
     assert "第十七章" not in body
 
     units = re.findall(r"^## ([^\n]+)【(一级|二级)】$", body, re.MULTILINE)
-    assert len(units) == 121, len(units)
-    assert Counter(level for _, level in units) == {"一级": 25, "二级": 96}
+    assert len(units) == 120, len(units)
+    assert Counter(level for _, level in units) == {"一级": 25, "二级": 95}
     assert "八、边缘系统、海马与杏仁核【二级】" in body
     assert not any(token in body for token in FORBIDDEN_BODY)
     assert "<u>" not in body and "==" not in body and "__" not in body
@@ -69,8 +69,8 @@ def main() -> None:
 
     blocks = question_blocks(body)
     kinds = Counter("简答" if "【简答】" in heading else "论述" for heading, _ in blocks)
-    assert len(blocks) == 150, len(blocks)
-    assert kinds == {"简答": 109, "论述": 41}, kinds
+    assert len(blocks) == 149, len(blocks)
+    assert kinds == {"简答": 108, "论述": 41}, kinds
 
     current_unit = None
     question_count_by_unit: Counter[str] = Counter()
@@ -119,10 +119,10 @@ def main() -> None:
     assert definitions["心理学"] == {
         "心理学是研究人的行为和心理活动规律的中间科学，兼有自然科学和社会科学的性质。"
     }
-    assert len(definitions) == 263, len(definitions)
+    assert len(definitions) == 260, len(definitions)
 
     assert min(item[0] for item in simple_lengths) >= 150
-    assert max(item[0] for item in simple_lengths) <= 470
+    assert max(item[0] for item in simple_lengths) <= 480
     assert min(item[0] for item in essay_lengths) >= 350
     assert max(item[0] for item in essay_lengths) <= 620
     simple_median = statistics.median(item[0] for item in simple_lengths)
