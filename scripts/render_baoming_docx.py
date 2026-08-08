@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 from pathlib import Path
 
@@ -280,7 +281,12 @@ def add_cover(
     document.add_page_break()
 
 
-def add_catalog(document: Document, lines: list[str]) -> None:
+def add_catalog(
+    document: Document,
+    lines: list[str],
+    catalog_page_map: dict[str, int] | None = None,
+) -> None:
+    page_map = catalog_page_map or CATALOG_PAGE_MAP
     title = document.add_paragraph()
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
     title.paragraph_format.first_line_indent = Cm(0)
@@ -299,7 +305,7 @@ def add_catalog(document: Document, lines: list[str]) -> None:
             is_chapter = False
         else:
             continue
-        if heading not in CATALOG_PAGE_MAP:
+        if heading not in page_map:
             continue
         paragraph = document.add_paragraph()
         paragraph.paragraph_format.first_line_indent = Cm(0)
@@ -309,7 +315,7 @@ def add_catalog(document: Document, lines: list[str]) -> None:
         paragraph.paragraph_format.tab_stops.add_tab_stop(
             Cm(15.8), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.DOTS
         )
-        run = paragraph.add_run(f"{heading}\t{CATALOG_PAGE_MAP[heading]}")
+        run = paragraph.add_run(f"{heading}\t{page_map[heading]}")
         set_run_font(run, size=11, bold=is_chapter)
 
     legend = document.add_paragraph()
@@ -318,7 +324,7 @@ def add_catalog(document: Document, lines: list[str]) -> None:
     legend.paragraph_format.space_after = Pt(0)
     shade_paragraph(legend, GRAY_FILL)
     legend_run = legend.add_run(
-        "3秒用法｜名解写①；简答写①＋②；论述写①＋②＋③；每档★加分项按题干选写。"
+        "使用说明｜每道押题下方即为可直接背写的完整答案；正文优先掌握，方括号内扩容按分值和时间选写。"
     )
     set_run_font(legend_run, size=10, bold=True)
 
@@ -327,8 +333,8 @@ def add_catalog(document: Document, lines: list[str]) -> None:
     note.paragraph_format.space_after = Pt(0)
     shade_paragraph(note, LIGHT_GRAY_FILL)
     note_run = note.add_run(
-        "②是简答、论述共用骨架，不需要背两套；③只写论述新增内容；"
-        "没有论述题的单元不设③；背诵主线只用于组织复述，不写入答卷。"
+        "【名词解释：……】位于完整定义句末，可直接提取；全书仅用关键词加粗，"
+        "不使用颜色、下划线或斜体。"
     )
     set_run_font(note_run, size=9.5)
 
@@ -597,7 +603,11 @@ def add_table(document: Document, table_lines: list[str]) -> None:
     spacer.paragraph_format.space_after = Pt(4)
 
 
-def render_markdown(markdown_path: Path, output_path: Path) -> None:
+def render_markdown(
+    markdown_path: Path,
+    output_path: Path,
+    catalog_page_map: dict[str, int] | None = None,
+) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
@@ -608,11 +618,11 @@ def render_markdown(markdown_path: Path, output_path: Path) -> None:
     document.core_properties.title = title
     document.core_properties.subject = "华东师范大学347心理学导论考前冲刺"
     document.core_properties.author = "铁头心理学考研"
-    add_cover(document, title, subtitle)
+    add_cover(document, title, subtitle, "全本｜2026" if "全本" in subtitle else "前三章｜2026")
     first_chapter_index = next(
         index for index, line in enumerate(lines) if line.startswith("# 第一章 ")
     )
-    add_catalog(document, lines)
+    add_catalog(document, lines, catalog_page_map)
 
     body_section = document.add_section(WD_SECTION.NEW_PAGE)
     configure_page(body_section)
@@ -723,8 +733,12 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("input", type=Path)
     parser.add_argument("output", type=Path)
+    parser.add_argument("--page-map", type=Path)
     arguments = parser.parse_args()
-    render_markdown(arguments.input, arguments.output)
+    page_map = None
+    if arguments.page_map:
+        page_map = json.loads(arguments.page_map.read_text(encoding="utf-8"))
+    render_markdown(arguments.input, arguments.output, page_map)
 
 
 if __name__ == "__main__":
