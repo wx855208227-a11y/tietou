@@ -32,7 +32,7 @@ from render_baoming_mother_docx import COMPACT_UNIT_PREFIXES
 TAG_GRAY = RGBColor(89, 89, 89)
 OPTIONAL_GRAY = RGBColor(96, 96, 96)
 DEFINITION_TAG_RE = re.compile(r"【名词解释：[^】]+】")
-INLINE_EXPANSION_RE = re.compile(r"【扩容（选用）：.*?】")
+INLINE_EXPANSION_RE = re.compile(r"【扩容（选(?:用|背)）：.*?】")
 INLINE_COMPACT_UNIT_PREFIXES = COMPACT_UNIT_PREFIXES + (
     "十三、心理学的主要分支",
     "四、影响信度系数的因素",
@@ -367,7 +367,9 @@ def add_inline_runs(
     monochrome: bool = False,
 ) -> None:
     def add_expansion_runs(expansion_content: str) -> None:
-        expansion_prefix = "【扩容（选用）："
+        prefix_match = re.match(r"【扩容（选(?:用|背)）：", expansion_content)
+        assert prefix_match is not None
+        expansion_prefix = prefix_match.group(0)
         prefix_run = paragraph.add_run(expansion_prefix)
         set_run_font(prefix_run, "宋体", 9.2, True)
         inner = expansion_content[len(expansion_prefix) : -1]
@@ -473,7 +475,7 @@ def add_catalog(
         if selective_expansion:
             note_text = (
                 "直接用法｜每道押题下方内容可直接背诵和作答；【名词解释】前是可独立提取的完整定义；"
-                "【扩容（选用）】中的内容按题目分值和时间选写。"
+                "【扩容（选背）】中的内容可选择背诵，作答时按题目分值和时间选写。"
             )
         else:
             note_text = "直接用法｜每道押题下方内容可直接背诵和作答；【名词解释】是可独立提取的完整定义；【加分项】按题干和时间灵活选写。"
@@ -547,7 +549,7 @@ def add_list_paragraph(
     paragraph.paragraph_format.space_after = Pt(0 if answer_mode else 1)
     paragraph.paragraph_format.widow_control = True
     paragraph.paragraph_format.keep_with_next = not answer_mode
-    if any(tag in stripped for tag in ("【采分点加分】", "【加分项】", "【扩容（选用）：", "【名词解释：")):
+    if any(tag in stripped for tag in ("【采分点加分】", "【加分项】", "【扩容（选用）：", "【扩容（选背）：", "【名词解释：")):
         paragraph.paragraph_format.keep_together = True
     add_inline_runs(
         paragraph,
@@ -572,7 +574,7 @@ def add_secondary_list_paragraph(
     paragraph.paragraph_format.line_spacing = 1.2 if compact else 1.3
     paragraph.paragraph_format.space_after = Pt(0 if answer_mode else 1)
     paragraph.paragraph_format.widow_control = True
-    if "【扩容（选用）：" in stripped or "【名词解释：" in stripped:
+    if "【扩容（选用）：" in stripped or "【扩容（选背）：" in stripped or "【名词解释：" in stripped:
         paragraph.paragraph_format.keep_together = True
     add_inline_runs(
         paragraph,
@@ -588,7 +590,7 @@ def add_body_paragraph(
     compact: bool,
     monochrome: bool = False,
 ) -> None:
-    optional = content.startswith("（加分项：") or content.startswith("【扩容（选用）：")
+    optional = content.startswith("（加分项：") or content.startswith(("【扩容（选用）：", "【扩容（选背）："))
     if optional and document.paragraphs:
         document.paragraphs[-1].paragraph_format.keep_with_next = True
     summary = content.startswith("综上")
@@ -606,6 +608,7 @@ def add_body_paragraph(
         or "【采分点加分】" in content
         or "【加分项】" in content
         or "【扩容（选用）：" in content
+        or "【扩容（选背）：" in content
     ):
         paragraph.paragraph_format.keep_together = True
     if summary:
