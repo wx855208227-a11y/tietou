@@ -29,12 +29,8 @@ TITLE = "华东师范大学347心理学导论保命手册"
 FIRST_CHAPTER = "第一章心理学研究的对象、方法及其学科发展"
 
 
-def plain_bracket_values(text: str) -> list[str]:
-    return [
-        value
-        for value in re.findall(r"【(.*?)】", text)
-        if value and value not in RESERVED and not value.startswith("名词解释：")
-    ]
+def plain_expansion(value: str) -> str:
+    return value.replace("**", "").replace("__", "").replace("`", "")
 
 
 def main() -> None:
@@ -86,8 +82,8 @@ def main() -> None:
         "一本通与考纲中的核心内容",
         "华东或相关真题信号强",
         "主观题可考性和答案复用价值最高",
-        "方括号外是背诵主体，写全可以拿到主要分数",
-        "【】内是扩容项，选背",
+        "圆括号外是背诵主体，写全可以拿到主要分数",
+        "（）内是扩容项，选背",
         "丰富答题角度、锦上添花，追求更高分数",
         "如果其中是例子，可以根据题目灵活替换",
     ):
@@ -100,6 +96,11 @@ def main() -> None:
 
     paragraphs = root.findall(f".//{{{W_NS}}}p")
     assert all(paragraph_text(paragraph).count("【名词解释：") <= 1 for paragraph in paragraphs)
+    assert all(
+        "【名词解释：" not in paragraph_text(paragraph)
+        or re.search(r"【名词解释：[^】]+】$", paragraph_text(paragraph))
+        for paragraph in paragraphs
+    ), "DOCX中存在名解标签后继续堆写正文的段落"
     crowd_paragraphs = {
         name: next(
             paragraph
@@ -129,9 +130,18 @@ def main() -> None:
         for index, paragraph in enumerate(paragraphs)
         if compact(paragraph_text(paragraph)) == compact(FIRST_CHAPTER)
     )
-    docx_body = "".join(paragraph_text(paragraph) for paragraph in paragraphs[body_paragraph_index:])
+    docx_body = "".join(
+        paragraph_text(paragraph) for paragraph in paragraphs[body_paragraph_index:]
+    ).replace("\u2060", "")
     assert compact(docx_body).count("【名词解释：") == definition_count
-    assert len(plain_bracket_values(compact(docx_body))) == len(expansions)
+    for wrapped, count in Counter(
+        f"（{plain_expansion(value)}）" for value in expansions
+    ).items():
+        assert docx_body.count(wrapped) >= count, wrapped
+    assert all(
+        value in RESERVED or value.startswith("名词解释：")
+        for value in re.findall(r"【(.*?)】", docx_body)
+    ), "DOCX正文仍存在使用方括号的扩容项"
 
     docx_units = Counter()
     for paragraph in paragraphs:
@@ -139,14 +149,6 @@ def main() -> None:
         if match:
             docx_units[match.group(1)] += 1
     assert docx_units == stars
-    expansion_open_runs = [
-        run
-        for run in root.findall(f".//{{{W_NS}}}r")
-        if "".join(node.text or "" for node in run.findall(f".//{{{W_NS}}}t")) == "【"
-    ]
-    assert len(expansion_open_runs) == len(expansions)
-    assert all(run_is_bold(run) for run in expansion_open_runs)
-
     later_questions = [
         paragraph
         for paragraph in paragraphs
@@ -206,7 +208,7 @@ def main() -> None:
     assert compact(page_texts[0]) == compact(TITLE)
     assert "V9" not in page_texts[0] and "2026" not in page_texts[0]
     assert "使用说明" in page_texts[1]
-    assert "【】内是扩容项" in compact(page_texts[1])
+    assert "（）内是扩容项" in compact(page_texts[1])
     assert "星级只表示背诵顺序，不代表必考概率" not in full_text
     assert "名词解释背【名词解释：……】前的定义及紧邻扩容" not in compact(full_text)
     assert full_text.count("押题") == question_count + 1
@@ -222,8 +224,6 @@ def main() -> None:
     assert "扩容（选背）" not in pdf_body and "扩容（选用）" not in pdf_body
     assert "例子可灵活替换" not in pdf_body and "固定例子可选用" not in pdf_body
     assert definition_count - 1 <= compact(pdf_body).count("【名词解释：") <= definition_count + 1
-    pdf_expansions = plain_bracket_values(compact(pdf_body))
-    assert len(expansions) - 6 <= len(pdf_expansions) <= len(expansions)
     semantic_pdf = semantic_text(pdf_body)
     for expansion in expansions:
         assert semantic_text(expansion) in semantic_pdf, expansion
@@ -251,7 +251,7 @@ def main() -> None:
                 break
     assert actual_map == page_map, (actual_map, page_map)
     catalog_text = "\n".join(page_texts[2:first_body])
-    assert "直接用法" in catalog_text and "【】内是可选扩容" in compact(catalog_text)
+    assert "直接用法" in catalog_text and "（）内是可选扩容" in compact(catalog_text)
     assert not re.search(r"\.{3,}0(?:\n|$)", catalog_text)
 
     print(

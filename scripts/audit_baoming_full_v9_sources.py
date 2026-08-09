@@ -22,7 +22,7 @@ def main() -> None:
         "## 结论\n\n- V9仅删除扩容标签和逐条例子提示，知识结论、采分点、关键词、名解定义及596处扩容实际内容均与已审计V8一致。\n",
         1,
     )
-    report = report.replace("596处选背扩容", "596处方括号扩容")
+    report = report.replace("596处选背扩容", "596处圆括号扩容")
     V9_REPORT.write_text(report, encoding="utf-8")
     print(
         "全本V9双源审计通过：呈现规则转换后知识内容零漂移；"

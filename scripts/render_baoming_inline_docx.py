@@ -35,6 +35,7 @@ OPTIONAL_GRAY = RGBColor(96, 96, 96)
 DEFINITION_TAG_RE = re.compile(r"【名词解释：[^】]+】")
 INLINE_EXPANSION_RE = re.compile(r"【扩容（选(?:用|背)）：.*?】")
 BARE_EXPANSION_RE = re.compile(r"【(?!(?:名词解释：[^】]+|简答|论述|★{1,3})】).*?】")
+ACTIVE_BARE_EXPANSION_RE = BARE_EXPANSION_RE
 INLINE_COMPACT_UNIT_PREFIXES = COMPACT_UNIT_PREFIXES + (
     "十三、心理学的主要分支",
     "四、影响信度系数的因素",
@@ -371,7 +372,9 @@ def add_inline_runs(
 ) -> None:
     def add_expansion_runs(expansion_content: str) -> None:
         prefix_match = re.match(r"【扩容（选(?:用|背)）：", expansion_content)
-        expansion_prefix = prefix_match.group(0) if prefix_match else "【"
+        round_expansion = expansion_content.startswith("（") and expansion_content.endswith("）")
+        expansion_prefix = prefix_match.group(0) if prefix_match else "（" if round_expansion else "【"
+        expansion_closing = "）" if round_expansion else "】"
         prefix_run = paragraph.add_run(expansion_prefix)
         set_run_font(prefix_run, "宋体", 9.2 if prefix_match else 10.5, True)
         inner = expansion_content[len(expansion_prefix) : -1]
@@ -383,7 +386,7 @@ def add_inline_runs(
             run.italic = is_italic
             if is_underlined:
                 run.underline = True
-        closing_run = paragraph.add_run("】")
+        closing_run = paragraph.add_run(expansion_closing)
         set_run_font(closing_run, "宋体", 9.2 if prefix_match else 10.5, True)
 
     def add_regular_runs(regular_content: str) -> None:
@@ -413,7 +416,7 @@ def add_inline_runs(
                     if optional:
                         run.font.color.rgb = BLACK if monochrome else OPTIONAL_GRAY
 
-    expansion_pattern = BARE_EXPANSION_RE if bare_expansions else INLINE_EXPANSION_RE
+    expansion_pattern = ACTIVE_BARE_EXPANSION_RE if bare_expansions else INLINE_EXPANSION_RE
     cursor = 0
     for match in expansion_pattern.finditer(content):
         add_regular_runs(content[cursor : match.start()])
@@ -478,8 +481,8 @@ def add_catalog(
     if direct_without_answer_label:
         if bare_expansions:
             note_text = (
-                "直接用法｜每道押题下方内容可直接背诵和作答；方括号外是背诵主体，"
-                "【】内是可选扩容，例子可按题目灵活替换。"
+                "直接用法｜每道押题下方内容可直接背诵和作答；圆括号外是背诵主体，"
+                "（）内是可选扩容，例子可按题目灵活替换。"
             )
         elif selective_expansion:
             note_text = (
@@ -638,8 +641,8 @@ def add_student_guide_v9(document: Document) -> None:
     use_heading.paragraph_format.space_after = Pt(7)
     set_run_font(use_heading.add_run("怎么用"), size=14, bold=True)
     uses = (
-        "1. 方括号外是背诵主体，写全可以拿到主要分数。",
-        "2. 【】内是扩容项，选背；用于丰富答题角度、锦上添花，追求更高分数。如果其中是例子，可以根据题目灵活替换。",
+        "1. 圆括号外是背诵主体，写全可以拿到主要分数。",
+        "2. （）内是扩容项，选背；用于丰富答题角度、锦上添花，追求更高分数。如果其中是例子，可以根据题目灵活替换。",
     )
     for value in uses:
         paragraph = document.add_paragraph()
@@ -723,7 +726,7 @@ def add_list_paragraph(
     paragraph.paragraph_format.keep_with_next = not answer_mode
     if (
         any(tag in stripped for tag in ("【采分点加分】", "【加分项】", "【扩容（选用）：", "【扩容（选背）：", "【名词解释："))
-        or bare_expansions and BARE_EXPANSION_RE.search(stripped)
+        or bare_expansions and ACTIVE_BARE_EXPANSION_RE.search(stripped)
     ):
         paragraph.paragraph_format.keep_together = True
     add_inline_runs(
@@ -756,7 +759,7 @@ def add_secondary_list_paragraph(
         "【扩容（选用）：" in stripped
         or "【扩容（选背）：" in stripped
         or "【名词解释：" in stripped
-        or bare_expansions and BARE_EXPANSION_RE.search(stripped)
+        or bare_expansions and ACTIVE_BARE_EXPANSION_RE.search(stripped)
     ):
         paragraph.paragraph_format.keep_together = True
     add_inline_runs(
@@ -779,7 +782,7 @@ def add_body_paragraph(
     optional = (
         content.startswith("（加分项：")
         or content.startswith(("【扩容（选用）：", "【扩容（选背）："))
-        or bare_expansions and BARE_EXPANSION_RE.fullmatch(content) is not None
+        or bare_expansions and ACTIVE_BARE_EXPANSION_RE.fullmatch(content) is not None
     )
     if optional and document.paragraphs:
         document.paragraphs[-1].paragraph_format.keep_with_next = True
@@ -805,7 +808,7 @@ def add_body_paragraph(
         or "【加分项】" in content
         or "【扩容（选用）：" in content
         or "【扩容（选背）：" in content
-        or bare_expansions and BARE_EXPANSION_RE.search(content)
+        or bare_expansions and ACTIVE_BARE_EXPANSION_RE.search(content)
     ):
         paragraph.paragraph_format.keep_together = True
     if summary:
@@ -835,6 +838,7 @@ def render_markdown(
     output_path: Path,
     page_map_override: dict[str, int] | None = None,
 ) -> None:
+    global ACTIVE_BARE_EXPANSION_RE
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
@@ -844,6 +848,22 @@ def render_markdown(
     minimal_v9 = subtitle.startswith("全本·极简直背版")
     comfortable = subtitle.startswith("全本·三星分级舒适阅读版V8") or minimal_v9
     bare_expansions = minimal_v9
+    if bare_expansions:
+        if "心理测量" in title:
+            from build_measurement_baoming_v3 import SOURCE, source_expansion_contents
+        else:
+            from build_baoming_full_v9 import SOURCE, source_expansion_contents
+
+        wrapped_expansions = sorted(
+            {f"（{value}）" for value in source_expansion_contents(SOURCE.read_text(encoding="utf-8"))},
+            key=len,
+            reverse=True,
+        )
+        ACTIVE_BARE_EXPANSION_RE = re.compile(
+            "|".join(re.escape(value) for value in wrapped_expansions)
+        )
+    else:
+        ACTIVE_BARE_EXPANSION_RE = BARE_EXPANSION_RE
     question_specific = full_book or subtitle.endswith(("V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16"))
     monochrome = full_book or subtitle.endswith(("V7", "V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16"))
     if page_map_override is not None:

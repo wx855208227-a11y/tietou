@@ -4,7 +4,7 @@ from collections import Counter
 from pathlib import Path
 import re
 
-from build_baoming_full_v9 import transform
+from build_baoming_full_v9 import POST_TAG_TEXT_RE, source_expansion_contents, transform
 from validate_baoming_full_v1 import question_blocks
 from validate_baoming_full_v3 import CHAPTERS, chapter_sections
 from validate_baoming_full_v4 import leaf_point_lines
@@ -21,12 +21,10 @@ def body(text: str) -> str:
 
 
 def expansion_contents(content: str) -> list[str]:
-    result = []
-    for value in re.findall(r"【(.*?)】", content):
-        plain = value.replace("**", "")
-        if plain in RESERVED or plain.startswith("名词解释："):
-            continue
-        result.append(value)
+    source = V8.read_text(encoding="utf-8")
+    result = source_expansion_contents(source)
+    for wrapped, count in Counter(f"（{value}）" for value in result).items():
+        assert content.count(wrapped) >= count, wrapped
     return result
 
 
@@ -41,9 +39,9 @@ def main() -> None:
         "华东或相关真题信号强",
         "主观题可考性",
         "答案复用价值",
-        "方括号外是背诵主体",
+        "圆括号外是背诵主体",
         "可以拿到主要分数",
-        "【】`内是扩容项，选背",
+        "（）`内是扩容项，选背",
         "丰富答题角度、锦上添花",
         "例子，可以根据题目灵活替换",
     ):
@@ -62,6 +60,12 @@ def main() -> None:
     assert "固定例子可选用" not in content
     assert content.count("【名词解释：") == 296
     assert all(line.count("【名词解释：") <= 1 for line in content.splitlines())
+    assert not POST_TAG_TEXT_RE.search(content), "名解标签后仍有正文堆在同一段"
+    assert all(
+        value.replace("**", "") in RESERVED
+        or value.replace("**", "").startswith("名词解释：")
+        for value in re.findall(r"【(.*?)】", content)
+    ), "正文仍存在使用方括号的扩容项"
     expansions = expansion_contents(content)
     assert len(expansions) == 596
 
@@ -93,7 +97,7 @@ def main() -> None:
     print(
         "全本V9内容验证通过："
         "V8知识内容零漂移；17章、117单元（★★★44／★★40／★33）、"
-        "145题（简答107／论述38）；296处名解、596处纯方括号扩容；"
+        "145题（简答107／论述38）；296处名解、596处圆括号扩容；"
         f"789个叶子采分点关键词覆盖={chapter_stats}。"
     )
 

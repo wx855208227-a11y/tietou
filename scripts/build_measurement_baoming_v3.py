@@ -9,7 +9,7 @@ SOURCE = ROOT / "deliverables/华东师范大学347心理测量保命手册_全�
 OUTPUT = ROOT / "deliverables/华东师范大学347心理测量保命手册_全本_极简直背版V3.md"
 PAIR_RE = re.compile(r"【名词解释：([^】]+)】【扩容（选用）：(.*?)】")
 EXPANSION_RE = re.compile(r"【扩容（选用）：(.*?)】")
-POST_TAG_TEXT_RE = re.compile(r"(【名词解释：[^】]+】)(?=\S)")
+POST_TAG_TEXT_RE = re.compile(r"(【名词解释：[^】]+】)[ \t]*(?=\S)")
 
 
 GUIDE = """### 星级
@@ -20,10 +20,19 @@ GUIDE = """### 星级
 
 ### 怎么用
 
-- 方括号外是背诵主体，写全可以拿到主要分数。
-- `【】`内是扩容项，选背；用于丰富答题角度、锦上添花，追求更高分数。如果其中是例子，可以根据题目灵活替换。
+- 圆括号外是背诵主体，写全可以拿到主要分数。
+- `（）`内是扩容项，选背；用于丰富答题角度、锦上添花，追求更高分数。如果其中是例子，可以根据题目灵活替换。
 
 """
+
+
+def clean_expansion(value: str) -> str:
+    return value.replace("（例子可灵活替换）", "")
+
+
+def source_expansion_contents(text: str) -> list[str]:
+    body = text[text.index("# 第一章 ") :]
+    return [clean_expansion(match.group(1)) for match in EXPANSION_RE.finditer(body)]
 
 
 THREE_STAR_UNITS = {
@@ -67,12 +76,12 @@ def transform(text: str) -> str:
         nonlocal pair_count
         pair_count += 1
         name, expansion = match.groups()
-        expansion = expansion.replace("（例子可灵活替换）", "")
-        return f"【{expansion}】【名词解释：{name}】"
+        expansion = clean_expansion(expansion)
+        return f"（{expansion}）【名词解释：{name}】"
 
     body = PAIR_RE.sub(replace_pair, body)
     assert pair_count == 81
-    body = EXPANSION_RE.sub(lambda match: f"【{match.group(1)}】", body)
+    body = EXPANSION_RE.sub(lambda match: f"（{clean_expansion(match.group(1))}）", body)
     body = body.replace("（例子可灵活替换）", "")
     body, separated_continuations = POST_TAG_TEXT_RE.subn(r"\1\n\n", body)
     assert separated_continuations == 27

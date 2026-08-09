@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "deliverables/华东师范大学347心理学导论保命手册_全本_三星分级舒适阅读版V8.md"
 OUTPUT = ROOT / "deliverables/华东师范大学347心理学导论保命手册_全本_极简直背版V9.md"
+EXPANSION_RE = re.compile(r"【扩容（选背）：(.*?)】")
+POST_TAG_TEXT_RE = re.compile(r"(【名词解释：[^】]+】)[ \t]*(?=\S)")
 
 
 GUIDE = """### 星级
@@ -16,10 +19,19 @@ GUIDE = """### 星级
 
 ### 怎么用
 
-- 方括号外是背诵主体，写全可以拿到主要分数。
-- `【】`内是扩容项，选背；用于丰富答题角度、锦上添花，追求更高分数。如果其中是例子，可以根据题目灵活替换。
+- 圆括号外是背诵主体，写全可以拿到主要分数。
+- `（）`内是扩容项，选背；用于丰富答题角度、锦上添花，追求更高分数。如果其中是例子，可以根据题目灵活替换。
 
 """
+
+
+def clean_expansion(value: str) -> str:
+    return value.replace("（例子可灵活替换）", "").replace("（固定例子可选用）", "")
+
+
+def source_expansion_contents(text: str) -> list[str]:
+    body = text[text.index("# 第一章 ") :]
+    return [clean_expansion(match.group(1)) for match in EXPANSION_RE.finditer(body)]
 
 
 def transform(text: str) -> str:
@@ -28,7 +40,11 @@ def transform(text: str) -> str:
     assert body.count("【扩容（选背）：") == 596
     assert body.count("（例子可灵活替换）") == 114
     assert body.count("（固定例子可选用）") == 2
-    body = body.replace("【扩容（选背）：", "【")
+    body, expansion_count = EXPANSION_RE.subn(
+        lambda match: f"（{clean_expansion(match.group(1))}）",
+        body,
+    )
+    assert expansion_count == 596
     body = body.replace("（例子可灵活替换）", "")
     body = body.replace("（固定例子可选用）", "")
     lines = body.splitlines()
@@ -41,7 +57,10 @@ def transform(text: str) -> str:
         first_tag_end = line.index("】", line.index("【名词解释：")) + 1
         lines[index : index + 1] = [line[:first_tag_end], "", line[first_tag_end:]]
     body = "\n".join(lines) + ("\n" if body.endswith("\n") else "")
+    body, separated_continuations = POST_TAG_TEXT_RE.subn(r"\1\n\n", body)
+    assert separated_continuations > 0
     assert all(line.count("【名词解释：") <= 1 for line in body.splitlines())
+    assert not POST_TAG_TEXT_RE.search(body)
     assert "扩容（选背）" not in body
     assert "扩容（选用）" not in body
     assert "例子可灵活替换" not in body
@@ -60,7 +79,7 @@ def main() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(result, encoding="utf-8")
     print(
-        f"已生成 {OUTPUT}：596处扩容改为纯方括号，"
+        f"已生成 {OUTPUT}：596处扩容改为全角圆括号，"
         "删除114处例子灵活替换提示和2处固定例子提示。"
     )
 
