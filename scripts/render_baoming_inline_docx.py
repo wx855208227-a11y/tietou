@@ -841,7 +841,7 @@ def render_markdown(
     # 全本各迭代版都应使用全本封面、目录和逐题直背版式；版本名不应
     # 成为版式识别条件。
     full_book = subtitle.startswith("全本·")
-    minimal_v9 = subtitle.startswith("全本·极简直背版V9")
+    minimal_v9 = subtitle.startswith("全本·极简直背版")
     comfortable = subtitle.startswith("全本·三星分级舒适阅读版V8") or minimal_v9
     bare_expansions = minimal_v9
     question_specific = full_book or subtitle.endswith(("V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16"))
