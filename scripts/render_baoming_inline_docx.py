@@ -34,6 +34,7 @@ TAG_GRAY = RGBColor(89, 89, 89)
 OPTIONAL_GRAY = RGBColor(96, 96, 96)
 DEFINITION_TAG_RE = re.compile(r"【名词解释：[^】]+】")
 INLINE_EXPANSION_RE = re.compile(r"【扩容（选(?:用|背)）：.*?】")
+BARE_EXPANSION_RE = re.compile(r"【(?!(?:名词解释：[^】]+|简答|论述|★{1,3})】).*?】")
 INLINE_COMPACT_UNIT_PREFIXES = COMPACT_UNIT_PREFIXES + (
     "十三、心理学的主要分支",
     "四、影响信度系数的因素",
@@ -366,13 +367,13 @@ def add_inline_runs(
     size: float = 12,
     optional: bool = False,
     monochrome: bool = False,
+    bare_expansions: bool = False,
 ) -> None:
     def add_expansion_runs(expansion_content: str) -> None:
         prefix_match = re.match(r"【扩容（选(?:用|背)）：", expansion_content)
-        assert prefix_match is not None
-        expansion_prefix = prefix_match.group(0)
+        expansion_prefix = prefix_match.group(0) if prefix_match else "【"
         prefix_run = paragraph.add_run(expansion_prefix)
-        set_run_font(prefix_run, "宋体", 9.2, True)
+        set_run_font(prefix_run, "宋体", 9.2 if prefix_match else 10.2, True)
         inner = expansion_content[len(expansion_prefix) : -1]
         for text, is_bold, is_underlined, is_italic in markdown_tokens(inner):
             if not text:
@@ -383,7 +384,7 @@ def add_inline_runs(
             if is_underlined:
                 run.underline = True
         closing_run = paragraph.add_run("】")
-        set_run_font(closing_run, "宋体", 9.2, True)
+        set_run_font(closing_run, "宋体", 9.2 if prefix_match else 10.2, True)
 
     def add_regular_runs(regular_content: str) -> None:
         for text, is_bold, is_underlined, is_italic in markdown_tokens(regular_content):
@@ -412,8 +413,9 @@ def add_inline_runs(
                     if optional:
                         run.font.color.rgb = BLACK if monochrome else OPTIONAL_GRAY
 
+    expansion_pattern = BARE_EXPANSION_RE if bare_expansions else INLINE_EXPANSION_RE
     cursor = 0
-    for match in INLINE_EXPANSION_RE.finditer(content):
+    for match in expansion_pattern.finditer(content):
         add_regular_runs(content[cursor : match.start()])
         add_expansion_runs(match.group(0))
         cursor = match.end()
@@ -430,6 +432,7 @@ def add_catalog(
     study_typography: bool = False,
     direct_without_answer_label: bool = False,
     selective_expansion: bool = False,
+    bare_expansions: bool = False,
 ) -> None:
     title = document.add_paragraph()
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -473,7 +476,12 @@ def add_catalog(
     else:
         shade_paragraph(note, LIGHT_GRAY_FILL)
     if direct_without_answer_label:
-        if selective_expansion:
+        if bare_expansions:
+            note_text = (
+                "直接用法｜每道押题下方内容可直接背诵和作答；方括号外是背诵主体，"
+                "【】内是可选扩容，例子可按题目灵活替换。"
+            )
+        elif selective_expansion:
             note_text = (
                 "直接用法｜每道押题下方内容可直接背诵和作答；【名词解释】前是可独立提取的完整定义；"
                 "【扩容（选背）】中的内容可选择背诵，作答时按题目分值和时间选写。"
@@ -590,6 +598,67 @@ def add_student_guide(document: Document) -> None:
     document.add_page_break()
 
 
+def add_student_guide_v9(document: Document) -> None:
+    title = document.add_paragraph()
+    title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    title.paragraph_format.first_line_indent = Cm(0)
+    title.paragraph_format.space_after = Pt(16)
+    set_run_font(title.add_run("使用说明"), "宋体", 22, True)
+
+    level_heading = document.add_paragraph()
+    level_heading.paragraph_format.first_line_indent = Cm(0)
+    level_heading.paragraph_format.space_after = Pt(7)
+    set_run_font(level_heading.add_run("星级"), size=14, bold=True)
+    levels = (
+        (
+            "★★★  核心优先｜",
+            "速背手册原一级；一本通与考纲中的核心内容，华东或相关真题信号强，主观题可考性和答案复用价值最高。优先完整背诵。",
+        ),
+        (
+            "★★  重点掌握｜",
+            "同属速背手册原一级；一本通与考纲依据明确，具有稳定可考性，但真题信号或综合优先度略低于三星。完成三星后继续掌握。",
+        ),
+        (
+            "★  基础覆盖｜",
+            "速背手册原二级；速背手册或一本通有收录且属于考纲范围，但真题信号和主观题可考性相对较弱。用于补足范围。",
+        ),
+    )
+    for label, explanation in levels:
+        paragraph = document.add_paragraph()
+        paragraph.paragraph_format.first_line_indent = Cm(0)
+        paragraph.paragraph_format.left_indent = Cm(0.45)
+        paragraph.paragraph_format.right_indent = Cm(0.3)
+        paragraph.paragraph_format.line_spacing = 1.42
+        paragraph.paragraph_format.space_after = Pt(8)
+        set_run_font(paragraph.add_run(label), size=11.5, bold=True)
+        set_run_font(paragraph.add_run(explanation), size=11)
+
+    caution = document.add_paragraph()
+    caution.paragraph_format.first_line_indent = Cm(0)
+    caution.paragraph_format.space_before = Pt(2)
+    caution.paragraph_format.space_after = Pt(13)
+    set_bottom_border(caution, size="8")
+    set_run_font(caution.add_run("星级只表示背诵顺序，不代表必考概率。"), size=10.5, bold=True)
+
+    use_heading = document.add_paragraph()
+    use_heading.paragraph_format.first_line_indent = Cm(0)
+    use_heading.paragraph_format.space_after = Pt(7)
+    set_run_font(use_heading.add_run("怎么用"), size=14, bold=True)
+    uses = (
+        "1. 方括号外是背诵主体，写全可以拿到主要分数。",
+        "2. 【】内是扩容项，选背；用于丰富答题角度、锦上添花，追求更高分数。如果其中是例子，可以根据题目灵活替换。",
+        "3. 名词解释背【名词解释：……】前的定义及紧邻扩容；简答、论述按题目写相应分点。",
+    )
+    for value in uses:
+        paragraph = document.add_paragraph()
+        paragraph.paragraph_format.first_line_indent = Cm(0)
+        paragraph.paragraph_format.left_indent = Cm(0.45)
+        paragraph.paragraph_format.line_spacing = 1.4
+        paragraph.paragraph_format.space_after = Pt(5)
+        set_run_font(paragraph.add_run(value), size=10.8)
+    document.add_page_break()
+
+
 def add_answer_heading(document: Document, text: str = "综合答案") -> None:
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.first_line_indent = Cm(0)
@@ -606,6 +675,7 @@ def add_question_heading(
     monochrome: bool = False,
     large_between_question_gap: bool = False,
     comfortable: bool = False,
+    bare_expansions: bool = False,
 ):
     paragraph = document.add_paragraph(style="Heading 3")
     paragraph.paragraph_format.first_line_indent = Cm(0)
@@ -614,7 +684,13 @@ def add_question_heading(
     match = re.match(r"(押题\d+)(【[^】]+】)(.*)", content)
     if match is None:
         paragraph.paragraph_format.space_before = Pt(8 if comfortable else 5)
-        add_inline_runs(paragraph, content, size=11.5, monochrome=monochrome)
+        add_inline_runs(
+            paragraph,
+            content,
+            size=11.5,
+            monochrome=monochrome,
+            bare_expansions=bare_expansions,
+        )
         return paragraph
     paragraph.paragraph_format.space_before = Pt(
         14 if comfortable and match.group(1) != "押题1"
@@ -624,7 +700,13 @@ def add_question_heading(
     )
     set_run_font(paragraph.add_run(match.group(1)), "宋体", 11.5, True)
     set_run_font(paragraph.add_run(match.group(2)), "宋体", 9.5, True)
-    add_inline_runs(paragraph, match.group(3), size=11.5, monochrome=monochrome)
+    add_inline_runs(
+        paragraph,
+        match.group(3),
+        size=11.5,
+        monochrome=monochrome,
+        bare_expansions=bare_expansions,
+    )
     if comfortable:
         set_bottom_border(paragraph, size="5")
     return paragraph
@@ -637,6 +719,7 @@ def add_list_paragraph(
     compact: bool,
     monochrome: bool = False,
     comfortable: bool = False,
+    bare_expansions: bool = False,
 ) -> None:
     stripped = raw_line.strip()
     paragraph = document.add_paragraph()
@@ -646,13 +729,17 @@ def add_list_paragraph(
     paragraph.paragraph_format.space_after = Pt(3 if comfortable else 0 if answer_mode else 1)
     paragraph.paragraph_format.widow_control = True
     paragraph.paragraph_format.keep_with_next = not answer_mode
-    if any(tag in stripped for tag in ("【采分点加分】", "【加分项】", "【扩容（选用）：", "【扩容（选背）：", "【名词解释：")):
+    if (
+        any(tag in stripped for tag in ("【采分点加分】", "【加分项】", "【扩容（选用）：", "【扩容（选背）：", "【名词解释："))
+        or bare_expansions and BARE_EXPANSION_RE.search(stripped)
+    ):
         paragraph.paragraph_format.keep_together = True
     add_inline_runs(
         paragraph,
         stripped,
         size=10.5 if not answer_mode else 11.5,
         monochrome=monochrome,
+        bare_expansions=bare_expansions,
     )
 
 
@@ -663,6 +750,7 @@ def add_secondary_list_paragraph(
     compact: bool,
     monochrome: bool = False,
     comfortable: bool = False,
+    bare_expansions: bool = False,
 ) -> None:
     """Render （1） child points one level below their parent scoring angle."""
     stripped = raw_line.strip()
@@ -672,13 +760,19 @@ def add_secondary_list_paragraph(
     paragraph.paragraph_format.line_spacing = 1.38 if comfortable else 1.2 if compact else 1.3
     paragraph.paragraph_format.space_after = Pt(2.5 if comfortable else 0 if answer_mode else 1)
     paragraph.paragraph_format.widow_control = True
-    if "【扩容（选用）：" in stripped or "【扩容（选背）：" in stripped or "【名词解释：" in stripped:
+    if (
+        "【扩容（选用）：" in stripped
+        or "【扩容（选背）：" in stripped
+        or "【名词解释：" in stripped
+        or bare_expansions and BARE_EXPANSION_RE.search(stripped)
+    ):
         paragraph.paragraph_format.keep_together = True
     add_inline_runs(
         paragraph,
         stripped,
         size=10.5 if not answer_mode else 11.3,
         monochrome=monochrome,
+        bare_expansions=bare_expansions,
     )
 
 
@@ -688,8 +782,13 @@ def add_body_paragraph(
     compact: bool,
     monochrome: bool = False,
     comfortable: bool = False,
+    bare_expansions: bool = False,
 ) -> None:
-    optional = content.startswith("（加分项：") or content.startswith(("【扩容（选用）：", "【扩容（选背）："))
+    optional = (
+        content.startswith("（加分项：")
+        or content.startswith(("【扩容（选用）：", "【扩容（选背）："))
+        or bare_expansions and BARE_EXPANSION_RE.fullmatch(content) is not None
+    )
     if optional and document.paragraphs:
         document.paragraphs[-1].paragraph_format.keep_with_next = True
     summary = content.startswith("综上")
@@ -714,6 +813,7 @@ def add_body_paragraph(
         or "【加分项】" in content
         or "【扩容（选用）：" in content
         or "【扩容（选背）：" in content
+        or bare_expansions and BARE_EXPANSION_RE.search(content)
     ):
         paragraph.paragraph_format.keep_together = True
     if summary:
@@ -732,6 +832,7 @@ def add_body_paragraph(
         size=11.5,
         optional=optional,
         monochrome=monochrome,
+        bare_expansions=bare_expansions,
     )
 
 
@@ -746,7 +847,9 @@ def render_markdown(
     # 全本各迭代版都应使用全本封面、目录和逐题直背版式；版本名不应
     # 成为版式识别条件。
     full_book = subtitle.startswith("全本·")
-    comfortable = subtitle.startswith("全本·三星分级舒适阅读版V8")
+    minimal_v9 = subtitle.startswith("全本·极简直背版V9")
+    comfortable = subtitle.startswith("全本·三星分级舒适阅读版V8") or minimal_v9
+    bare_expansions = minimal_v9
     question_specific = full_book or subtitle.endswith(("V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16"))
     monochrome = full_book or subtitle.endswith(("V7", "V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16"))
     if page_map_override is not None:
@@ -795,13 +898,18 @@ def render_markdown(
         else f"华东师范大学347{subject_name}直背综合答案版"
     )
     document.core_properties.author = "铁头心理学考研"
-    add_cover(
-        document,
-        title,
-        subtitle,
-        edition="全本｜2026" if full_book else "前三章｜2026",
-    )
-    if comfortable:
+    if minimal_v9:
+        add_cover(document, title, "", edition="")
+    else:
+        add_cover(
+            document,
+            title,
+            subtitle,
+            edition="全本｜2026" if full_book else "前三章｜2026",
+        )
+    if minimal_v9:
+        add_student_guide_v9(document)
+    elif comfortable:
         add_student_guide(document)
     first_chapter_index = next(
         index for index, line in enumerate(lines) if line.startswith("# 第一章 ")
@@ -816,6 +924,7 @@ def render_markdown(
         study_typography=subtitle.endswith("V11"),
         direct_without_answer_label=full_book or subtitle.endswith(("V12", "V13", "V14", "V15", "V16")),
         selective_expansion=full_book or subtitle.endswith(("V13", "V14", "V15", "V16")),
+        bare_expansions=bare_expansions,
     )
 
     body_section = document.add_section(WD_SECTION.NEW_PAGE)
@@ -874,6 +983,7 @@ def render_markdown(
                         monochrome=monochrome,
                         large_between_question_gap=full_book or subtitle.endswith(("V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16")),
                         comfortable=comfortable,
+                        bare_expansions=bare_expansions,
                     )
                 else:
                     heading = add_heading(document, 3, displayed)
@@ -895,6 +1005,7 @@ def render_markdown(
                 compact_unit,
                 monochrome=monochrome,
                 comfortable=comfortable,
+                bare_expansions=bare_expansions,
             )
         elif re.match(r"^（\d+）", stripped):
             add_secondary_list_paragraph(
@@ -904,6 +1015,7 @@ def render_markdown(
                 compact_unit,
                 monochrome=monochrome,
                 comfortable=comfortable,
+                bare_expansions=bare_expansions,
             )
         else:
             add_body_paragraph(
@@ -912,6 +1024,7 @@ def render_markdown(
                 compact_unit,
                 monochrome=monochrome,
                 comfortable=comfortable,
+                bare_expansions=bare_expansions,
             )
         line_index += 1
 
