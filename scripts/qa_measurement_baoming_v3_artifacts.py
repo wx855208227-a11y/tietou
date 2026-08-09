@@ -98,6 +98,11 @@ def main() -> None:
 
     paragraphs = root.findall(f".//{{{W_NS}}}p")
     assert all(paragraph_text(paragraph).count("【名词解释：") <= 1 for paragraph in paragraphs)
+    assert all(
+        "【名词解释：" not in paragraph_text(paragraph)
+        or re.search(r"【名词解释：[^】]+】$", paragraph_text(paragraph))
+        for paragraph in paragraphs
+    ), "DOCX中存在名解标签后继续堆写正文的段落"
     body_paragraph_index = next(
         index
         for index, paragraph in enumerate(paragraphs)
@@ -142,7 +147,7 @@ def main() -> None:
     assert int(sample_spacing.get(f"{{{W_NS}}}after")) >= 100
 
     document = fitz.open(PDF)
-    assert len(document) == 40
+    assert len(document) == 41
     page_texts: list[str] = []
     image_blocks = overflow_blocks = non_black_spans = non_black_drawings = 0
     non_gray_pixels = italic_spans = 0

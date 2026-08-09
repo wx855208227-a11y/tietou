@@ -9,6 +9,7 @@ SOURCE = ROOT / "deliverables/华东师范大学347心理测量保命手册_全�
 OUTPUT = ROOT / "deliverables/华东师范大学347心理测量保命手册_全本_极简直背版V3.md"
 PAIR_RE = re.compile(r"【名词解释：([^】]+)】【扩容（选用）：(.*?)】")
 EXPANSION_RE = re.compile(r"【扩容（选用）：(.*?)】")
+POST_TAG_TEXT_RE = re.compile(r"(【名词解释：[^】]+】)(?=\S)")
 
 
 GUIDE = """### 星级
@@ -73,8 +74,11 @@ def transform(text: str) -> str:
     assert pair_count == 81
     body = EXPANSION_RE.sub(lambda match: f"【{match.group(1)}】", body)
     body = body.replace("（例子可灵活替换）", "")
+    body, separated_continuations = POST_TAG_TEXT_RE.subn(r"\1\n\n", body)
+    assert separated_continuations == 27
     assert "扩容（选用）" not in body and "例子可灵活替换" not in body
     assert all(line.count("【名词解释：") <= 1 for line in body.splitlines())
+    assert not POST_TAG_TEXT_RE.search(body)
 
     return (
         "# 华东师范大学347心理测量保命手册\n\n"

@@ -5,7 +5,7 @@ from pathlib import Path
 import re
 
 from build_measurement_baoming_v2 import EXPANSIONS
-from build_measurement_baoming_v3 import SOURCE, OUTPUT, transform
+from build_measurement_baoming_v3 import POST_TAG_TEXT_RE, SOURCE, OUTPUT, transform
 from validate_measurement_baoming_v1 import CHAPTERS, normalize_definition, plain, question_blocks
 
 
@@ -87,6 +87,7 @@ def main() -> None:
     assert "例子可灵活替换" not in body
     assert body.count("【名词解释：") == 81
     assert all(line.count("【名词解释：") <= 1 for line in body.splitlines())
+    assert not POST_TAG_TEXT_RE.search(body), "名解标签后仍有正文堆在同一段"
     expansions = expansion_contents(body)
     assert len(expansions) == 165
 
