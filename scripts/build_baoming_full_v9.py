@@ -14,13 +14,10 @@ GUIDE = """### 星级
 - **★★ 重点掌握**：同属速背手册原一级；一本通与考纲依据明确，具有稳定可考性，但真题信号或综合优先度略低于三星。完成三星后继续掌握。
 - **★ 基础覆盖**：对应速背手册原二级；速背手册或一本通有收录且属于考纲范围，但真题信号和主观题可考性相对较弱。用于补足范围。
 
-> 星级只表示背诵顺序，不代表必考概率。
-
 ### 怎么用
 
 - 方括号外是背诵主体，写全可以拿到主要分数。
 - `【】`内是扩容项，选背；用于丰富答题角度、锦上添花，追求更高分数。如果其中是例子，可以根据题目灵活替换。
-- 名词解释背`【名词解释：……】`前的定义及紧邻扩容；简答、论述按题目写相应分点。
 
 """
 
@@ -34,6 +31,17 @@ def transform(text: str) -> str:
     body = body.replace("【扩容（选背）：", "【")
     body = body.replace("（例子可灵活替换）", "")
     body = body.replace("（固定例子可选用）", "")
+    lines = body.splitlines()
+    multi_definition_indexes = [
+        index for index, line in enumerate(lines) if line.count("【名词解释：") > 1
+    ]
+    assert len(multi_definition_indexes) == 6
+    for index in reversed(multi_definition_indexes):
+        line = lines[index]
+        first_tag_end = line.index("】", line.index("【名词解释：")) + 1
+        lines[index : index + 1] = [line[:first_tag_end], "", line[first_tag_end:]]
+    body = "\n".join(lines) + ("\n" if body.endswith("\n") else "")
+    assert all(line.count("【名词解释：") <= 1 for line in body.splitlines())
     assert "扩容（选背）" not in body
     assert "扩容（选用）" not in body
     assert "例子可灵活替换" not in body

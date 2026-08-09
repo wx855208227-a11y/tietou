@@ -48,6 +48,11 @@ def main() -> None:
         "例子，可以根据题目灵活替换",
     ):
         assert phrase in front, phrase
+    for phrase in (
+        "星级只表示背诵顺序，不代表必考概率",
+        "名词解释背`【名词解释：……】`前的定义及紧邻扩容",
+    ):
+        assert phrase not in front, phrase
     assert front.count("### ") == 2
 
     content = body(text)
@@ -56,6 +61,7 @@ def main() -> None:
     assert "例子可灵活替换" not in content
     assert "固定例子可选用" not in content
     assert content.count("【名词解释：") == 296
+    assert all(line.count("【名词解释：") <= 1 for line in content.splitlines())
     expansions = expansion_contents(content)
     assert len(expansions) == 596
 

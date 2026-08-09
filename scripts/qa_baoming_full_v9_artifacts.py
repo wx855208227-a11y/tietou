@@ -92,8 +92,38 @@ def main() -> None:
         "如果其中是例子，可以根据题目灵活替换",
     ):
         assert phrase in docx_text, phrase
+    for phrase in (
+        "星级只表示背诵顺序，不代表必考概率",
+        "名词解释背【名词解释：……】前的定义及紧邻扩容",
+    ):
+        assert phrase not in docx_text, phrase
 
     paragraphs = root.findall(f".//{{{W_NS}}}p")
+    assert all(paragraph_text(paragraph).count("【名词解释：") <= 1 for paragraph in paragraphs)
+    crowd_paragraphs = {
+        name: next(
+            paragraph
+            for paragraph in paragraphs
+            if compact(paragraph_text(paragraph)).startswith(compact(prefix))
+        )
+        for name, prefix in {
+            "从众": "从众是个体在群体影响下放弃原有意见",
+            "服从": "服从是个体受到外界权威或压力影响",
+            "影响来源": "1. 影响来源：从众主要来自群体多数意见",
+        }.items()
+    }
+    assert crowd_paragraphs["从众"] is not crowd_paragraphs["服从"]
+    for name in ("从众", "服从"):
+        spacing = crowd_paragraphs[name].find(f"./{{{W_NS}}}pPr/{{{W_NS}}}spacing")
+        assert spacing is not None
+        assert int(spacing.get(f"{{{W_NS}}}line")) >= 360
+        assert int(spacing.get(f"{{{W_NS}}}after")) >= 100
+    list_spacing = crowd_paragraphs["影响来源"].find(
+        f"./{{{W_NS}}}pPr/{{{W_NS}}}spacing"
+    )
+    assert list_spacing is not None
+    assert int(list_spacing.get(f"{{{W_NS}}}line")) >= 350
+    assert int(list_spacing.get(f"{{{W_NS}}}after")) >= 80
     body_paragraph_index = next(
         index
         for index, paragraph in enumerate(paragraphs)
@@ -130,7 +160,7 @@ def main() -> None:
     assert question_gaps and min(question_gaps) >= 280
 
     document = fitz.open(PDF)
-    assert len(document) == 93
+    assert len(document) == 107
     page_texts: list[str] = []
     image_blocks = overflow_blocks = non_black_spans = non_black_drawings = 0
     non_gray_pixels = italic_spans = 0
@@ -177,6 +207,8 @@ def main() -> None:
     assert "V9" not in page_texts[0] and "2026" not in page_texts[0]
     assert "使用说明" in page_texts[1]
     assert "【】内是扩容项" in compact(page_texts[1])
+    assert "星级只表示背诵顺序，不代表必考概率" not in full_text
+    assert "名词解释背【名词解释：……】前的定义及紧邻扩容" not in compact(full_text)
     assert full_text.count("押题") == question_count + 1
 
     first_body = next(

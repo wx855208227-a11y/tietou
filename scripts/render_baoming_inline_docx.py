@@ -373,18 +373,18 @@ def add_inline_runs(
         prefix_match = re.match(r"【扩容（选(?:用|背)）：", expansion_content)
         expansion_prefix = prefix_match.group(0) if prefix_match else "【"
         prefix_run = paragraph.add_run(expansion_prefix)
-        set_run_font(prefix_run, "宋体", 9.2 if prefix_match else 10.2, True)
+        set_run_font(prefix_run, "宋体", 9.2 if prefix_match else 10.5, True)
         inner = expansion_content[len(expansion_prefix) : -1]
         for text, is_bold, is_underlined, is_italic in markdown_tokens(inner):
             if not text:
                 continue
             run = paragraph.add_run(text.replace("—", "\u2060—\u2060"))
-            set_run_font(run, "宋体", 10.2, is_bold)
+            set_run_font(run, "宋体", 10.5 if bare_expansions else 10.2, is_bold)
             run.italic = is_italic
             if is_underlined:
                 run.underline = True
         closing_run = paragraph.add_run("】")
-        set_run_font(closing_run, "宋体", 9.2 if prefix_match else 10.2, True)
+        set_run_font(closing_run, "宋体", 9.2 if prefix_match else 10.5, True)
 
     def add_regular_runs(regular_content: str) -> None:
         for text, is_bold, is_underlined, is_italic in markdown_tokens(regular_content):
@@ -395,13 +395,13 @@ def add_inline_runs(
                     continue
                 if DEFINITION_TAG_RE.fullmatch(part):
                     run = paragraph.add_run("\u2060".join(part))
-                    set_run_font(run, "宋体", 9.5, True)
+                    set_run_font(run, "宋体", 9.8 if bare_expansions else 9.5, True)
                     run.italic = is_italic
                     if not monochrome:
                         run.font.highlight_color = WD_COLOR_INDEX.YELLOW
                 elif re.fullmatch(r"【[^】]+】", part):
                     run = paragraph.add_run("\u2060".join(part))
-                    set_run_font(run, "宋体", 9.5, True)
+                    set_run_font(run, "宋体", 9.8 if bare_expansions else 9.5, True)
                     run.italic = is_italic
                     run.font.color.rgb = BLACK if monochrome else TAG_GRAY
                 else:
@@ -633,13 +633,6 @@ def add_student_guide_v9(document: Document) -> None:
         set_run_font(paragraph.add_run(label), size=11.5, bold=True)
         set_run_font(paragraph.add_run(explanation), size=11)
 
-    caution = document.add_paragraph()
-    caution.paragraph_format.first_line_indent = Cm(0)
-    caution.paragraph_format.space_before = Pt(2)
-    caution.paragraph_format.space_after = Pt(13)
-    set_bottom_border(caution, size="8")
-    set_run_font(caution.add_run("星级只表示背诵顺序，不代表必考概率。"), size=10.5, bold=True)
-
     use_heading = document.add_paragraph()
     use_heading.paragraph_format.first_line_indent = Cm(0)
     use_heading.paragraph_format.space_after = Pt(7)
@@ -647,7 +640,6 @@ def add_student_guide_v9(document: Document) -> None:
     uses = (
         "1. 方括号外是背诵主体，写全可以拿到主要分数。",
         "2. 【】内是扩容项，选背；用于丰富答题角度、锦上添花，追求更高分数。如果其中是例子，可以根据题目灵活替换。",
-        "3. 名词解释背【名词解释：……】前的定义及紧邻扩容；简答、论述按题目写相应分点。",
     )
     for value in uses:
         paragraph = document.add_paragraph()
@@ -680,7 +672,7 @@ def add_question_heading(
     paragraph = document.add_paragraph(style="Heading 3")
     paragraph.paragraph_format.first_line_indent = Cm(0)
     paragraph.paragraph_format.keep_with_next = True
-    paragraph.paragraph_format.space_after = Pt(4 if comfortable else 2)
+    paragraph.paragraph_format.space_after = Pt(6 if comfortable else 2)
     match = re.match(r"(押题\d+)(【[^】]+】)(.*)", content)
     if match is None:
         paragraph.paragraph_format.space_before = Pt(8 if comfortable else 5)
@@ -693,17 +685,17 @@ def add_question_heading(
         )
         return paragraph
     paragraph.paragraph_format.space_before = Pt(
-        14 if comfortable and match.group(1) != "押题1"
-        else 8 if comfortable
+        16 if comfortable and match.group(1) != "押题1"
+        else 9 if comfortable
         else 10 if large_between_question_gap and match.group(1) != "押题1"
         else 5
     )
-    set_run_font(paragraph.add_run(match.group(1)), "宋体", 11.5, True)
-    set_run_font(paragraph.add_run(match.group(2)), "宋体", 9.5, True)
+    set_run_font(paragraph.add_run(match.group(1)), "宋体", 12, True)
+    set_run_font(paragraph.add_run(match.group(2)), "宋体", 10, True)
     add_inline_runs(
         paragraph,
         match.group(3),
-        size=11.5,
+        size=12,
         monochrome=monochrome,
         bare_expansions=bare_expansions,
     )
@@ -725,8 +717,8 @@ def add_list_paragraph(
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.left_indent = Cm(0.75)
     paragraph.paragraph_format.first_line_indent = Cm(-0.48)
-    paragraph.paragraph_format.line_spacing = 1.42 if comfortable else 1.2 if compact else 1.35
-    paragraph.paragraph_format.space_after = Pt(3 if comfortable else 0 if answer_mode else 1)
+    paragraph.paragraph_format.line_spacing = 1.48 if comfortable else 1.2 if compact else 1.35
+    paragraph.paragraph_format.space_after = Pt(4.5 if comfortable else 0 if answer_mode else 1)
     paragraph.paragraph_format.widow_control = True
     paragraph.paragraph_format.keep_with_next = not answer_mode
     if (
@@ -737,7 +729,7 @@ def add_list_paragraph(
     add_inline_runs(
         paragraph,
         stripped,
-        size=10.5 if not answer_mode else 11.5,
+        size=10.5 if not answer_mode else 12 if comfortable else 11.5,
         monochrome=monochrome,
         bare_expansions=bare_expansions,
     )
@@ -757,8 +749,8 @@ def add_secondary_list_paragraph(
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.left_indent = Cm(1.22)
     paragraph.paragraph_format.first_line_indent = Cm(-0.47)
-    paragraph.paragraph_format.line_spacing = 1.38 if comfortable else 1.2 if compact else 1.3
-    paragraph.paragraph_format.space_after = Pt(2.5 if comfortable else 0 if answer_mode else 1)
+    paragraph.paragraph_format.line_spacing = 1.46 if comfortable else 1.2 if compact else 1.3
+    paragraph.paragraph_format.space_after = Pt(4 if comfortable else 0 if answer_mode else 1)
     paragraph.paragraph_format.widow_control = True
     if (
         "【扩容（选用）：" in stripped
@@ -770,7 +762,7 @@ def add_secondary_list_paragraph(
     add_inline_runs(
         paragraph,
         stripped,
-        size=10.5 if not answer_mode else 11.3,
+        size=10.5 if not answer_mode else 11.8 if comfortable else 11.3,
         monochrome=monochrome,
         bare_expansions=bare_expansions,
     )
@@ -800,12 +792,12 @@ def add_body_paragraph(
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.line_spacing = (
         1.36 if comfortable and optional
-        else 1.46 if comfortable
+        else 1.5 if comfortable
         else 1.18 if optional
         else 1.25 if compact
         else 1.4
     )
-    paragraph.paragraph_format.space_after = Pt(3 if comfortable else 1)
+    paragraph.paragraph_format.space_after = Pt(5 if comfortable else 1)
     paragraph.paragraph_format.widow_control = True
     if (
         "【名词解释：" in content
@@ -817,6 +809,8 @@ def add_body_paragraph(
     ):
         paragraph.paragraph_format.keep_together = True
     if summary:
+        paragraph.paragraph_format.space_before = Pt(4 if comfortable else 0)
+        paragraph.paragraph_format.space_after = Pt(6 if comfortable else 1)
         paragraph.paragraph_format.keep_together = True
     if content == "**【整体加分】**":
         paragraph.paragraph_format.first_line_indent = Cm(0)
@@ -829,7 +823,7 @@ def add_body_paragraph(
     add_inline_runs(
         paragraph,
         content,
-        size=11.5,
+        size=12 if comfortable else 11.5,
         optional=optional,
         monochrome=monochrome,
         bare_expansions=bare_expansions,
@@ -956,8 +950,8 @@ def render_markdown(
                 heading.paragraph_format.space_before = Pt(7)
                 heading.paragraph_format.space_after = Pt(3)
             elif comfortable:
-                heading.paragraph_format.space_before = Pt(11)
-                heading.paragraph_format.space_after = Pt(5)
+                heading.paragraph_format.space_before = Pt(13)
+                heading.paragraph_format.space_after = Pt(7)
             answer_mode = False
         elif stripped.startswith("#### "):
             heading_text = stripped[5:].strip()
