@@ -56,9 +56,15 @@ def main() -> None:
             for name in archive.namelist()
             if name.startswith("word/header") and name.endswith(".xml")
         )
-    docx_text = "".join(node.text or "" for node in root.findall(f".//{{{W_NS}}}t")).replace(
-        "\u2060", ""
+    raw_docx_text = "".join(
+        node.text or "" for node in root.findall(f".//{{{W_NS}}}t")
     )
+    docx_text = raw_docx_text.replace("\u2060", "")
+    assert all(
+        "\u2060" not in tag
+        for tag in re.findall(r"【.*?】", raw_docx_text)
+        if compact(tag).startswith(compact("【名词解释："))
+    ), "名词解释标签中仍存在拉大字距的连接字符"
     colors = {node.get(f"{{{W_NS}}}val") for node in root.findall(f".//{{{W_NS}}}color")}
     assert colors == {"000000"}, colors
     assert all(
@@ -104,6 +110,24 @@ def main() -> None:
         for index, paragraph in enumerate(paragraphs)
         if compact(paragraph_text(paragraph)) == compact(FIRST_CHAPTER)
     )
+    for paragraph in paragraphs[body_paragraph_index:]:
+        paragraph_style = paragraph.find(f"./{{{W_NS}}}pPr/{{{W_NS}}}pStyle")
+        if paragraph_style is not None or not paragraph_text(paragraph).strip():
+            continue
+        run_sizes = []
+        for run in paragraph.findall(f"./{{{W_NS}}}r"):
+            run_text = "".join(
+                node.text or "" for node in run.findall(f".//{{{W_NS}}}t")
+            )
+            if not run_text:
+                continue
+            size = run.find(f"./{{{W_NS}}}rPr/{{{W_NS}}}sz")
+            assert size is not None, paragraph_text(paragraph)
+            run_sizes.append(int(size.get(f"{{{W_NS}}}val")))
+        assert not run_sizes or set(run_sizes) == {24}, (
+            paragraph_text(paragraph),
+            sorted(set(run_sizes)),
+        )
     docx_body = "".join(
         paragraph_text(paragraph) for paragraph in paragraphs[body_paragraph_index:]
     ).replace("\u2060", "")
@@ -144,7 +168,7 @@ def main() -> None:
     assert int(sample_spacing.get(f"{{{W_NS}}}after")) >= 100
 
     document = fitz.open(PDF)
-    assert len(document) == 41
+    assert len(document) == 43
     page_texts: list[str] = []
     image_blocks = overflow_blocks = non_black_spans = non_black_drawings = 0
     non_gray_pixels = italic_spans = 0

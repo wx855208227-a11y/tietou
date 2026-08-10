@@ -32,6 +32,7 @@ from render_baoming_mother_docx import COMPACT_UNIT_PREFIXES
 
 TAG_GRAY = RGBColor(89, 89, 89)
 OPTIONAL_GRAY = RGBColor(96, 96, 96)
+BODY_TEXT_SIZE = 12
 DEFINITION_TAG_RE = re.compile(r"【名词解释：[^】]+】")
 INLINE_EXPANSION_RE = re.compile(r"【扩容（选(?:用|背)）：.*?】")
 BARE_EXPANSION_RE = re.compile(r"【(?!(?:名词解释：[^】]+|简答|论述|★{1,3})】).*?】")
@@ -376,18 +377,28 @@ def add_inline_runs(
         expansion_prefix = prefix_match.group(0) if prefix_match else "（" if round_expansion else "【"
         expansion_closing = "）" if round_expansion else "】"
         prefix_run = paragraph.add_run(expansion_prefix)
-        set_run_font(prefix_run, "宋体", 9.2 if prefix_match else 10.5, True)
+        set_run_font(
+            prefix_run,
+            "宋体",
+            size if bare_expansions else 9.2 if prefix_match else 10.5,
+            True,
+        )
         inner = expansion_content[len(expansion_prefix) : -1]
         for text, is_bold, is_underlined, is_italic in markdown_tokens(inner):
             if not text:
                 continue
             run = paragraph.add_run(text.replace("—", "\u2060—\u2060"))
-            set_run_font(run, "宋体", 10.5 if bare_expansions else 10.2, is_bold)
+            set_run_font(run, "宋体", size if bare_expansions else 10.2, is_bold)
             run.italic = is_italic
             if is_underlined:
                 run.underline = True
         closing_run = paragraph.add_run(expansion_closing)
-        set_run_font(closing_run, "宋体", 9.2 if prefix_match else 10.5, True)
+        set_run_font(
+            closing_run,
+            "宋体",
+            size if bare_expansions else 9.2 if prefix_match else 10.5,
+            True,
+        )
 
     def add_regular_runs(regular_content: str) -> None:
         for text, is_bold, is_underlined, is_italic in markdown_tokens(regular_content):
@@ -397,19 +408,24 @@ def add_inline_runs(
                 if not part:
                     continue
                 if DEFINITION_TAG_RE.fullmatch(part):
-                    run = paragraph.add_run("\u2060".join(part))
-                    set_run_font(run, "宋体", 9.8 if bare_expansions else 9.5, True)
+                    run = paragraph.add_run(part)
+                    set_run_font(run, "宋体", size if bare_expansions else 9.5, True)
                     run.italic = is_italic
                     if not monochrome:
                         run.font.highlight_color = WD_COLOR_INDEX.YELLOW
                 elif re.fullmatch(r"【[^】]+】", part):
-                    run = paragraph.add_run("\u2060".join(part))
-                    set_run_font(run, "宋体", 9.8 if bare_expansions else 9.5, True)
+                    run = paragraph.add_run(part)
+                    set_run_font(run, "宋体", size if bare_expansions else 9.5, True)
                     run.italic = is_italic
                     run.font.color.rgb = BLACK if monochrome else TAG_GRAY
                 else:
                     run = paragraph.add_run(part.replace("—", "\u2060—\u2060"))
-                    set_run_font(run, "宋体", 9.5 if optional else size, is_bold)
+                    set_run_font(
+                        run,
+                        "宋体",
+                        size if bare_expansions else 9.5 if optional else size,
+                        is_bold,
+                    )
                     run.italic = is_italic
                     if is_underlined:
                         run.underline = True
@@ -732,7 +748,7 @@ def add_list_paragraph(
     add_inline_runs(
         paragraph,
         stripped,
-        size=10.5 if not answer_mode else 12 if comfortable else 11.5,
+        size=10.5 if not answer_mode else BODY_TEXT_SIZE if comfortable else 11.5,
         monochrome=monochrome,
         bare_expansions=bare_expansions,
     )
@@ -765,7 +781,7 @@ def add_secondary_list_paragraph(
     add_inline_runs(
         paragraph,
         stripped,
-        size=10.5 if not answer_mode else 11.8 if comfortable else 11.3,
+        size=10.5 if not answer_mode else BODY_TEXT_SIZE if comfortable else 11.3,
         monochrome=monochrome,
         bare_expansions=bare_expansions,
     )
@@ -826,7 +842,7 @@ def add_body_paragraph(
     add_inline_runs(
         paragraph,
         content,
-        size=12 if comfortable else 11.5,
+        size=BODY_TEXT_SIZE if comfortable else 11.5,
         optional=optional,
         monochrome=monochrome,
         bare_expansions=bare_expansions,
