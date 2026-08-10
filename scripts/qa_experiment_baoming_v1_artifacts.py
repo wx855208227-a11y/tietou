@@ -111,6 +111,19 @@ def main() -> None:
     assert len(question_headings) == question_count
     question_before: list[int] = []
     for paragraph in question_headings:
+        type_runs = []
+        for run in paragraph.findall(f"./{{{W_NS}}}r"):
+            run_text = "".join(node.text or "" for node in run.findall(f".//{{{W_NS}}}t"))
+            if run_text not in {"【简答】", "【论述】"}:
+                continue
+            properties = run.find(f"./{{{W_NS}}}rPr")
+            assert properties is not None
+            size = properties.find(f"./{{{W_NS}}}sz")
+            fonts = properties.find(f"./{{{W_NS}}}rFonts")
+            assert size is not None and int(size.get(f"{{{W_NS}}}val")) == 24
+            assert fonts is not None and fonts.get(f"{{{W_NS}}}eastAsia") == "宋体"
+            type_runs.append(run_text)
+        assert len(type_runs) == 1, paragraph_text(paragraph)
         spacing = paragraph.find(f"./{{{W_NS}}}pPr/{{{W_NS}}}spacing")
         assert spacing is not None
         question_before.append(int(spacing.get(f"{{{W_NS}}}before")))
@@ -199,7 +212,7 @@ def main() -> None:
         "# 华东实验心理学保命手册V1质检报告\n\n"
         "- 内容：11个一级章节、49个单元、49道押题；三星18、二星17、一星14。\n"
         "- 答案：简答35道、论述14道；69个唯一名解、73处调用、116处同行扩容。\n"
-        "- DOCX：正文非标题统一12磅；名解标签正常字距；无彩色、底纹、下划线和斜体；题目前距不小于9磅。\n"
+        "- DOCX：正文非标题统一12磅；【简答】、【论述】题型标记统一为宋体12磅；名解标签正常字距；无彩色、底纹、下划线和斜体；题目前距不小于9磅。\n"
         f"- PDF：A4共{len(document)}页，其中正文{len(document) - first_body}页；无图片块、越界文本、彩色像素和斜体文本。\n"
         "- 目录：60个章节／单元页码均与最终PDF正文页一致。\n"
     )

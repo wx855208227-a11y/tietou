@@ -709,8 +709,9 @@ def add_question_heading(
         else 10 if large_between_question_gap and match.group(1) != "押题1"
         else 5
     )
-    set_run_font(paragraph.add_run(match.group(1)), "宋体", 12, True)
-    set_run_font(paragraph.add_run(match.group(2)), "宋体", 10, True)
+    set_run_font(paragraph.add_run(match.group(1)), "宋体", BODY_TEXT_SIZE, True)
+    # 题型标记是题干正文的一部分，不再通过缩小字号制造视觉层级。
+    set_run_font(paragraph.add_run(match.group(2)), "宋体", BODY_TEXT_SIZE, True)
     add_inline_runs(
         paragraph,
         match.group(3),

@@ -147,6 +147,24 @@ def main() -> None:
         if match:
             docx_units[match.group(1)] += 1
     assert docx_units == stars
+    question_headings = [
+        paragraph for paragraph in paragraphs if re.match(r"^押题\d+【", paragraph_text(paragraph))
+    ]
+    assert len(question_headings) == question_count
+    for paragraph in question_headings:
+        type_runs = []
+        for run in paragraph.findall(f"./{{{W_NS}}}r"):
+            run_text = "".join(node.text or "" for node in run.findall(f".//{{{W_NS}}}t"))
+            if run_text not in {"【简答】", "【论述】"}:
+                continue
+            properties = run.find(f"./{{{W_NS}}}rPr")
+            assert properties is not None
+            size = properties.find(f"./{{{W_NS}}}sz")
+            fonts = properties.find(f"./{{{W_NS}}}rFonts")
+            assert size is not None and int(size.get(f"{{{W_NS}}}val")) == 24
+            assert fonts is not None and fonts.get(f"{{{W_NS}}}eastAsia") == "宋体"
+            type_runs.append(run_text)
+        assert len(type_runs) == 1, paragraph_text(paragraph)
     later_questions = [
         paragraph for paragraph in paragraphs if re.match(r"^押题(?:2|3|4)【", paragraph_text(paragraph))
     ]
