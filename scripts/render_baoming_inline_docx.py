@@ -867,6 +867,8 @@ def render_markdown(
     if bare_expansions:
         if "心理测量" in title:
             from build_measurement_baoming_v3 import SOURCE, source_expansion_contents
+        elif "实验心理学" in title:
+            from build_experiment_baoming_v1 import SOURCE, source_expansion_contents
         else:
             from build_baoming_full_v9 import SOURCE, source_expansion_contents
 
@@ -921,7 +923,12 @@ def render_markdown(
     configure_page(document.sections[0])
     set_update_fields(document)
     document.core_properties.title = title
-    subject_name = "心理测量" if "心理测量" in title else "心理学导论"
+    if "心理测量" in title:
+        subject_name = "心理测量"
+    elif "实验心理学" in title:
+        subject_name = "实验心理学"
+    else:
+        subject_name = "心理学导论"
     document.core_properties.subject = (
         f"华东师范大学347{subject_name}逐题直背答案版"
         if question_specific
