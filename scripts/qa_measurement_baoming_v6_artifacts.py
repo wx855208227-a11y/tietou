@@ -22,6 +22,8 @@ MARKDOWN = BASE.with_suffix(".md")
 DOCX = BASE.with_suffix(".docx")
 PDF = BASE.with_suffix(".pdf")
 PAGE_MAP = Path("content/measurement_baoming_v6_page_map.json")
+VERSION = "V6"
+EXPECTED_PAGES = 45
 TITLE = "华东师范大学347心理测量保命手册"
 HEADER = "华东师范大学347｜心理测量保命手册"
 FIRST_CHAPTER = "第一章心理测量和测验的历史回顾"
@@ -68,7 +70,7 @@ def main() -> None:
     assert not root.findall(f".//{{{W_NS}}}highlight")
     assert not root.findall(f".//{{{W_NS}}}shd")
     assert "**" not in docx_text
-    assert "任务模块编号版V6" not in docx_text
+    assert VERSION not in docx_text
     assert HEADER in header_text
     for forbidden in (
         "扩容（选背）",
@@ -159,7 +161,7 @@ def main() -> None:
     assert question_gaps and min(question_gaps) >= 320
 
     document = fitz.open(PDF)
-    assert len(document) == 45
+    assert len(document) == EXPECTED_PAGES
     page_texts: list[str] = []
     image_blocks = overflow_blocks = non_black_spans = non_black_drawings = 0
     non_gray_pixels = italic_spans = 0
@@ -198,7 +200,7 @@ def main() -> None:
     assert non_black_spans == non_black_drawings == non_gray_pixels == italic_spans == 0
     assert all(text.strip() for text in page_texts)
     assert compact(page_texts[0]) == compact(TITLE)
-    assert "V6" not in page_texts[0] and "2026" not in page_texts[0]
+    assert VERSION not in page_texts[0] and "2026" not in page_texts[0]
     assert "使用说明" in page_texts[1] and "（）内是扩容项" in compact(page_texts[1])
     assert full_text.count("押题") == question_count + 1
 
@@ -242,7 +244,7 @@ def main() -> None:
     assert "直接用法" in catalog_text and "（）内是可选扩容" in compact(catalog_text)
 
     print(
-        "测量保命手册V6制品质检通过："
+        f"测量保命手册{VERSION}制品质检通过："
         f"pages={len(document)} body_pages={len(document) - first_body} questions={question_count} "
         f"types={dict(question_types)} stars={dict(stars)} definitions={definition_count} "
         f"task_modules={len(task_modules)} second_level={len(second_level)} third_level={len(third_level)} "

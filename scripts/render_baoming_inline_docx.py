@@ -44,6 +44,21 @@ INLINE_COMPACT_UNIT_PREFIXES = COMPACT_UNIT_PREFIXES + (
     "六、概化理论",
 )
 
+# LibreOffice does not consistently honor keep-with-next when a task-module
+# heading is followed by a long, keep-together child paragraph. These V7
+# pagination locks are derived from the first compact-layout PDF pass and keep
+# the module heading from becoming the last line of a page.
+MEASUREMENT_V7_PAGE_BREAK_MODULES = {
+    "1. 两类测验的基本含义如下：",
+    "3. 人格评定量表的编制使用要求包括：",
+    "3. 各种信度估计方法的主要区别如下：",
+    "2. 项目难度的分布特点和选择要求如下：",
+}
+
+MEASUREMENT_V7_PAGE_BREAK_BODY = {
+    "难度、项目间相关和鉴别力既相互联系，也会使信度与预测效度出现需要平衡的关系。",
+}
+
 CATALOG_PAGE_MAP = {
     "第一章 心理学研究的对象、方法及其学科发展": 1,
     "一、心理学的含义与研究对象": 1,
@@ -687,11 +702,12 @@ def add_question_heading(
     large_between_question_gap: bool = False,
     comfortable: bool = False,
     bare_expansions: bool = False,
+    tight_layout: bool = False,
 ):
     paragraph = document.add_paragraph(style="Heading 3")
     paragraph.paragraph_format.first_line_indent = Cm(0)
     paragraph.paragraph_format.keep_with_next = True
-    paragraph.paragraph_format.space_after = Pt(6 if comfortable else 2)
+    paragraph.paragraph_format.space_after = Pt(4.5 if tight_layout else 6 if comfortable else 2)
     match = re.match(r"(押题\d+)(【[^】]+】)(.*)", content)
     if match is None:
         paragraph.paragraph_format.space_before = Pt(8 if comfortable else 5)
@@ -732,18 +748,28 @@ def add_list_paragraph(
     monochrome: bool = False,
     comfortable: bool = False,
     bare_expansions: bool = False,
+    tight_layout: bool = False,
 ) -> None:
     stripped = raw_line.strip()
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.left_indent = Cm(0.75)
     paragraph.paragraph_format.first_line_indent = Cm(-0.48)
-    paragraph.paragraph_format.line_spacing = 1.48 if comfortable else 1.2 if compact else 1.35
-    paragraph.paragraph_format.space_after = Pt(4.5 if comfortable else 0 if answer_mode else 1)
+    paragraph.paragraph_format.line_spacing = (
+        1.4 if tight_layout else 1.48 if comfortable else 1.2 if compact else 1.35
+    )
+    paragraph.paragraph_format.space_after = Pt(
+        2 if tight_layout else 4.5 if comfortable else 0 if answer_mode else 1
+    )
     paragraph.paragraph_format.widow_control = True
+    plain_stripped = stripped.replace("**", "")
+    if tight_layout and plain_stripped in MEASUREMENT_V7_PAGE_BREAK_MODULES:
+        paragraph.paragraph_format.page_break_before = True
     # In task-module answers, a numbered line ending in a colon is the parent
     # module heading and must stay with its first child point.
     paragraph.paragraph_format.keep_with_next = not answer_mode or stripped.endswith("：")
     if stripped.endswith("："):
+        if tight_layout:
+            paragraph.paragraph_format.space_before = Pt(3)
         paragraph.paragraph_format.keep_together = True
     if (
         any(tag in stripped for tag in ("【采分点加分】", "【加分项】", "【扩容（选用）：", "【扩容（选背）：", "【名词解释："))
@@ -767,14 +793,19 @@ def add_secondary_list_paragraph(
     monochrome: bool = False,
     comfortable: bool = False,
     bare_expansions: bool = False,
+    tight_layout: bool = False,
 ) -> None:
     """Render （1） child points one level below their parent scoring angle."""
     stripped = raw_line.strip()
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.left_indent = Cm(1.22)
     paragraph.paragraph_format.first_line_indent = Cm(-0.47)
-    paragraph.paragraph_format.line_spacing = 1.46 if comfortable else 1.2 if compact else 1.3
-    paragraph.paragraph_format.space_after = Pt(4 if comfortable else 0 if answer_mode else 1)
+    paragraph.paragraph_format.line_spacing = (
+        1.4 if tight_layout else 1.46 if comfortable else 1.2 if compact else 1.3
+    )
+    paragraph.paragraph_format.space_after = Pt(
+        2 if tight_layout else 4 if comfortable else 0 if answer_mode else 1
+    )
     paragraph.paragraph_format.widow_control = True
     paragraph.paragraph_format.keep_with_next = stripped.endswith("：")
     if stripped.endswith("："):
@@ -804,14 +835,19 @@ def add_deep_list_paragraph(
     monochrome: bool = False,
     comfortable: bool = False,
     bare_expansions: bool = False,
+    tight_layout: bool = False,
 ) -> None:
     """Render ① and a. as the third and fourth real answer levels."""
     stripped = raw_line.strip()
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.left_indent = Cm(1.68 if level == 3 else 2.12)
     paragraph.paragraph_format.first_line_indent = Cm(-0.43)
-    paragraph.paragraph_format.line_spacing = 1.46 if comfortable else 1.2 if compact else 1.3
-    paragraph.paragraph_format.space_after = Pt(4 if comfortable else 0 if answer_mode else 1)
+    paragraph.paragraph_format.line_spacing = (
+        1.4 if tight_layout else 1.46 if comfortable else 1.2 if compact else 1.3
+    )
+    paragraph.paragraph_format.space_after = Pt(
+        2 if tight_layout else 4 if comfortable else 0 if answer_mode else 1
+    )
     paragraph.paragraph_format.widow_control = True
     if (
         "【名词解释：" in stripped
@@ -834,6 +870,7 @@ def add_body_paragraph(
     monochrome: bool = False,
     comfortable: bool = False,
     bare_expansions: bool = False,
+    tight_layout: bool = False,
 ) -> None:
     optional = (
         content.startswith("（加分项：")
@@ -846,18 +883,28 @@ def add_body_paragraph(
     module_intro = content.endswith("：") and not optional
     if summary and document.paragraphs:
         # 避免整题总结或“最后一点＋总结”被单独挤到下一页，尤其是下一章
-        # 强制换页时形成大面积空白。最多把前四个相邻采分段与总结成组。
-        for previous in document.paragraphs[-4:]:
+        # 强制换页时形成大面积空白。紧凑版不再反向绑定前文，避免
+        # “模块标题—唯一子项—总结”形成过长连续链后把模块标题留在页尾；
+        # 其他既有版本维持原分页逻辑。
+        previous_count = 0 if tight_layout else 4
+        for previous in document.paragraphs[-previous_count:]:
             previous.paragraph_format.keep_with_next = True
     paragraph = document.add_paragraph()
+    plain_content = content.replace("**", "")
+    if tight_layout and plain_content in MEASUREMENT_V7_PAGE_BREAK_BODY:
+        paragraph.paragraph_format.page_break_before = True
     paragraph.paragraph_format.line_spacing = (
-        1.36 if comfortable and optional
+        1.32 if tight_layout and optional
+        else 1.42 if tight_layout
+        else 1.36 if comfortable and optional
         else 1.5 if comfortable
         else 1.18 if optional
         else 1.25 if compact
         else 1.4
     )
-    paragraph.paragraph_format.space_after = Pt(5 if comfortable else 1)
+    paragraph.paragraph_format.space_after = Pt(
+        2.5 if tight_layout else 5 if comfortable else 1
+    )
     paragraph.paragraph_format.widow_control = True
     if (
         "【名词解释：" in content
@@ -869,12 +916,20 @@ def add_body_paragraph(
     ):
         paragraph.paragraph_format.keep_together = True
     if summary:
-        paragraph.paragraph_format.space_before = Pt(4 if comfortable else 0)
-        paragraph.paragraph_format.space_after = Pt(6 if comfortable else 1)
+        paragraph.paragraph_format.space_before = Pt(
+            3 if tight_layout else 4 if comfortable else 0
+        )
+        paragraph.paragraph_format.space_after = Pt(
+            4 if tight_layout else 6 if comfortable else 1
+        )
         paragraph.paragraph_format.keep_together = True
     if module_intro:
-        paragraph.paragraph_format.space_before = Pt(3 if comfortable else 1)
-        paragraph.paragraph_format.space_after = Pt(3 if comfortable else 1)
+        paragraph.paragraph_format.space_before = Pt(
+            2 if tight_layout else 3 if comfortable else 1
+        )
+        paragraph.paragraph_format.space_after = Pt(
+            2 if tight_layout else 3 if comfortable else 1
+        )
         paragraph.paragraph_format.keep_with_next = True
         paragraph.paragraph_format.keep_together = True
     if content == "**【整体加分】**":
@@ -909,6 +964,9 @@ def render_markdown(
     full_book = subtitle.startswith("全本·")
     minimal_v9 = subtitle.startswith("全本·极简直背版")
     comfortable = subtitle.startswith("全本·三星分级舒适阅读版V8") or minimal_v9
+    # 测量V7只调整排版密度：章节连续排版、压缩答案内部无意义段后距，
+    # 但保留题间留白、12磅正文和原有内容层级。
+    tight_layout = "心理测量" in title and subtitle.endswith("V7")
     bare_expansions = minimal_v9
     if bare_expansions:
         if "心理测量" in title:
@@ -1028,7 +1086,15 @@ def render_markdown(
             line_index += 1
             continue
         if stripped.startswith("# "):
-            add_heading(document, 1, stripped[2:].strip(), page_break_before=not first_chapter)
+            heading = add_heading(
+                document,
+                1,
+                stripped[2:].strip(),
+                page_break_before=not first_chapter and not tight_layout,
+            )
+            if tight_layout and not first_chapter:
+                heading.paragraph_format.space_before = Pt(14)
+                heading.paragraph_format.space_after = Pt(4)
             first_chapter = False
             answer_mode = False
         elif stripped.startswith("## "):
@@ -1039,8 +1105,8 @@ def render_markdown(
                 heading.paragraph_format.space_before = Pt(7)
                 heading.paragraph_format.space_after = Pt(3)
             elif comfortable:
-                heading.paragraph_format.space_before = Pt(13)
-                heading.paragraph_format.space_after = Pt(7)
+                heading.paragraph_format.space_before = Pt(9 if tight_layout else 13)
+                heading.paragraph_format.space_after = Pt(5 if tight_layout else 7)
             answer_mode = False
         elif stripped.startswith("#### "):
             heading_text = stripped[5:].strip()
@@ -1067,6 +1133,7 @@ def render_markdown(
                         large_between_question_gap=full_book or subtitle.endswith(("V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16")),
                         comfortable=comfortable,
                         bare_expansions=bare_expansions,
+                        tight_layout=tight_layout,
                     )
                 else:
                     heading = add_heading(document, 3, displayed)
@@ -1089,6 +1156,7 @@ def render_markdown(
                 monochrome=monochrome,
                 comfortable=comfortable,
                 bare_expansions=bare_expansions,
+                tight_layout=tight_layout,
             )
         elif re.match(r"^（\d+）", stripped):
             add_secondary_list_paragraph(
@@ -1099,6 +1167,7 @@ def render_markdown(
                 monochrome=monochrome,
                 comfortable=comfortable,
                 bare_expansions=bare_expansions,
+                tight_layout=tight_layout,
             )
         elif re.match(r"^[①②③④⑤⑥⑦⑧⑨⑩]", stripped):
             add_deep_list_paragraph(
@@ -1110,6 +1179,7 @@ def render_markdown(
                 monochrome=monochrome,
                 comfortable=comfortable,
                 bare_expansions=bare_expansions,
+                tight_layout=tight_layout,
             )
         elif re.match(r"^[a-z]\.\s", stripped):
             add_deep_list_paragraph(
@@ -1121,6 +1191,7 @@ def render_markdown(
                 monochrome=monochrome,
                 comfortable=comfortable,
                 bare_expansions=bare_expansions,
+                tight_layout=tight_layout,
             )
         else:
             add_body_paragraph(
@@ -1130,6 +1201,7 @@ def render_markdown(
                 monochrome=monochrome,
                 comfortable=comfortable,
                 bare_expansions=bare_expansions,
+                tight_layout=tight_layout,
             )
         line_index += 1
 
