@@ -788,6 +788,38 @@ def add_secondary_list_paragraph(
     )
 
 
+def add_deep_list_paragraph(
+    document: Document,
+    raw_line: str,
+    answer_mode: bool,
+    compact: bool,
+    level: int,
+    monochrome: bool = False,
+    comfortable: bool = False,
+    bare_expansions: bool = False,
+) -> None:
+    """Render ① and a. as the third and fourth real answer levels."""
+    stripped = raw_line.strip()
+    paragraph = document.add_paragraph()
+    paragraph.paragraph_format.left_indent = Cm(1.68 if level == 3 else 2.12)
+    paragraph.paragraph_format.first_line_indent = Cm(-0.43)
+    paragraph.paragraph_format.line_spacing = 1.46 if comfortable else 1.2 if compact else 1.3
+    paragraph.paragraph_format.space_after = Pt(4 if comfortable else 0 if answer_mode else 1)
+    paragraph.paragraph_format.widow_control = True
+    if (
+        "【名词解释：" in stripped
+        or bare_expansions and ACTIVE_BARE_EXPANSION_RE.search(stripped)
+    ):
+        paragraph.paragraph_format.keep_together = True
+    add_inline_runs(
+        paragraph,
+        stripped,
+        size=10.5 if not answer_mode else BODY_TEXT_SIZE if comfortable else 11.3,
+        monochrome=monochrome,
+        bare_expansions=bare_expansions,
+    )
+
+
 def add_body_paragraph(
     document: Document,
     content: str,
@@ -1051,6 +1083,28 @@ def render_markdown(
                 raw_line,
                 answer_mode,
                 compact_unit,
+                monochrome=monochrome,
+                comfortable=comfortable,
+                bare_expansions=bare_expansions,
+            )
+        elif re.match(r"^[①②③④⑤⑥⑦⑧⑨⑩]", stripped):
+            add_deep_list_paragraph(
+                document,
+                raw_line,
+                answer_mode,
+                compact_unit,
+                level=3,
+                monochrome=monochrome,
+                comfortable=comfortable,
+                bare_expansions=bare_expansions,
+            )
+        elif re.match(r"^[a-z]\.\s", stripped):
+            add_deep_list_paragraph(
+                document,
+                raw_line,
+                answer_mode,
+                compact_unit,
+                level=4,
                 monochrome=monochrome,
                 comfortable=comfortable,
                 bare_expansions=bare_expansions,
