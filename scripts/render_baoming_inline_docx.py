@@ -740,7 +740,9 @@ def add_list_paragraph(
     paragraph.paragraph_format.line_spacing = 1.48 if comfortable else 1.2 if compact else 1.35
     paragraph.paragraph_format.space_after = Pt(4.5 if comfortable else 0 if answer_mode else 1)
     paragraph.paragraph_format.widow_control = True
-    paragraph.paragraph_format.keep_with_next = not answer_mode
+    # In task-module answers, a numbered line ending in a colon is the parent
+    # module heading and must stay with its first child point.
+    paragraph.paragraph_format.keep_with_next = not answer_mode or stripped.endswith("：")
     if (
         any(tag in stripped for tag in ("【采分点加分】", "【加分项】", "【扩容（选用）：", "【扩容（选背）：", "【名词解释："))
         or bare_expansions and ACTIVE_BARE_EXPANSION_RE.search(stripped)
@@ -772,6 +774,7 @@ def add_secondary_list_paragraph(
     paragraph.paragraph_format.line_spacing = 1.46 if comfortable else 1.2 if compact else 1.3
     paragraph.paragraph_format.space_after = Pt(4 if comfortable else 0 if answer_mode else 1)
     paragraph.paragraph_format.widow_control = True
+    paragraph.paragraph_format.keep_with_next = stripped.endswith("：")
     if (
         "【扩容（选用）：" in stripped
         or "【扩容（选背）：" in stripped
