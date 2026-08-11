@@ -20,9 +20,30 @@ from validate_measurement_baoming_v3 import definition_modules
 
 TRANSITION_ENDINGS = ("：",)
 CUSTOM_TRANSITIONS = {
+    "押题1【简答】简述测量的**含义、构成和基本要素**。": (
+        "测量的**基本要素**主要包括：",
+    ),
+    "押题1【简答】简述心理测验的**含义、三要素和客观性指标**。": (
+        "心理测验的**三个基本要素**包括：",
+        "心理测验的**客观性指标**主要包括：",
+    ),
+    "押题1【简答】简述人格测验中存在的**主要问题及改进方向**。": (
+        "人格测验的**主要问题及相应改进方向**包括：",
+    ),
+    "押题1【简答】简述信度的**含义**，并说明误差及真分数理论的基本假设。": (
+        "理解经典真分数理论，首先需要明确**误差及其主要类型**：",
+        "经典真分数理论对**真分数及实测分数构成**的说明如下：",
+    ),
     "押题1【简答】简述影响信度系数的**主要因素**及提高信度的方法。": (
         "影响信度系数的**主要因素**包括以下几点：",
         "提高信度的**主要方法**包括：",
+    ),
+    "押题1【简答】简述效标（准则）关联效度的**含义及验证方法**。": (
+        "效标效度验证涉及的**基本概念和类型**包括：",
+        "效标效度的**验证程序及结果解释**如下：",
+    ),
+    "押题1【简答】简述影响测验效度的**主要因素及控制方法**。": (
+        "影响测验效度的**主要因素及相应控制方法**包括：",
     ),
 }
 
@@ -68,7 +89,10 @@ def check_modules(text: str) -> tuple[int, int]:
     transition_count = module_count = 0
     for heading, body in blocks.items():
         values = paragraphs(body)
-        transitions = tuple(value for _, value in MODULES[heading]) or CUSTOM_TRANSITIONS[heading]
+        transitions = CUSTOM_TRANSITIONS.get(
+            heading,
+            tuple(value for _, value in MODULES[heading]),
+        )
         positions = []
         for transition in transitions:
             assert transition.endswith(TRANSITION_ENDINGS), transition
@@ -124,7 +148,7 @@ def main() -> None:
     assert all(len(values) == 1 for values in expansions.values())
 
     transition_count, module_count = check_modules(text)
-    assert transition_count == module_count == 82
+    assert transition_count == module_count == 83
     assert not re.search(r"^\d+[）)]", body, re.MULTILINE)
     assert not re.search(r"^[A-ZＡ-Ｚ][.．、]", body, re.MULTILINE)
     assert not re.search(r"^（\d+）", body, re.MULTILINE) or "1." in body
@@ -144,7 +168,9 @@ def main() -> None:
     ):
         assert forbidden not in body, forbidden
 
-    custom = question_map(text)[next(iter(CUSTOM_BODY))]
+    custom = question_map(text)[
+        "押题1【简答】简述影响信度系数的**主要因素**及提高信度的方法。"
+    ]
     for phrase in (
         "影响信度系数的**主要因素**包括以下几点：",
         "提高信度的**主要方法**包括：",
@@ -157,8 +183,8 @@ def main() -> None:
 
     print(
         "测量保命手册V4内容验证通过：11章、39单元、45题；"
-        "除信度校准题外基础内容相对V3零漂移；"
-        f"82个自然答题模块均由过渡段引出并从1重新编号；"
+        "38题基础内容相对V3零漂移，7题仅作层级或题干必写项校准；"
+        f"83个自然答题模块均由过渡段引出并从1重新编号；"
         "60个唯一名解、81处调用零异文。"
     )
 
