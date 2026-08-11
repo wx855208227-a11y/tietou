@@ -836,6 +836,7 @@ def add_body_paragraph(
     if optional and document.paragraphs:
         document.paragraphs[-1].paragraph_format.keep_with_next = True
     summary = content.startswith("综上")
+    module_intro = content.endswith("：") and not optional
     if summary and document.paragraphs:
         # 避免整题总结或“最后一点＋总结”被单独挤到下一页，尤其是下一章
         # 强制换页时形成大面积空白。最多把前四个相邻采分段与总结成组。
@@ -863,6 +864,11 @@ def add_body_paragraph(
     if summary:
         paragraph.paragraph_format.space_before = Pt(4 if comfortable else 0)
         paragraph.paragraph_format.space_after = Pt(6 if comfortable else 1)
+        paragraph.paragraph_format.keep_together = True
+    if module_intro:
+        paragraph.paragraph_format.space_before = Pt(3 if comfortable else 1)
+        paragraph.paragraph_format.space_after = Pt(3 if comfortable else 1)
+        paragraph.paragraph_format.keep_with_next = True
         paragraph.paragraph_format.keep_together = True
     if content == "**【整体加分】**":
         paragraph.paragraph_format.first_line_indent = Cm(0)

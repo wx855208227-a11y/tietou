@@ -8,6 +8,7 @@ from build_measurement_baoming_v4 import (
     CUSTOM_BODY,
     MODULES,
     OUTPUT,
+    PARAGRAPH_REPLACEMENTS,
     QUESTION_RE,
     REMOVE_PARAGRAPHS,
     SOURCE,
@@ -68,7 +69,7 @@ def check_zero_drift(source: str, result: str) -> None:
     new = question_map(result)
     assert old.keys() == new.keys() == MODULES.keys()
     for heading in old:
-        if heading in CUSTOM_BODY:
+        if heading in CUSTOM_BODY or heading in PARAGRAPH_REPLACEMENTS:
             continue
         source_paragraphs = [
             normalize_top_number(value)
@@ -183,7 +184,7 @@ def main() -> None:
 
     print(
         "测量保命手册V4内容验证通过：11章、39单元、45题；"
-        "38题基础内容相对V3零漂移，7题仅作层级或题干必写项校准；"
+        "36题基础内容相对V3零漂移，9题仅作层级、题干必写项或论述角度校准；"
         f"83个自然答题模块均由过渡段引出并从1重新编号；"
         "60个唯一名解、81处调用零异文。"
     )
