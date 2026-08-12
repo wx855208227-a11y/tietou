@@ -62,7 +62,16 @@ MEASUREMENT_V8_PAGE_BREAK_MODULES = {
     "1. 投射测验的理论原理主要包括：",
 }
 MEASUREMENT_V8_PAGE_BREAK_BODY: set[str] = set()
-MEASUREMENT_V9_PAGE_BREAK_MODULES: set[str] = set()
+MEASUREMENT_V9_PAGE_BREAK_MODULES = {
+    "1. 人格自陈量表常见的反应偏差包括：",
+    "3. 两类测验的主要区别如下：",
+    "3. 概化理论的研究阶段和基本设计如下：",
+    "1. 效标效度验证涉及的基本概念和类型包括：",
+    "1. 项目鉴别力的主要估计方法及解释标准如下：",
+    "3. 常模与标准的区别如下：",
+    "1. 发展量表的主要优点包括：",
+    "2. 组内常模的应用实例及解释限制如下：",
+}
 MEASUREMENT_V9_PAGE_BREAK_BODY: set[str] = set()
 ACTIVE_MEASUREMENT_PAGE_BREAK_MODULES = MEASUREMENT_V7_PAGE_BREAK_MODULES
 ACTIVE_MEASUREMENT_PAGE_BREAK_BODY = MEASUREMENT_V7_PAGE_BREAK_BODY

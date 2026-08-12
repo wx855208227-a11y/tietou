@@ -25,6 +25,7 @@ PAGE_MAP = Path("content/measurement_baoming_v6_page_map.json")
 VERSION = "V6"
 EXPECTED_PAGES = 45
 EXPECTED_DEFINITION_COUNT = 58
+ALLOWED_SPARSE_PHYSICAL_PAGES: set[int] = set()
 TITLE = "华东师范大学347心理测量保命手册"
 HEADER = "华东师范大学347｜心理测量保命手册"
 FIRST_CHAPTER = "第一章心理测量和测验的历史回顾"
@@ -223,7 +224,8 @@ def main() -> None:
         assert compact(required) in compact(pdf_body), required
 
     for physical_page, page_text in enumerate(page_texts[first_body:], start=first_body + 1):
-        assert len(re.sub(r"\s+", "", page_text)) >= 220, physical_page
+        if physical_page not in ALLOWED_SPARSE_PHYSICAL_PAGES:
+            assert len(re.sub(r"\s+", "", page_text)) >= 220, physical_page
         lines = [line.strip() for line in page_text.splitlines() if line.strip()]
         meaningful = [line for line in lines if line != HEADER and not line.isdigit()]
         assert meaningful
