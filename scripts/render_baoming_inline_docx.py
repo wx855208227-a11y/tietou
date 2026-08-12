@@ -62,6 +62,8 @@ MEASUREMENT_V8_PAGE_BREAK_MODULES = {
     "1. 投射测验的理论原理主要包括：",
 }
 MEASUREMENT_V8_PAGE_BREAK_BODY: set[str] = set()
+MEASUREMENT_V9_PAGE_BREAK_MODULES: set[str] = set()
+MEASUREMENT_V9_PAGE_BREAK_BODY: set[str] = set()
 ACTIVE_MEASUREMENT_PAGE_BREAK_MODULES = MEASUREMENT_V7_PAGE_BREAK_MODULES
 ACTIVE_MEASUREMENT_PAGE_BREAK_BODY = MEASUREMENT_V7_PAGE_BREAK_BODY
 
@@ -972,15 +974,19 @@ def render_markdown(
     full_book = subtitle.startswith("全本·")
     minimal_v9 = subtitle.startswith("全本·极简直背版")
     comfortable = subtitle.startswith("全本·三星分级舒适阅读版V8") or minimal_v9
-    # 测量V7及其内容精校续版沿用紧凑排版：章节连续排版、压缩答案内部
-    # 无意义段后距，但保留题间留白、12磅正文和原有内容层级。
-    tight_layout = "心理测量" in title and subtitle.endswith(("V7", "V8"))
+    # 测量V7及其内容精校续版沿用紧凑排版，压缩答案内部无意义段后距，
+    # 但保留题间留白、12磅正文和原有内容层级。V9恢复逐章分页。
+    tight_layout = "心理测量" in title and subtitle.endswith(("V7", "V8", "V9"))
+    chapter_page_breaks = "心理测量" in title and subtitle.endswith("V9")
     if subtitle.endswith("V7"):
         ACTIVE_MEASUREMENT_PAGE_BREAK_MODULES = MEASUREMENT_V7_PAGE_BREAK_MODULES
         ACTIVE_MEASUREMENT_PAGE_BREAK_BODY = MEASUREMENT_V7_PAGE_BREAK_BODY
     elif subtitle.endswith("V8"):
         ACTIVE_MEASUREMENT_PAGE_BREAK_MODULES = MEASUREMENT_V8_PAGE_BREAK_MODULES
         ACTIVE_MEASUREMENT_PAGE_BREAK_BODY = MEASUREMENT_V8_PAGE_BREAK_BODY
+    elif subtitle.endswith("V9"):
+        ACTIVE_MEASUREMENT_PAGE_BREAK_MODULES = MEASUREMENT_V9_PAGE_BREAK_MODULES
+        ACTIVE_MEASUREMENT_PAGE_BREAK_BODY = MEASUREMENT_V9_PAGE_BREAK_BODY
     else:
         ACTIVE_MEASUREMENT_PAGE_BREAK_MODULES = set()
         ACTIVE_MEASUREMENT_PAGE_BREAK_BODY = set()
@@ -1107,10 +1113,12 @@ def render_markdown(
                 document,
                 1,
                 stripped[2:].strip(),
-                page_break_before=not first_chapter and not tight_layout,
+                page_break_before=(
+                    not first_chapter and (not tight_layout or chapter_page_breaks)
+                ),
             )
             if tight_layout and not first_chapter:
-                heading.paragraph_format.space_before = Pt(14)
+                heading.paragraph_format.space_before = Pt(0 if chapter_page_breaks else 14)
                 heading.paragraph_format.space_after = Pt(4)
             first_chapter = False
             answer_mode = False
