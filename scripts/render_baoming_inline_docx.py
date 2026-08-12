@@ -58,6 +58,12 @@ MEASUREMENT_V7_PAGE_BREAK_MODULES = {
 MEASUREMENT_V7_PAGE_BREAK_BODY = {
     "难度、项目间相关和鉴别力既相互联系，也会使信度与预测效度出现需要平衡的关系。",
 }
+MEASUREMENT_V8_PAGE_BREAK_MODULES = {
+    "1. 投射测验的理论原理主要包括：",
+}
+MEASUREMENT_V8_PAGE_BREAK_BODY: set[str] = set()
+ACTIVE_MEASUREMENT_PAGE_BREAK_MODULES = MEASUREMENT_V7_PAGE_BREAK_MODULES
+ACTIVE_MEASUREMENT_PAGE_BREAK_BODY = MEASUREMENT_V7_PAGE_BREAK_BODY
 
 CATALOG_PAGE_MAP = {
     "第一章 心理学研究的对象、方法及其学科发展": 1,
@@ -762,7 +768,7 @@ def add_list_paragraph(
     )
     paragraph.paragraph_format.widow_control = True
     plain_stripped = stripped.replace("**", "")
-    if tight_layout and plain_stripped in MEASUREMENT_V7_PAGE_BREAK_MODULES:
+    if tight_layout and plain_stripped in ACTIVE_MEASUREMENT_PAGE_BREAK_MODULES:
         paragraph.paragraph_format.page_break_before = True
     # In task-module answers, a numbered line ending in a colon is the parent
     # module heading and must stay with its first child point.
@@ -891,7 +897,7 @@ def add_body_paragraph(
             previous.paragraph_format.keep_with_next = True
     paragraph = document.add_paragraph()
     plain_content = content.replace("**", "")
-    if tight_layout and plain_content in MEASUREMENT_V7_PAGE_BREAK_BODY:
+    if tight_layout and plain_content in ACTIVE_MEASUREMENT_PAGE_BREAK_BODY:
         paragraph.paragraph_format.page_break_before = True
     paragraph.paragraph_format.line_spacing = (
         1.32 if tight_layout and optional
@@ -956,6 +962,8 @@ def render_markdown(
     page_map_override: dict[str, int] | None = None,
 ) -> None:
     global ACTIVE_BARE_EXPANSION_RE
+    global ACTIVE_MEASUREMENT_PAGE_BREAK_MODULES
+    global ACTIVE_MEASUREMENT_PAGE_BREAK_BODY
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     subtitle = lines[2].removeprefix("## ").strip()
@@ -967,6 +975,15 @@ def render_markdown(
     # 测量V7及其内容精校续版沿用紧凑排版：章节连续排版、压缩答案内部
     # 无意义段后距，但保留题间留白、12磅正文和原有内容层级。
     tight_layout = "心理测量" in title and subtitle.endswith(("V7", "V8"))
+    if subtitle.endswith("V7"):
+        ACTIVE_MEASUREMENT_PAGE_BREAK_MODULES = MEASUREMENT_V7_PAGE_BREAK_MODULES
+        ACTIVE_MEASUREMENT_PAGE_BREAK_BODY = MEASUREMENT_V7_PAGE_BREAK_BODY
+    elif subtitle.endswith("V8"):
+        ACTIVE_MEASUREMENT_PAGE_BREAK_MODULES = MEASUREMENT_V8_PAGE_BREAK_MODULES
+        ACTIVE_MEASUREMENT_PAGE_BREAK_BODY = MEASUREMENT_V8_PAGE_BREAK_BODY
+    else:
+        ACTIVE_MEASUREMENT_PAGE_BREAK_MODULES = set()
+        ACTIVE_MEASUREMENT_PAGE_BREAK_BODY = set()
     bare_expansions = minimal_v9
     if bare_expansions:
         if "心理测量" in title:
