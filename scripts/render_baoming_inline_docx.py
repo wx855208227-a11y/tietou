@@ -964,9 +964,9 @@ def render_markdown(
     full_book = subtitle.startswith("全本·")
     minimal_v9 = subtitle.startswith("全本·极简直背版")
     comfortable = subtitle.startswith("全本·三星分级舒适阅读版V8") or minimal_v9
-    # 测量V7只调整排版密度：章节连续排版、压缩答案内部无意义段后距，
-    # 但保留题间留白、12磅正文和原有内容层级。
-    tight_layout = "心理测量" in title and subtitle.endswith("V7")
+    # 测量V7及其内容精校续版沿用紧凑排版：章节连续排版、压缩答案内部
+    # 无意义段后距，但保留题间留白、12磅正文和原有内容层级。
+    tight_layout = "心理测量" in title and subtitle.endswith(("V7", "V8"))
     bare_expansions = minimal_v9
     if bare_expansions:
         if "心理测量" in title:

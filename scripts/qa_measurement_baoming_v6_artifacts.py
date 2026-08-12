@@ -24,6 +24,7 @@ PDF = BASE.with_suffix(".pdf")
 PAGE_MAP = Path("content/measurement_baoming_v6_page_map.json")
 VERSION = "V6"
 EXPECTED_PAGES = 45
+EXPECTED_DEFINITION_COUNT = 58
 TITLE = "华东师范大学347心理测量保命手册"
 HEADER = "华东师范大学347｜心理测量保命手册"
 FIRST_CHAPTER = "第一章心理测量和测验的历史回顾"
@@ -34,7 +35,7 @@ def main() -> None:
     definition_count = body.count("【名词解释：")
     stars = Counter(re.findall(r"^## .+【(★★★|★★|★)】$", body, re.MULTILINE))
     question_types = Counter(re.findall(r"^### 押题\d+【(简答|论述)】", body, re.MULTILINE))
-    assert (question_count, definition_count) == (45, 58)
+    assert (question_count, definition_count) == (45, EXPECTED_DEFINITION_COUNT)
     assert question_types == {"简答": 38, "论述": 7}
     assert stars == {"★★★": 16, "★★": 13, "★": 10}
     page_map: dict[str, int] = json.loads(PAGE_MAP.read_text(encoding="utf-8"))

@@ -27,6 +27,9 @@ NUMBER_PREFIX_RE = re.compile(
     re.MULTILINE,
 )
 ROUND_EXPANSION_RE = re.compile(r"（[^（）]*）")
+EXPECTED_ADMITTED_TERMS = ADMITTED_TERMS
+EXPECTED_DEFINITION_COUNT = 58
+CONTENT_FRAGMENT_EXEMPT_HEADINGS: set[str] = set()
 
 
 def question_map(text: str) -> dict[str, str]:
@@ -159,13 +162,15 @@ def main() -> None:
     maps = question_map(text)
     assert source_maps.keys() == maps.keys()
     for heading in source_maps:
+        if heading in CONTENT_FRAGMENT_EXEMPT_HEADINGS:
+            continue
         assert content_fragments(source_maps[heading]) == content_fragments(maps[heading]), heading
 
     actual_terms = set(TERM_RE.findall(body))
-    assert actual_terms == ADMITTED_TERMS
-    assert body.count("【名词解释：") == 58
+    assert actual_terms == EXPECTED_ADMITTED_TERMS
+    assert body.count("【名词解释：") == EXPECTED_DEFINITION_COUNT
     definitions, expansions = definition_modules(body)
-    assert set(definitions) == set(expansions) == ADMITTED_TERMS
+    assert set(definitions) == set(expansions) == EXPECTED_ADMITTED_TERMS
     assert all(len(values) == 1 for values in definitions.values())
     assert all(len(values) == 1 for values in expansions.values())
     assert all(line.count("【名词解释：") <= 1 for line in body.splitlines())
@@ -226,7 +231,8 @@ def main() -> None:
         "测量保命手册V6内容验证通过："
         f"11章、39单元、45题（简答{types['简答']}／论述{types['论述']}）；"
         f"94个题干任务模块全部从1连续编号，总起与总结均不编号；"
-        f"{leaf_count}个叶子采分点均有关键词；39个准入名解、58处调用零异文；"
+        f"{leaf_count}个叶子采分点均有关键词；{len(EXPECTED_ADMITTED_TERMS)}个准入名解、"
+        f"{EXPECTED_DEFINITION_COUNT}处调用零异文；"
         f"简答基础容量中位数{simple_median:.1f}字，论述{essay_median:.1f}字，容量比{ratio:.2f}。"
     )
 
