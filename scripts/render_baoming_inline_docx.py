@@ -73,6 +73,11 @@ MEASUREMENT_V9_PAGE_BREAK_MODULES = {
     "2. 组内常模的应用实例及解释限制如下：",
 }
 MEASUREMENT_V9_PAGE_BREAK_BODY: set[str] = set()
+EXPERIMENT_V2_PAGE_BREAK_MODULES = {
+    "1. 韦伯定律的主要内容包括：",
+    "2. 无觉察知觉的实验逻辑与控制要求包括：",
+}
+EXPERIMENT_V2_PAGE_BREAK_BODY: set[str] = set()
 ACTIVE_MEASUREMENT_PAGE_BREAK_MODULES = MEASUREMENT_V7_PAGE_BREAK_MODULES
 ACTIVE_MEASUREMENT_PAGE_BREAK_BODY = MEASUREMENT_V7_PAGE_BREAK_BODY
 
@@ -985,9 +990,20 @@ def render_markdown(
     comfortable = subtitle.startswith("全本·三星分级舒适阅读版V8") or minimal_v9
     # 测量V7及其内容精校续版沿用紧凑排版，压缩答案内部无意义段后距，
     # 但保留题间留白、12磅正文和原有内容层级。V9恢复逐章分页。
-    tight_layout = "心理测量" in title and subtitle.endswith(("V7", "V8", "V9"))
-    chapter_page_breaks = "心理测量" in title and subtitle.endswith("V9")
-    if subtitle.endswith("V7"):
+    task_aligned_rebuild = (
+        "心理学导论" in title and subtitle.endswith("V10")
+        or "实验心理学" in title and subtitle.endswith("V2")
+    )
+    tight_layout = (
+        "心理测量" in title and subtitle.endswith(("V7", "V8", "V9"))
+    ) or task_aligned_rebuild
+    chapter_page_breaks = (
+        "心理测量" in title and subtitle.endswith("V9")
+    ) or task_aligned_rebuild
+    if "实验心理学" in title and subtitle.endswith("V2"):
+        ACTIVE_MEASUREMENT_PAGE_BREAK_MODULES = EXPERIMENT_V2_PAGE_BREAK_MODULES
+        ACTIVE_MEASUREMENT_PAGE_BREAK_BODY = EXPERIMENT_V2_PAGE_BREAK_BODY
+    elif subtitle.endswith("V7"):
         ACTIVE_MEASUREMENT_PAGE_BREAK_MODULES = MEASUREMENT_V7_PAGE_BREAK_MODULES
         ACTIVE_MEASUREMENT_PAGE_BREAK_BODY = MEASUREMENT_V7_PAGE_BREAK_BODY
     elif subtitle.endswith("V8"):

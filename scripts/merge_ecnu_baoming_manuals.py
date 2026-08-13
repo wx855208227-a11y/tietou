@@ -40,6 +40,8 @@ SOURCES = (
 )
 
 BLACK = RGBColor(0, 0, 0)
+STRIP_NON_CHAPTER_PAGE_BREAKS = False
+COMBINED_NON_CHAPTER_PAGE_BREAK_TEXTS: set[str] = set()
 
 
 def set_run_font(run, name: str = "宋体", size: float = 12, bold: bool | None = None) -> None:
@@ -300,6 +302,25 @@ def add_part_title(document: Document, title: str) -> None:
     properties.append(borders)
 
 
+def copied_body_child(child, *, strip_non_chapter_page_breaks: bool):
+    copied = deepcopy(child)
+    if not strip_non_chapter_page_breaks or copied.tag != qn("w:p"):
+        return copied
+    properties = copied.find(qn("w:pPr"))
+    if properties is None:
+        return copied
+    style = properties.find(qn("w:pStyle"))
+    style_name = style.get(qn("w:val"), "") if style is not None else ""
+    if style_name in {"Heading1", "1"}:
+        return copied
+    for page_break in list(properties.findall(qn("w:pageBreakBefore"))):
+        properties.remove(page_break)
+    text = "".join(node.text or "" for node in copied.iter(qn("w:t"))).strip()
+    if text in COMBINED_NON_CHAPTER_PAGE_BREAK_TEXTS:
+        properties.append(OxmlElement("w:pageBreakBefore"))
+    return copied
+
+
 def build(output_path: Path, page_map: dict[str, int] | None = None) -> None:
     source_documents = [Document(spec[3]) for spec in SOURCES]
     document = Document(SOURCES[0][3])
@@ -322,7 +343,15 @@ def build(output_path: Path, page_map: dict[str, int] | None = None) -> None:
         configure_body_section(section, header_text, restart=index == 0)
         add_part_title(document, part_title)
         for child in body_heading_paragraphs(source_document):
-            document._element.body.insert(-1, deepcopy(child))
+            document._element.body.insert(
+                -1,
+                copied_body_child(
+                    child,
+                    strip_non_chapter_page_breaks=(
+                        STRIP_NON_CHAPTER_PAGE_BREAKS and index == len(SOURCES) - 1
+                    ),
+                ),
+            )
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     document.save(output_path)
