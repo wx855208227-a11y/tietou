@@ -42,6 +42,14 @@ SOURCES = (
 BLACK = RGBColor(0, 0, 0)
 STRIP_NON_CHAPTER_PAGE_BREAKS = False
 COMBINED_NON_CHAPTER_PAGE_BREAK_TEXTS: set[str] = set()
+COVER_TITLE = "华东师范大学347\n心理学保命手册"
+CORE_TITLE = "华东师范大学347心理学保命手册"
+CORE_SUBJECT = "心理学导论、实验心理学、心理与教育测量合订版"
+GUIDE_LEVEL_LINES = (
+    "★★★  核心优先｜速背手册原一级；一本通与考纲中的核心内容，华东或相关真题信号强，主观题可考性和答案复用价值最高。优先完整背诵。",
+    "★★  重点掌握｜同属速背手册原一级；一本通与考纲依据明确，具有稳定可考性，但真题信号或综合优先度略低于三星。完成三星后继续掌握。",
+    "★  基础覆盖｜速背手册原二级；速背手册或一本通有收录且属于考纲范围，但真题信号和主观题可考性相对较弱。用于补足范围。",
+)
 
 
 def set_run_font(run, name: str = "宋体", size: float = 12, bold: bool | None = None) -> None:
@@ -175,7 +183,7 @@ def add_cover(document: Document) -> None:
     paragraph = document.add_paragraph(style="Title")
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     paragraph.paragraph_format.first_line_indent = Cm(0)
-    run = paragraph.add_run("华东师范大学347\n心理学保命手册")
+    run = paragraph.add_run(COVER_TITLE)
     set_run_font(run, "微软雅黑", 24, True)
     document.add_page_break()
 
@@ -199,12 +207,7 @@ def add_guide(document: Document) -> None:
     heading.paragraph_format.space_after = Pt(6)
     set_run_font(heading.add_run("星级"), size=14, bold=True)
 
-    lines = (
-        "★★★  核心优先｜速背手册原一级；一本通与考纲中的核心内容，华东或相关真题信号强，主观题可考性和答案复用价值最高。优先完整背诵。",
-        "★★  重点掌握｜同属速背手册原一级；一本通与考纲依据明确，具有稳定可考性，但真题信号或综合优先度略低于三星。完成三星后继续掌握。",
-        "★  基础覆盖｜速背手册原二级；速背手册或一本通有收录且属于考纲范围，但真题信号和主观题可考性相对较弱。用于补足范围。",
-    )
-    for text in lines:
+    for text in GUIDE_LEVEL_LINES:
         paragraph = document.add_paragraph()
         paragraph.paragraph_format.first_line_indent = Cm(0)
         paragraph.paragraph_format.line_spacing = 1.35
@@ -329,8 +332,8 @@ def build(output_path: Path, page_map: dict[str, int] | None = None) -> None:
     set_update_fields(document)
     configure_front_section(document.sections[0])
 
-    document.core_properties.title = "华东师范大学347心理学保命手册"
-    document.core_properties.subject = "心理学导论、实验心理学、心理与教育测量合订版"
+    document.core_properties.title = CORE_TITLE
+    document.core_properties.subject = CORE_SUBJECT
     document.core_properties.author = "铁头心理学考研"
 
     add_cover(document)

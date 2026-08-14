@@ -85,7 +85,14 @@ def default_page_map(lines: list[str]) -> dict[str, int]:
     }
 
 
-def render(markdown_path: Path, output_path: Path, page_map_path: Path | None = None) -> None:
+def render(
+    markdown_path: Path,
+    output_path: Path,
+    page_map_path: Path | None = None,
+    *,
+    subject_label: str = "普通心理学",
+    header_text: str | None = None,
+) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
     first_chapter = next(index for index, line in enumerate(lines) if line.startswith("# 第一章 "))
@@ -100,7 +107,7 @@ def render(markdown_path: Path, output_path: Path, page_map_path: Path | None = 
     configure_page(document.sections[0])
     set_update_fields(document)
     document.core_properties.title = title
-    document.core_properties.subject = "深圳大学347普通心理学逐题直背保命手册"
+    document.core_properties.subject = f"深圳大学347{subject_label}逐题直背保命手册"
     document.core_properties.author = "铁头心理学考研"
 
     add_cover(document, title, "", edition="")
@@ -118,7 +125,10 @@ def render(markdown_path: Path, output_path: Path, page_map_path: Path | None = 
 
     body_section = document.add_section(WD_SECTION.NEW_PAGE)
     configure_page(body_section)
-    configure_body_header_footer(body_section, "深圳大学347｜普通心理学保命手册")
+    configure_body_header_footer(
+        body_section,
+        header_text or f"深圳大学347｜{subject_label}保命手册",
+    )
 
     first_body_chapter = True
     for raw_line in lines[first_chapter:]:
@@ -180,8 +190,16 @@ def main() -> None:
     parser.add_argument("input", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("--page-map", type=Path)
+    parser.add_argument("--subject-label", default="普通心理学")
+    parser.add_argument("--header-text")
     arguments = parser.parse_args()
-    render(arguments.input, arguments.output, arguments.page_map)
+    render(
+        arguments.input,
+        arguments.output,
+        arguments.page_map,
+        subject_label=arguments.subject_label,
+        header_text=arguments.header_text,
+    )
 
 
 if __name__ == "__main__":
