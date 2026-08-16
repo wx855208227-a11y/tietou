@@ -3,6 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 import re
 
+from sjtu_baoming_canonical import canonicalize_definitions
+
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "deliverables/深圳大学347普通心理学保命手册_全本V2.md"
@@ -74,11 +76,7 @@ def add_true_question_calibrations(text: str) -> str:
     text = insert_after(
         text,
         "## 二、刺激强度与感觉大小的关系【★★★】",
-        "\n\n### 押题1【简答】解释**阈下知觉**，并说明其研究结论。\n\n阈下知觉是指个体在没有意识到刺激存在的情况下，刺激仍对其心理和行为产生影响的现象。（刺激强度低于个体能够有意识报告的觉察阈限，但可能在启动、选择或情绪反应中留下效应。）【名词解释：阈下知觉】\n\n1. **基本逻辑**：先证明被试对刺激的外显辨认处于随机水平，再考察该刺激是否改变随后任务表现。（只有同时满足“无意识报告”和“行为效应”两个条件，才能作为阈下知觉证据。）\n\n2. **研究结论**：阈下刺激能够产生一定的知觉和语义加工，但效应通常较弱，并受到刺激强度、任务要求和测量方法限制。（不能把实验室中的微弱启动效应夸大为可以任意操纵复杂行为。）\n\n综上，阈下知觉说明未进入清晰意识的刺激仍可能受到加工，但其存在范围和实际作用必须依据严格实验加以判断。\n\n### 押题2【论述】论述**韦伯定律、费希纳定律和斯蒂文斯幂定律**的基本观点及关系。",
-    )
-    text = text.replace(
-        "### 押题1【论述】论述**韦伯定律、费希纳定律和斯蒂文斯幂定律**的基本观点及关系。\n\n### 押题1【论述】论述**韦伯定律、费希纳定律和斯蒂文斯幂定律**的基本观点及关系。",
-        "### 押题2【论述】论述**韦伯定律、费希纳定律和斯蒂文斯幂定律**的基本观点及关系。",
+        "\n\n### 押题1【简答】解释**阈下知觉**，并说明其研究结论。\n\n阈下知觉是指个体在没有意识到刺激存在的情况下，刺激仍对其心理和行为产生影响的现象。（刺激强度低于个体能够有意识报告的觉察阈限，但可能在启动、选择或情绪反应中留下效应。）【名词解释：阈下知觉】\n\n1. **基本逻辑**：先证明被试对刺激的外显辨认处于随机水平，再考察该刺激是否改变随后任务表现。（只有同时满足“无意识报告”和“行为效应”两个条件，才能作为阈下知觉证据。）\n\n2. **研究结论**：阈下刺激能够产生一定的知觉和语义加工，但效应通常较弱，并受到刺激强度、任务要求和测量方法限制。（不能把实验室中的微弱启动效应夸大为可以任意操纵复杂行为。）\n\n综上，阈下知觉说明未进入清晰意识的刺激仍可能受到加工，但其存在范围和实际作用必须依据严格实验加以判断。",
     )
     text = insert_after(
         text,
@@ -146,12 +144,34 @@ def renumber_duplicate_questions(text: str) -> str:
     return "".join(output)
 
 
+def calibrate_question_types(text: str) -> str:
+    # These tasks require several complete theories or a comparison conclusion; in the
+    # current answer volume they are more consistent with SJTU's argumentation questions.
+    prompts = {
+        "比较脑功能的**定位说、整体说、机能系统说、模块说和神经网络说**。":
+            "比较脑功能的**定位说、整体说、机能系统说、模块说和神经网络说**。",
+        "简述动机的本能论、驱力理论、诱因理论、唤醒理论和认知理论。":
+            "论述动机的本能论、驱力理论、诱因理论、唤醒理论和认知理论。",
+        "比较人本主义人格理论与班杜拉社会学习人格理论的主要观点。":
+            "比较人本主义人格理论与班杜拉社会学习人格理论的主要观点。",
+        "简述人格测评的主要方法，并比较自陈量表与投射测验。":
+            "论述人格测评的主要方法，并比较自陈量表与投射测验。",
+        "比较语言发展的学习观、先天观和相互作用论。":
+            "比较语言发展的学习观、先天观和相互作用论。",
+    }
+    for old_prompt, new_prompt in prompts.items():
+        text = text.replace(f"【简答】{old_prompt}", f"【论述】{new_prompt}")
+    return text
+
+
 def main() -> None:
     text = SOURCE.read_text(encoding="utf-8")
     text = replace_guide(text)
     text = replace_stars(text)
     text = add_true_question_calibrations(text)
     text = renumber_duplicate_questions(text)
+    text = canonicalize_definitions(text)
+    text = calibrate_question_types(text)
     assert text.startswith("# 上海交通大学347普通心理学保命手册")
     assert "深圳大学" not in text
     assert "【名词解释：心理现象】" in text

@@ -3,6 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 import re
 
+from sjtu_baoming_canonical import canonicalize_definitions
+
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "deliverables/华东师范大学347实验心理学保命手册_全本_任务适配精校版V2.md"
@@ -108,6 +110,34 @@ def add_source_aligned_content(text: str) -> str:
 综上，信号检测论能够把目击者“是否真正记得”与“是否愿意报告见过”区分开来，从而比单纯正确率更准确地评价目击记忆。
 """
     text = insert_after(text, signal_anchor, signal_design)
+    attention_anchor = "综上，不同范式分别从空间定向、视觉搜索、信息过滤和资源分配等角度操作化注意。"
+    attention_true = """
+
+### 押题2【简答】简述基于反应时研究注意的几种方法。
+
+基于反应时的注意研究通过操纵提示、搜索条件或整体—局部任务，比较不同条件下的反应时和正确率，以推测注意选择和加工优先性。
+
+1. **提示注意研究**：提示法通过刺激或指导语引导被试注意某一输入源，再比较其与未被提示输入源的加工差异。
+
+（1）**空间提示范式**：自变量是提示有效性，包括有效、无效和中立试次；因变量是目标出现后的反应时和正确率。
+
+（2）**结果解释**：有效提示通常反应最快，中立提示居中，无效提示最慢，说明注意提前定向能够促进目标加工。
+
+2. **目标搜索研究**：搜索法要求被试从多个非目标刺激中寻找目标刺激，通过反应时随项目数量的变化考察注意扫描过程。
+
+（1）**搜索范式**：操纵目标是否具有突出特征、目标是否出现和项目数量，记录寻找目标所需反应时。
+
+（2）**结果解释**：突出特征目标的反应时较少随项目数量变化，缺乏突出特征的目标反应时随项目数量增加而上升，说明后者需要较多逐项加工。
+
+3. **整体—局部研究**：整体—局部法通过由小字母组成大字母的复合刺激，考察个体优先提取整体信息还是局部信息。
+
+（1）**整体—局部范式**：操纵整体字母、局部字母及二者是否一致，要求被试识别指定层级的字母，记录反应时和正确率。
+
+（2）**结果解释**：整体字母通常识别更快，冲突时整体信息会干扰局部识别，支持整体加工优先。
+
+综上，提示法研究注意定向，搜索法研究注意扫描，整体—局部法研究加工优先性，三者都必须结合反应时与正确率解释。
+"""
+    text = insert_after(text, attention_anchor, attention_true)
     memory_anchor = "# 第九章 思维"
     memory_addition = """## 四、启动效应及其研究【★★★】
 
@@ -180,6 +210,25 @@ def clean_known_errors(text: str) -> str:
     return text
 
 
+def renumber_chapters(text: str) -> str:
+    mapping = {
+        "第四章 反应时": "第三章 反应时",
+        "第五章 心理物理学": "第四章 心理物理学",
+        "第六章 注意": "第五章 注意",
+        "第七章 知觉": "第六章 知觉",
+        "第八章 记忆与学习": "第七章 记忆与学习",
+        "第九章 思维": "第八章 思维",
+        "第十章 情绪": "第九章 情绪",
+        "第十一章 临床与社会领域的实验研究": "第十章 临床与社会领域的实验研究",
+    }
+    return re.sub(
+        r"^# (第四章 反应时|第五章 心理物理学|第六章 注意|第七章 知觉|第八章 记忆与学习|第九章 思维|第十章 情绪|第十一章 临床与社会领域的实验研究)$",
+        lambda match: "# " + mapping[match.group(1)],
+        text,
+        flags=re.MULTILINE,
+    )
+
+
 def renumber_questions(text: str) -> str:
     blocks = re.split(r"(?=^## )", text, flags=re.MULTILINE)
     output: list[str] = []
@@ -200,7 +249,9 @@ def main() -> None:
     text = align_terms_and_priorities(text)
     text = add_source_aligned_content(text)
     text = clean_known_errors(text)
+    text = renumber_chapters(text)
     text = renumber_questions(text)
+    text = canonicalize_definitions(text)
     assert text.startswith("# 上海交通大学347实验心理学保命手册")
     assert "华东师范大学" not in text
     assert "【名词解释：交叉滞后法】" in text
