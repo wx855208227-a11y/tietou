@@ -35,6 +35,7 @@ EXAM_INVENTORY = HERE / "szu_exam_questions.tsv"
 
 CURRENT_DOCX_SHA256 = "f3abae6923e0a050f2052f10f6b88772954e1137be85a54d0c59b5625a696fe9"
 TEXTBOOK = "彭聃龄《普通心理学》第6版"
+TEXTBOOK_PDF_PAGE_OFFSET = 12
 EXAM_SOURCE = "HF：深圳大学2019—2026年初试真题册"
 
 
@@ -199,7 +200,8 @@ RENDER_CHECKS = [
 
 HEADERS = [
     "编号", "章节", "严重程度", "问题类型", "一本通实际页码", "具体位置", "一本通原文",
-    "教材/真题依据", "核对依据与问题说明", "修改建议", "置信度", "来源性质", "修改状态", "编辑备注",
+    "教材书内页码", "教材扫描PDF页码", "真题依据", "核对依据与问题说明", "修改建议",
+    "置信度", "来源性质", "修改状态", "编辑备注",
 ]
 
 NAVY = "17365D"
@@ -226,6 +228,32 @@ def pages_for_locator(value: object) -> list[int]:
     if len(digits) == 2 and re.search(r"\d\s*[—–~～-]\s*\d", text):
         return list(range(digits[0], digits[1] + 1))
     return [number for number in digits if 1 <= number <= 492]
+
+
+def textbook_pdf_locator(value: object) -> str:
+    """Convert printed textbook page locators to physical PDF page locators."""
+    text = str(value).strip()
+    page_pattern = r"P\d+(?:\s*[—–~～-]\s*P?\d+)?(?:\s*[、，,；;]\s*P?\d+(?:\s*[—–~～-]\s*P?\d+)?)*"
+    if not re.fullmatch(page_pattern, text):
+        return "—"
+    converted = re.sub(
+        r"\d+",
+        lambda match: str(int(match.group(0)) + TEXTBOOK_PDF_PAGE_OFFSET),
+        text,
+    ).replace("P", "")
+    return f"第{converted}页"
+
+
+def split_issue_evidence(item: dict[str, object]) -> tuple[str, str, str]:
+    """Keep textbook pages and exam references in distinct, auditable columns."""
+    legacy = str(item["教材页码"]).strip()
+    if legacy.startswith("P"):
+        return legacy, textbook_pdf_locator(legacy), "—"
+    if legacy not in {"", "—"}:
+        return "—", "—", legacy
+    if str(item["章节"]).startswith("补充章") or "补充" in str(item["来源性质"]):
+        return "待确认", "待确认", "—"
+    return "—", "—", "—"
 
 
 def current_issues() -> list[dict[str, object]]:
@@ -264,22 +292,24 @@ def add_issue_sheet(wb: Workbook, issues: list[dict[str, object]]) -> dict[int, 
     ws.append(HEADERS)
     page_issues: dict[int, list[int]] = defaultdict(list)
     for number, item in enumerate(issues, 1):
+        textbook_page, textbook_pdf_page, exam_evidence = split_issue_evidence(item)
         ws.append([
             number, item["章节"], item["严重程度"], item["问题类型"], item["一本通实际页码"],
-            item["具体位置"], item["一本通原文"], item["教材页码"], item["核对依据与问题说明"],
-            item["修改建议"], item["置信度"], item["来源性质"], item["修改状态"], item["编辑备注"],
+            item["具体位置"], item["一本通原文"], textbook_page, textbook_pdf_page, exam_evidence,
+            item["核对依据与问题说明"], item["修改建议"], item["置信度"], item["来源性质"],
+            item["修改状态"], item["编辑备注"],
         ])
         for page in pages_for_locator(item["一本通实际页码"]):
             page_issues[page].append(number)
-    style_table(ws, [8, 31, 11, 22, 18, 31, 52, 20, 64, 60, 10, 31, 12, 24])
-    ws.auto_filter.ref = f"A1:N{ws.max_row}"
+    style_table(ws, [8, 31, 11, 22, 18, 31, 52, 18, 22, 28, 64, 60, 10, 31, 12, 24])
+    ws.auto_filter.ref = f"A1:P{ws.max_row}"
     for severity, color in (("高", HIGH), ("中", MEDIUM), ("低", LOW)):
         ws.conditional_formatting.add(
-            f"A2:N{ws.max_row}",
+            f"A2:P{ws.max_row}",
             FormulaRule(formula=[f'$C2="{severity}"'], fill=PatternFill("solid", fgColor=color)),
         )
     ws.conditional_formatting.add(
-        f"A2:N{ws.max_row}", FormulaRule(formula=['$M2="已修改"'], fill=PatternFill("solid", fgColor=GREEN))
+        f"A2:P{ws.max_row}", FormulaRule(formula=['$O2="已修改"'], fill=PatternFill("solid", fgColor=GREEN))
     )
     return page_issues
 
@@ -338,7 +368,8 @@ def add_unit_ledger(wb: Workbook, rows: list[dict[str, str]], page_issues: dict[
     ws = wb.create_sheet("逐知识点核对台账")
     headers = [
         "单元编号", "一本通实际页码", "章节", "单元类型", "来源区", "最近标题", "一本通文本",
-        "最佳教材页", "教材OCR证据片段", "自动对齐分类", "审核结论", "关联问题编号",
+        "最佳教材书内页码", "教材扫描PDF页码", "教材OCR证据片段", "自动对齐分类", "审核结论",
+        "关联问题编号",
     ]
     ws.append(headers)
     for row in rows:
@@ -357,11 +388,12 @@ def add_unit_ledger(wb: Workbook, rows: list[dict[str, str]], page_issues: dict[
             conclusion = "已按教材证据与上下文核对"
         ws.append([
             row["单元编号"], f"P{page}", row["章节"], row["单元类型"], row["来源区"], row["最近标题"],
-            row["一本通文本"], row["最佳教材页"], row["教材OCR证据片段"], row["逐条复核桶"], conclusion,
+            row["一本通文本"], row["最佳教材页"], textbook_pdf_locator(row["最佳教材页"]),
+            row["教材OCR证据片段"], row["逐条复核桶"], conclusion,
             "、".join(f"Q{number:03d}" for number in links),
         ])
-    style_table(ws, [12, 16, 30, 16, 14, 36, 64, 14, 58, 28, 40, 26])
-    ws.auto_filter.ref = f"A1:L{ws.max_row}"
+    style_table(ws, [12, 16, 30, 16, 14, 36, 64, 18, 22, 58, 28, 40, 26])
+    ws.auto_filter.ref = f"A1:M{ws.max_row}"
 
 
 def add_exam_sheet(wb: Workbook) -> None:
@@ -416,13 +448,15 @@ def add_risk_and_second_review(wb: Workbook, issues: list[dict[str, object]]) ->
         ws = wb.create_sheet(title)
         ws.append(HEADERS)
         for number, item in enumerate(selected, 1):
+            textbook_page, textbook_pdf_page, exam_evidence = split_issue_evidence(item)
             ws.append([
                 number, item["章节"], item["严重程度"], item["问题类型"], item["一本通实际页码"],
-                item["具体位置"], item["一本通原文"], item["教材页码"], item["核对依据与问题说明"],
-                item["修改建议"], item["置信度"], item["来源性质"], item["修改状态"], item["编辑备注"],
+                item["具体位置"], item["一本通原文"], textbook_page, textbook_pdf_page, exam_evidence,
+                item["核对依据与问题说明"], item["修改建议"], item["置信度"], item["来源性质"],
+                item["修改状态"], item["编辑备注"],
             ])
-        style_table(ws, [8, 31, 11, 22, 18, 31, 52, 20, 64, 60, 10, 31, 12, 24])
-        ws.auto_filter.ref = f"A1:N{ws.max_row}"
+        style_table(ws, [8, 31, 11, 22, 18, 31, 52, 18, 22, 28, 64, 60, 10, 31, 12, 24])
+        ws.auto_filter.ref = f"A1:P{ws.max_row}"
 
 
 def add_notes(wb: Workbook, issues: list[dict[str, object]], unit_rows: list[dict[str, str]]) -> None:
@@ -433,6 +467,7 @@ def add_notes(wb: Workbook, issues: list[dict[str, object]], unit_rows: list[dic
         ("审核对象", f"用户本次上传的深大普通心理学一本通；SHA-256：{CURRENT_DOCX_SHA256}。不与其他一本通版本对比。"),
         ("页码口径", "全部按一本通页脚实际页码P1—492；物理页=实际页+8。"),
         ("最高内容依据", f"{TEXTBOOK}。教材PDF为589页扫描版；正文证据使用逐页OCR，高影响项回看原扫描/渲染页。"),
+        ("教材页码口径", "教材书内印刷页码与扫描PDF物理页码分别列示；本扫描版固定为“PDF物理页码=教材书内页码+12”。例如教材P39对应PDF第51页，教材P512—513对应PDF第524—525页。"),
         ("真题依据", f"{EXAM_SOURCE}，共提取2019—2026年243道四科题；本表只核验普通心理学及与本稿直接相关的考点。"),
         ("审核范围", f"P1—492、{chapters}个章节/补充章、目录与标题、4963个正文非空DOCX单元（另核8个前置页单元）、公式对象、Tips、补充内容、真题年份与重点等级。"),
         ("问题数", f"共{len(issues)}项：高{severity['高']}、中{severity['中']}、低{severity['低']}。问题数量不是覆盖证明，覆盖证据见逐页表与逐知识点台账。"),
@@ -463,19 +498,40 @@ def validate(path: Path, expected_issues: int, expected_units: int) -> None:
     if set(wb.sheetnames) != required:
         raise RuntimeError(f"unexpected sheets: {wb.sheetnames}")
     issue_ws = wb["问题总表"]
+    if [cell.value for cell in issue_ws[1]] != HEADERS:
+        raise RuntimeError("issue sheet headers do not expose separate textbook/PDF/exam evidence")
     ids = [issue_ws.cell(row, 1).value for row in range(2, issue_ws.max_row + 1)]
     if ids != list(range(1, expected_issues + 1)):
         raise RuntimeError("issue numbering is not consecutive")
     for row in range(2, issue_ws.max_row + 1):
-        for column in (2, 3, 4, 5, 6, 7, 9, 10, 11, 12):
+        for column in (2, 3, 4, 5, 6, 7, 11, 12, 13, 14):
             if issue_ws.cell(row, column).value in (None, ""):
                 raise RuntimeError(f"blank required issue field at row {row}, col {column}")
+    issue_rows = {
+        str(issue_ws.cell(row, 8).value): (
+            str(issue_ws.cell(row, 9).value), str(issue_ws.cell(row, 10).value)
+        )
+        for row in range(2, issue_ws.max_row + 1)
+    }
+    if issue_rows.get("P39") != ("第51页", "—"):
+        raise RuntimeError("textbook P39 to PDF page 51 mapping failed")
+    if issue_rows.get("P512—513") != ("第524—525页", "—"):
+        raise RuntimeError("textbook P512—513 to PDF page 524—525 mapping failed")
+    if not any(
+        issue_ws.cell(row, 8).value == "—"
+        and issue_ws.cell(row, 9).value == "—"
+        and issue_ws.cell(row, 10).value == "2020简答题4"
+        for row in range(2, issue_ws.max_row + 1)
+    ):
+        raise RuntimeError("exam evidence was not kept separate from textbook PDF pages")
     page_ws = wb["逐页覆盖_P1-P492"]
     if page_ws.max_row != 493 or page_ws.cell(2, 1).value != "P1" or page_ws.cell(493, 1).value != "P492":
         raise RuntimeError("page coverage is not exactly P1—P492")
     unit_ws = wb["逐知识点核对台账"]
     if unit_ws.max_row - 1 != expected_units:
         raise RuntimeError(f"unit ledger mismatch: {unit_ws.max_row - 1} != {expected_units}")
+    if unit_ws.cell(1, 9).value != "教材扫描PDF页码":
+        raise RuntimeError("unit ledger is missing textbook PDF page column")
     for ws in wb.worksheets[:7]:
         if ws.auto_filter.ref is None:
             raise RuntimeError(f"missing filter: {ws.title}")
