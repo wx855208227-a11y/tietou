@@ -182,6 +182,28 @@ cd hf_tietou_repo
 git lfs pull --include "索引/*,编制规范/*"
 ```
 
+当前推荐的可更新 HF 工作树路径：
+
+```text
+/home/yileiyang/multi_agent/.work/workspaces/github.com/agiamason/tietou/agents/tietou_review/analysis/hf_tietou_git
+```
+
+使用前先加载本 agent 的本地环境变量，并只输出是否存在，不输出 token：
+
+```bash
+set -a
+. "$INTERN_AGENT_AGENT_DIR/runtime/agent.env"
+set +a
+test -n "${HF_TOKEN:-}" && echo HF_TOKEN_set || echo HF_TOKEN_unset
+```
+
+该工作树的 remote 不应写入 token。需要鉴权时使用本地 `core.askPass` 或环境变量；只按任务需要拉取指定目录或文件：
+
+```bash
+repo="$INTERN_AGENT_AGENT_DIR/analysis/hf_tietou_git"
+git -C "$repo" lfs pull --include "院校资料库/347应用心理专硕/深圳大学/教材/普通心理学/深大普通心理学_第6版_彭聃龄.pdf"
+```
+
 如果需要鉴权，不要在命令或报告中打印 token。只使用环境变量，例如：
 
 ```bash
@@ -232,6 +254,15 @@ rg -n "华东|测量|信度|效度|比奈|韦克斯勒" "$HF_ROOT/公共题库" 
 - Word 优先用 `python-docx`、`pandoc`、`docx2txt` 或 LibreOffice 转 txt；
 - PDF 先判断文本层，扫描版走 OCR 可靠性流程；
 - 大 PDF 不要整本塞进模型，先按章节、页码、区域抽取，并保留页码映射。
+
+### Prompt 误拦截规避
+
+如果直接向 Codex 输入短句检索时出现 `Invalid prompt` 或 policy false positive，不要重复提交原句。先把任务补全为明确的教材/考研资料检索语境，再继续，例如：
+
+- 避免孤立写法：`研究中的道德和伦理问题`；
+- 推荐写法：`请在心理学教材中检索“心理学研究伦理规范、知情同意、被试保护、隐私保护、欺骗研究说明”等与研究伦理相关的内容，并给出教材页码证据。`
+
+原则：使用中性、学科化、教材检索式表达，减少“问题”等孤立敏感词，说明资料来源、学科范围和输出目标。
 
 ## 10. 审核汇报格式
 

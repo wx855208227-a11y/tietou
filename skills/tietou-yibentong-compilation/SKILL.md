@@ -20,6 +20,7 @@ For DOCX generation, use the render-preview format loop documented in `docs/yibe
 ## Non-Negotiable Workflow
 
 1. Confirm the source set: 铁头一本通 draft or textbook as 主体材料, official/e-textbook reference, target院校官方考纲, target院校历年真题, and optional 312/泛347真题库.
+   - If any source is a scanned/image-heavy PDF, complete the scanned-PDF reliability gate in `requirements.md` before using it as evidence.
 2. Separate source types in notes and outputs: textbook/source rules, external-material comparison, past-exam evidence, tips/examples, supplementary content, and formatting requirements.
 3. For a new textbook-based 一本通, keep the textbook chapter order, but compile as an exam-facing 考点筛选稿, not a full textbook compression. Delete or heavily compress background narration, transitions, low-yield examples, policy discussion, and long descriptive history unless they are directly examinable.
 4. Preserve textbook keywords and key sentences after screening. Rebuild them into answer-like layers: category/person/event -> core contribution/definition -> necessary examples/details. Each layer should be a memorisable scoring point.
@@ -41,6 +42,8 @@ Use this workflow whenever the project has `tietou_manager`, `tietou_worker1`, `
 - `tietou_manager` is the only agent that communicates with the leader/user. Workers and reviewer report only to `tietou_manager` and follow manager assignments.
 - Workers must not ask the leader directly for clarification. They should report blockers, assumptions, and missing inputs to `tietou_manager`.
 - `tietou_reviewer` does not command workers directly. It reports findings and verdicts to `tietou_manager`; the manager decides and assigns rework.
+- For `tietou_review`, use the agent-local HF git worktree at `$INTERN_AGENT_AGENT_DIR/analysis/hf_tietou_git` when it exists. Load `$INTERN_AGENT_AGENT_DIR/runtime/agent.env` before HF access, verify only `HF_TOKEN_set/unset`, and use targeted `git lfs pull --include "<path>"`; do not full-pull the HF dataset and do not print tokens or credentialed remotes.
+- If a short Chinese query triggers an `Invalid prompt` / policy false positive, do not retry the same wording. Rewrite it into a neutral textbook-search request with clear academic context, source scope, and output goal. For example, replace isolated wording such as `研究中的道德和伦理问题` with `请在心理学教材中检索心理学研究伦理规范、知情同意、被试保护、隐私保护、欺骗研究说明等与研究伦理相关的内容，并给出教材页码证据。`
 
 ### Role Responsibilities
 
