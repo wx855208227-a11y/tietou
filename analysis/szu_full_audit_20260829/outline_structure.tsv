@@ -1,0 +1,316 @@
+record_no	kind	locator	style	rendered_page	text
+1	paragraph	p1	2	1	深圳大学2026年硕士研究生入学考试大纲
+2	paragraph	p2	3	1	（初试科目只提供考试大纲）
+3	paragraph	p3		1	命题学院/部门（盖章）：心理学院
+4	paragraph	p4		1	考试科目代码及名称：[347]心理学专业综合
+5	paragraph	p5		1	说明：
+6	paragraph	p6		1	心理学专业综合涵盖心理学基础、心理学研究方法、心理统计、心理测量、实验心理学等基础学科，心理学专业综合考试由教育部发布命题指导意见，参考应用心理专业硕士教育指导委员会提出的指导性考试大纲自行命制，要求考生在熟练掌握心理学基础知识的前提下，能灵活运用心理学研究方法剖析现实中的心理学问题，提出针对性的研究方案，并熟练运用统计学知识分析数据，得出合理的结论。心理学专业综合为全国统一考试，考试时间为180分钟，满分为300分。
+7	paragraph	p7		1	
+8	paragraph	p8		1	心理学基础
+9	paragraph	p9		1	第一节 心理学概述
+10	paragraph	p10		1	（一） 心理学研究对象
+11	paragraph	p11		1	（二） 心理学主要流派
+12	paragraph	p12		1	
+13	paragraph	p13		1	第二节 心理学的研究方法
+14	paragraph	p14		1	（一） 实验法
+15	paragraph	p15		1	1. 变量与控制
+16	paragraph	p16		1	2. 实验的信度和效度
+17	paragraph	p17		1	3. 反应时法
+18	paragraph	p18		1	4. 心理物理学方法
+19	paragraph	p19		1	（二） 观察法
+20	paragraph	p20		1	（三） 个案法
+21	paragraph	p21		1	（四） 横断设计、纵向设计、聚合交叉设计、双生子设计
+22	paragraph	p22		1	（五） 量化研究、质性研究
+23	paragraph	p23		1	（六） 研究中的道德和伦理问题
+24	paragraph	p24		1	
+25	paragraph	p25		1	第三节 感觉
+26	paragraph	p26		1	（一） 感觉的含义
+27	paragraph	p27		1	（二） 颜色视觉
+28	paragraph	p28		1	（三） 声音的心理维度
+29	paragraph	p29		1	
+30	paragraph	p30		1	第四节 知觉
+31	paragraph	p31		1	（一） 知觉的含义和特性
+32	paragraph	p32		1	（二） 知觉组织
+33	paragraph	p33		1	1. 知觉组织原则
+34	paragraph	p34		1	2. 形状知觉
+35	paragraph	p35		1	3. 深度知觉
+36	paragraph	p36		1	4. 运动知觉
+37	paragraph	p37		1	
+38	paragraph	p38		1	（三） 错觉
+39	paragraph	p39		1	
+40	paragraph	p40		1	第五节 意识和注意
+41	paragraph	p41		1	（一） 意识与无意识
+42	paragraph	p42		1	1. 意识的含义
+43	paragraph	p43		1	2. 意识的功能
+44	paragraph	p44		1	3. 睡眠与梦
+45	paragraph	p45		1	
+46	paragraph	p46		1	（二） 注意过程
+47	paragraph	p47		1	1. 注意的含义
+48	paragraph	p48		1	2. 注意的特征
+49	paragraph	p49		1	3. 选择性注意
+50	paragraph	p50		1	
+51	paragraph	p51		1	第六节 学习和记忆
+52	paragraph	p52		1	（一） 学习的含义
+53	paragraph	p53		1	（二） 学习理论
+54	paragraph	p54		1	1. 经典性条件作用说
+55	paragraph	p55		1	2. 操作性条件作用说
+56	paragraph	p56		1	3. 观察学习
+57	paragraph	p57		1	
+58	paragraph	p58		1	（三） 记忆的含义
+59	paragraph	p59		1	
+60	paragraph	p60		1	（四） 记忆的种类
+61	paragraph	p61		1	1. 感觉记忆
+62	paragraph	p62		1	2. 短时记忆与工作记忆
+63	paragraph	p63		1	3. 长时记忆
+64	paragraph	p64		1	
+65	paragraph	p65		1	（五） 遗忘
+66	paragraph	p66		1	1. 遗忘曲线
+67	paragraph	p67		1	2. 影响遗忘的因素
+68	paragraph	p68		1	
+69	paragraph	p69		1	第七节 思维
+70	paragraph	p70		1	（一） 思维的含义及种类
+71	paragraph	p71		1	（二） 概念的含义及其形成
+72	paragraph	p72		1	（三） 问题解决
+73	paragraph	p73		1	1. 问题解决的过程
+74	paragraph	p74		1	2. 影响问题解决的因素
+75	paragraph	p75		1	
+76	paragraph	p76		1	（四） 推理
+77	paragraph	p77		1	1. 演绎推理
+78	paragraph	p78		1	2. 归纳推理
+79	paragraph	p79		1	
+80	paragraph	p80		1	（五） 判断和决策
+81	paragraph	p81		1	1. 启发法和判断
+82	paragraph	p82		1	2. 决策框架
+83	paragraph	p83		1	3. 决策规避
+84	paragraph	p84		1	
+85	paragraph	p85		1	第八节 智力
+86	paragraph	p86		1	（一） 智力的含义
+87	paragraph	p87		1	（二） 智力的测量
+88	paragraph	p88		1	1. 智力测验的编制
+89	paragraph	p89		1	2. 常用智力测验
+90	paragraph	p90		1	
+91	paragraph	p91		1	（三） 智力理论
+92	paragraph	p92		1	1. 智力的心理测量学理论
+93	paragraph	p93		1	2. 智力三因素理论
+94	paragraph	p94		1	3. 多元智力理论
+95	paragraph	p95		1	
+96	paragraph	p96		1	第九节 情绪
+97	paragraph	p97		1	（一） 情绪的含义和功能
+98	paragraph	p98		1	（二） 表情
+99	paragraph	p99		1	1. 非语言交流
+100	paragraph	p100		1	2. 文化与表情
+101	paragraph	p101		1	3. 面部表情
+102	paragraph	p102		1	
+103	paragraph	p103		1	（三） 情绪理论
+104	paragraph	p104		1	1. 詹姆斯——兰格理论
+105	paragraph	p105		1	2. 坎农——巴德理论
+106	paragraph	p106		1	3. 情绪的认知评价理论
+107	paragraph	p107		1	
+108	paragraph	p108		1	第十节 动机
+109	paragraph	p109		1	（一） 动机的含义
+110	paragraph	p110		1	（二） 生理动机
+111	paragraph	p111		1	（三） 个人成就动机
+112	paragraph	p112		1	1. 成就需要
+113	paragraph	p113		1	2. 成功与失败的归因
+114	paragraph	p114		1	
+115	paragraph	p115		1	（四） 学习动机
+116	paragraph	p116		1	1. 学习动机强化理论
+117	paragraph	p117		1	2. 学习动机的人本理论
+118	paragraph	p118		1	3. 学习动机的社会认知理论
+119	paragraph	p119		1	4. 学习动机的培养与发展
+120	paragraph	p120		1	
+121	paragraph	p121		1	（五） 需要层次理论
+122	paragraph	p122		1	
+123	paragraph	p123		1	
+124	paragraph	p124		1	
+125	paragraph	p125		1	
+126	paragraph	p126		1	心理统计
+127	paragraph	p127		1	
+128	paragraph	p128		1	第一节 描述统计
+129	paragraph	p129		1	（一）统计图表
+130	paragraph	p130		1	1. 统计图
+131	paragraph	p131		1	2. 统计表
+132	paragraph	p132		1	
+133	paragraph	p133		1	（二）集中量数
+134	paragraph	p134		1	1. 算术平均数
+135	paragraph	p135		1	2. 中数
+136	paragraph	p136		1	3. 众数
+137	paragraph	p137		1	
+138	paragraph	p138		1	（三）差异量数
+139	paragraph	p139		1	1. 离差与平均差
+140	paragraph	p140		1	2. 方差和标准差
+141	paragraph	p141		1	3. 差异系数
+142	paragraph	p142		1	
+143	paragraph	p143		1	（四）地位量数
+144	paragraph	p144		1	1. 百分位数
+145	paragraph	p145		1	2. 百分等级
+146	paragraph	p146		1	3. 标准分数
+147	paragraph	p147		1	
+148	paragraph	p148		1	（五）相关量数
+149	paragraph	p149		1	1.积差相关
+150	paragraph	p150		1	2.斯皮尔曼等级相关
+151	paragraph	p151		1	3. 肯德尔等级相关
+152	paragraph	p152		1	4.点二列相关和二列相关
+153	paragraph	p153		1	
+154	paragraph	p154		1	第二节 推断统计
+155	paragraph	p155		1	（一）推断统计的基础
+156	paragraph	p156		1	1. 概率
+157	paragraph	p157		1	2. 概率分布
+158	paragraph	p158		1	3. 样本平均数的抽样分布
+159	paragraph	p159		1	4.抽样和抽样误差
+160	paragraph	p160		1	
+161	paragraph	p161		1	（二）参数估计
+162	paragraph	p162		1	1.点估计
+163	paragraph	p163		1	2. 区间估计
+164	paragraph	p164		1	3. 总体平均数的估计
+165	paragraph	p165		1	
+166	paragraph	p166		1	（三）假设检验
+167	paragraph	p167		1	1. 假设检验的基本原理和过程
+168	paragraph	p168		1	2. 样本与总体平均数的差异检验
+169	paragraph	p169		1	3. 两个总体平均数的差异检验
+170	paragraph	p170		1	4. 方差齐性检验
+171	paragraph	p171		1	5. 相关系数的显著性检验
+172	paragraph	p172		1	
+173	paragraph	p173		1	（四）方差分析
+174	paragraph	p174		1	1.方差分析的原理和基本过程
+175	paragraph	p175		1	2. 完全随机化方差分析
+176	paragraph	p176		1	3. 重复测量方差分析
+177	paragraph	p177		1	4. 多因素方差分析
+178	paragraph	p178		1	5. 事后检验与简单效应分析
+179	paragraph	p179		1	
+180	paragraph	p180		1	（五）统计功效和效果量
+181	paragraph	p181		1	1.统计功效和效果量的含义
+182	paragraph	p182		1	2.不同统计方法中常用的效果量指标
+183	paragraph	p183		1	
+184	paragraph	p184		1	（六）回归分析
+185	paragraph	p185		1	1. 一元线性回归方程的建立、检验和应用
+186	paragraph	p186		1	2. 多元线性回归分析
+187	paragraph	p187		1	
+188	paragraph	p188		1	（七）卡方检验
+189	paragraph	p189		1	1.拟合度检验
+190	paragraph	p190		1	2.独立性检验
+191	paragraph	p191		1	
+192	paragraph	p192		1	（八）非参数检验
+193	paragraph	p193		1	1.符号检验
+194	paragraph	p194		1	2.符号秩次检验
+195	paragraph	p195		1	3.中位数检验
+196	paragraph	p196		1	4．秩和检验
+197	paragraph	p197		1	5.秩次方差分析
+198	paragraph	p198		1	
+199	paragraph	p199		1	心理测量
+200	paragraph	p200		1	第一节 心理测量基本理论
+201	paragraph	p201		1	
+202	paragraph	p202		1	（一）心理测量的基础
+203	paragraph	p203		1	1. 心理测量的基本概念
+204	paragraph	p204		1	2. 心理测量的特征和分类
+205	paragraph	p205		1	3. 量表的类型
+206	paragraph	p206		1	
+207	paragraph	p207		1	（二）经典测量理论
+208	paragraph	p208		1	1. 经典测量理论模型
+209	paragraph	p209		1	2. 心理测验的信效度
+210	paragraph	p210		1	3. 心理测验的误差
+211	paragraph	p211		1	4. 心理测验的项目分析
+212	paragraph	p212		1	
+213	paragraph	p213		1	（三）现代测量理论
+214	paragraph	p214		1	1. 概化理论
+215	paragraph	p215		1	2. 项目反应理论
+216	paragraph	p216		1	3. 认知诊断理论
+217	paragraph	p217		1	
+218	paragraph	p218		1	第二节 心理测验及应用
+219	paragraph	p219		1	（一）心理测验的编制技术
+220	paragraph	p220		1	1. 心理测验编制的基本程序
+221	paragraph	p221		1	2. 测验目标与命题双向细目表
+222	paragraph	p222		1	3. 题目编制技术
+223	paragraph	p223		1	4. 测验标准化
+224	paragraph	p224		1	5. 测验等值技术
+225	paragraph	p225		1	
+226	paragraph	p226		1	（二）心理测验的施测
+227	paragraph	p227		1	1.测验的设计
+228	paragraph	p228		1	2.施测的程序和步骤
+229	paragraph	p229		1	
+230	paragraph	p230		1	（三）测验常模
+231	paragraph	p231		1	1. 常模和常模团体
+232	paragraph	p232		1	2. 分数的转换和合成
+233	paragraph	p233		1	3. 常模的编制
+234	paragraph	p234		1	4. 常用的常模
+235	paragraph	p235		1	
+236	paragraph	p236		1	（四）标准参照测验
+237	paragraph	p237		1	1. 标准参照测验的定义和作用
+238	paragraph	p238		1	2. 标准参照测验的题目分析
+239	paragraph	p239		1	3. 标准参照测验的信度与效度
+240	paragraph	p240		1	4. 标准参照测验的分数解释
+241	paragraph	p241		1	
+242	paragraph	p242		1	（五）常用心理测验
+243	paragraph	p243		1	1. 人格测验
+244	paragraph	p244		1	2. 智力测验
+245	paragraph	p245		1	3.常用临床心理测验
+246	paragraph	p246		1	4.心理测验的合理使用策略
+247	paragraph	p247		1	
+248	paragraph	p248		1	实验心理学
+249	paragraph	p249		1	
+250	paragraph	p250		1	第一节 绪论
+251	paragraph	p251		1	（一）实验心理学的由来与科学属性
+252	paragraph	p252		1	（二）实证研究的优越性
+253	paragraph	p253		1	（三）实验心理学的方法学地位
+254	paragraph	p254		1	1.实验法
+255	paragraph	p255		1	2.相关研究法
+256	paragraph	p256		1	3.观察法
+257	paragraph	p257		1	（四）如何进行实验心理学研究
+258	paragraph	p258		1	
+259	paragraph	p259		1	第二节 实验研究的变量
+260	paragraph	p260		1	（一）自变量
+261	paragraph	p261		1	（二）因变量
+262	paragraph	p262		1	（三）额外变量
+263	paragraph	p263		1	
+264	paragraph	p264		1	第三节 多变量设计
+265	paragraph	p265		1	（一）多自变量与多因变量设计
+266	paragraph	p266		1	（二）主效应与交互作用
+267	paragraph	p267		1	
+268	paragraph	p268		1	第四节 被试间、被试内和混合设计
+269	paragraph	p269		1	（一）被试间设计
+270	paragraph	p270		1	（二）被试内设计
+271	paragraph	p271		1	（三）混合设计
+272	paragraph	p272		1	
+273	paragraph	p273		1	第五节 小样本设计
+274	paragraph	p274		1	（一）小样本设计
+275	paragraph	p275		1	（二）小样本设计的类型
+276	paragraph	p276		1	（三）小样本设计的评价
+277	paragraph	p277		1	
+278	paragraph	p278		1	第六节 准实验设计
+279	paragraph	p279		1	（一）准实验设计
+280	paragraph	p280		1	（二）准实验设计的类型
+281	paragraph	p281		1	（三）准实验设计的优缺点
+282	paragraph	p282		1	
+283	paragraph	p283		1	第七节 实验研究的效度和信度
+284	paragraph	p284		1	（一）实验研究的效度
+285	paragraph	p285		1	1.构念效度
+286	paragraph	p286		1	2.内部效度
+287	paragraph	p287		1	3.统计结论效度
+288	paragraph	p288		1	4.外部效度
+289	paragraph	p289		1	
+290	paragraph	p290		1	（二）实验研究的信度
+291	paragraph	p291		1	1.影响实验信度的因素
+292	paragraph	p292		1	2.实验信度的验证
+293	paragraph	p293		1	
+294	paragraph	p294		1	第八节 如何读和写心理实验报告
+295	paragraph	p295		1	（一）文献检索
+296	paragraph	p296		1	（二）核对清单阅读法
+297	paragraph	p297		1	（三）心理实验报告的写作
+298	paragraph	p298		1	
+299	paragraph	p299		1	第九节 反应时
+300	paragraph	p300		1	（一）反应时研究的基本问题
+301	paragraph	p301		1	（二）反应时新法
+302	paragraph	p302		1	（三）反应时研究的新进展
+303	paragraph	p303		1	
+304	paragraph	p304		1	第十节 心理物理学
+305	paragraph	p305		1	（一）感觉阈限的测量
+306	paragraph	p306		1	（二）阈上感觉的测量
+307	paragraph	p307		1	（三）心理物理函数
+308	paragraph	p308		1	
+309	paragraph	p309		1	第十一节 信号检测论
+310	paragraph	p310		1	（一）信号检测论的引入
+311	paragraph	p311		1	（二）信号检测论的基本思想
+312	paragraph	p312		1	（三）信号检测论的两种独立指标
+313	paragraph	p313		1	（四）接受者操作特性曲线
+314	paragraph	p314		1	
+315	paragraph	p315		1	
