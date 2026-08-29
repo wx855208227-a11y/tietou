@@ -1,0 +1,45 @@
+from __future__ import annotations
+
+from pathlib import Path
+
+import merge_ecnu_baoming_manuals as base
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+base.OUTPUT = ROOT / "deliverables/深圳大学347心理学保命手册_普心实验测量合订版V2.docx"
+base.PAGE_MAP_OUTPUT = ROOT / "content/shenzhen_baoming_combined_v2_page_map.json"
+base.COVER_TITLE = "深圳大学347心理学保命手册"
+base.CORE_TITLE = "深圳大学347心理学保命手册"
+base.CORE_SUBJECT = "普通心理学、实验心理学、心理与教育测量合订版"
+base.GUIDE_LEVEL_LINES = (
+    "★★★  核心优先｜对应速背手册原一级；同时得到深大真题、现行考纲、指定教材或一本通中的强证据支持，主观题可考性和答案复用价值最高。",
+    "★★  重点掌握｜同属速背手册原一级；教材、一本通和考纲／真题依据明确，能够形成稳定主观题，但综合优先度略低于三星。",
+    "★  基础覆盖｜对应速背手册原二级；速背手册或一本通确有收录，属于指定教材范围，但主观题信号和综合可考性相对较弱。",
+)
+base.STRIP_NON_CHAPTER_PAGE_BREAKS = True
+base.COMBINED_NON_CHAPTER_PAGE_BREAK_TEXTS = set()
+base.SOURCES = (
+    (
+        "第一部分 普通心理学",
+        "普通心理学",
+        "深圳大学347｜普通心理学保命手册",
+        ROOT / "deliverables/深圳大学347普通心理学保命手册_全本V3.docx",
+    ),
+    (
+        "第二部分 实验心理学",
+        "实验心理学",
+        "深圳大学347｜实验心理学保命手册",
+        ROOT / "deliverables/深圳大学347实验心理学保命手册_全本V2.docx",
+    ),
+    (
+        "第三部分 心理与教育测量",
+        "心理与教育测量",
+        "深圳大学347｜心理与教育测量保命手册",
+        ROOT / "deliverables/深圳大学347心理与教育测量保命手册_全本V2.docx",
+    ),
+)
+
+
+if __name__ == "__main__":
+    base.main()
