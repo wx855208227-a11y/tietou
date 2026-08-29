@@ -144,10 +144,12 @@ def validate_general_task_alignment(text: str) -> None:
             if parent is not None:
                 assert parent in answer, (fragment, parent)
 
-    sound = next(answer for heading, _, answer in question_blocks(text) if "声音的心理维度" in heading)
-    assert "声音掩蔽" not in sound
-    conditioning = next(answer for heading, _, answer in question_blocks(text) if "经典条件作用的形成过程" in heading)
-    assert "理论发展" not in conditioning
+    sound_heading, _, sound = next(item for item in question_blocks(text) if "声音的心理维度" in item[0])
+    assert "声音掩蔽" in sound_heading and "声音掩蔽" in sound
+    conditioning_heading, _, conditioning = next(
+        item for item in question_blocks(text) if "经典条件作用的形成过程" in item[0]
+    )
+    assert "理论发展" in conditioning_heading and "理论发展" in conditioning
 
 
 def validate_cross_manual_definitions(paths: list[Path]) -> None:
