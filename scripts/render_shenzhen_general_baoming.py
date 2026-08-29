@@ -171,6 +171,28 @@ def render(
                 comfortable=True,
                 bare_expansions=True,
             )
+        elif re.match(r"^[①②③④⑤⑥⑦⑧⑨⑩]", stripped):
+            inline.add_deep_list_paragraph(
+                document,
+                raw_line,
+                answer_mode=True,
+                compact=False,
+                level=3,
+                monochrome=True,
+                comfortable=True,
+                bare_expansions=True,
+            )
+        elif re.match(r"^[a-z]\.\s", stripped):
+            inline.add_deep_list_paragraph(
+                document,
+                raw_line,
+                answer_mode=True,
+                compact=False,
+                level=4,
+                monochrome=True,
+                comfortable=True,
+                bare_expansions=True,
+            )
         else:
             inline.add_body_paragraph(
                 document,
