@@ -1,11 +1,20 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
 import re
 
 
 ROOT = Path(__file__).resolve().parents[1]
 DELIVERABLES = ROOT / "deliverables"
+WORK = ROOT.parent / "work/sjtu_baoming_20260914"
+SOURCE_INVENTORY = WORK / "source_inventory.json"
+EXPECTED_SOURCE_HASHES = {
+    "general_rapid": "799b8f8d2e350cb3de5e73f08049715f16cc8ec43be895aebb3ea36cce2bff17",
+    "clinical_rapid": "fa7ffd9b781870fd5a7a40824022dbf867be80cf8a68696f5461df6d77720395",
+    "clinical_yibentong": "40ecb74a3a1b3ab2d0ffdfcd19411bafe4ce1f9498fb893ceb972f9f5e3ff383",
+    "experiment_yibentong": "5d0394e7dbe30484f99dd0275dd2c79fdac11cfae6368bcfcfcf8dda6ec01feb",
+}
 
 SUBJECTS = {
     "general": (
@@ -167,7 +176,16 @@ def align_clinical(text: str) -> str:
     return replace_unit(text, "## 一、临床心理学的含义、性质与工作范围【★★】", CLINICAL_INTRO)
 
 
+def verify_current_sources() -> None:
+    inventory = json.loads(SOURCE_INVENTORY.read_text(encoding="utf-8"))
+    actual = {key: value["sha256"] for key, value in inventory.items()}
+    assert actual == EXPECTED_SOURCE_HASHES, actual
+    for item in inventory.values():
+        assert Path(item["markdown"]).is_file(), item["markdown"]
+
+
 def main() -> None:
+    verify_current_sources()
     for subject, (source, output) in SUBJECTS.items():
         text = replace_front(source.read_text(encoding="utf-8"), GUIDES[subject])
         if subject == "general":
