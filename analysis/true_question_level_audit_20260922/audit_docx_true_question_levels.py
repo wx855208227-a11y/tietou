@@ -22,6 +22,17 @@ W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 IMPORTANCE_RE = re.compile(r"[（(](一级|二级|三级)[）)]")
 TRUE_QUESTION_RE = re.compile(r"【[^】]*真题[^】]*】")
 HEADING_LEVEL = {"heading 1": 1, "heading 2": 2, "heading 3": 3, "heading 4": 4}
+TEXT_HEADING_PATTERNS = (
+    (1, re.compile(r"^第[一二三四五六七八九十百零〇0-9]+章")),
+    (2, re.compile(r"^[一二三四五六七八九十百]+、")),
+    (3, re.compile(r"^（[一二三四五六七八九十百]+）")),
+    (4, re.compile(r"^\d+[.．]")),
+    (5, re.compile(r"^（\d+）")),
+    (6, re.compile(r"^[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]")),
+    (7, re.compile(r"^[A-Z][.．]")),
+    (8, re.compile(r"^[a-z][.．]")),
+)
+MAX_HEADING_LEVEL = max(level for level, _ in TEXT_HEADING_PATTERNS)
 
 
 def text_of(paragraph: etree._Element) -> str:
@@ -60,8 +71,21 @@ def rendered_page_for(text: str, normalized_pages: list[str]) -> int | None:
     return None
 
 
-def direct_parent(current: dict[int, tuple[str, str] | None], structural_level: int | None) -> str:
-    start = 3 if structural_level == 4 else 4
+def inferred_heading_level(text: str, style_name: str) -> int | None:
+    # Visible numbering is the authoritative hierarchy in the compiled guide.
+    # Some older files use Heading 3/4 styles one level deeper than their
+    # displayed “三、/（三）” numbering, so style-first inference can erase the
+    # actual parent before a numbered child is evaluated.
+    for level, pattern in TEXT_HEADING_PATTERNS:
+        if pattern.match(text):
+            return level
+    return HEADING_LEVEL.get(style_name)
+
+
+def direct_parent(
+    current: dict[int, tuple[str, str] | None], structural_level: int | None
+) -> str:
+    start = (structural_level - 1) if structural_level else MAX_HEADING_LEVEL
     for level in range(start, 0, -1):
         entry = current.get(level)
         if entry:
@@ -118,7 +142,10 @@ def main() -> None:
 
     pdf = pymupdf.open(args.pdf)
     normalized_pages = [normalize(page.get_text()) for page in pdf]
-    current: dict[int, tuple[str, str] | None] = {1: None, 2: None, 3: None, 4: None}
+    current: dict[int, tuple[str, str] | None] = {
+        level: None for level in range(1, MAX_HEADING_LEVEL + 1)
+    }
+    pending_supplement_title = False
     rows: list[dict[str, object]] = []
 
     for xml_index, paragraph in enumerate(document.findall(f".//{W}p")):
@@ -126,13 +153,30 @@ def main() -> None:
         style_node = paragraph.find(f"./{W}pPr/{W}pStyle")
         style_id = style_node.get(f"{W}val") if style_node is not None else ""
         style_name = style_names.get(style_id, style_id).lower()
-        structural_level = HEADING_LEVEL.get(style_name)
         own_level = importance(text)
+        structural_level = inferred_heading_level(text, style_name)
+
+        # Some source documents format a supplement title as an unnumbered,
+        # bold paragraph. It is a sibling topic under the current second-level
+        # title, not a child of the numbered third-level topic immediately
+        # before the supplement box.
+        if text and pending_supplement_title:
+            if structural_level is None:
+                structural_level = 3 if current[2] else 2
+            pending_supplement_title = False
+
+        # A few manually compiled titles omit their visible numbering. An
+        # explicit importance label still makes them hierarchy-bearing titles.
+        if structural_level is None and own_level:
+            structural_level = 3 if current[2] else 2
 
         if structural_level:
             current[structural_level] = (text, own_level)
-            for lower in range(structural_level + 1, 5):
+            for lower in range(structural_level + 1, MAX_HEADING_LEVEL + 1):
                 current[lower] = None
+
+        if text.startswith("补充内容"):
+            pending_supplement_title = True
 
         if "真题" not in text:
             continue
@@ -140,7 +184,7 @@ def main() -> None:
         effective_level = own_level
         effective_source = text if own_level else ""
         if not effective_level:
-            for level in (4, 3, 2, 1):
+            for level in range(MAX_HEADING_LEVEL, 0, -1):
                 entry = current[level]
                 if entry and entry[1]:
                     effective_source, effective_level = entry
@@ -152,7 +196,7 @@ def main() -> None:
         )
         physical_page = rendered_page_for(text, normalized_pages)
         printed_page = footer_page(pdf[physical_page - 1]) if physical_page else ""
-        chapter = current[2][0] if current[2] else ""
+        chapter = current[1][0] if current[1] else ""
         marker = "；".join(TRUE_QUESTION_RE.findall(text)) or "含‘真题’字样"
 
         rows.append(
