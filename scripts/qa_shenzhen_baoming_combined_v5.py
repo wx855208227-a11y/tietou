@@ -19,6 +19,8 @@ PDF = ROOT / "deliverables/深圳大学347心理学保命手册_普心实验测�
 PAGE_MAP = ROOT / "content/shenzhen_baoming_combined_v5_page_map.json"
 REPORT = ROOT / "deliverables/深圳大学347心理学保命手册_排版与结构质检报告V5.md"
 TITLE = "深圳大学347心理学保命手册"
+REPORT_VERSION = "V5"
+EXPECTED_DEFINITION_CALLS = 348
 PARTS = ("第一部分 普通心理学", "第二部分 实验心理学", "第三部分 心理与教育测量")
 SUBJECTS = (
     (
@@ -85,7 +87,7 @@ def main() -> None:
     assert len([p for p in h1 if page_break_before(p)]) == 29
 
     all_text = "\n".join(p.text for p in document.paragraphs)
-    assert all_text.count("【名词解释：") == 348
+    assert all_text.count("【名词解释：") == EXPECTED_DEFINITION_CALLS
     assert "圆括号外是背诵主体，写全可以拿到主要分数" in all_text
     assert "既可补充其他采分点，也可补充相关概念、解释或例子" in all_text
     assert len([p for p in document.paragraphs if p.text.startswith("（")]) >= 18
@@ -146,7 +148,7 @@ def main() -> None:
         assert page_map[part] == pages[0]
 
     REPORT.write_text(
-        f"""# 深圳大学347心理学保命手册排版与结构质检报告V5
+        f"""# 深圳大学347心理学保命手册排版与结构质检报告{REPORT_VERSION}
 
 ## 结论
 
