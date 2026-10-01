@@ -899,18 +899,12 @@ def add_body_paragraph(
         or content.startswith(("【扩容（选用）：", "【扩容（选背）："))
         or bare_expansions and ACTIVE_BARE_EXPANSION_RE.fullmatch(content) is not None
     )
-    if optional and document.paragraphs:
-        document.paragraphs[-1].paragraph_format.keep_with_next = True
     summary = content.startswith("综上")
     module_intro = content.endswith("：") and not optional
-    if summary and document.paragraphs:
-        # 避免整题总结或“最后一点＋总结”被单独挤到下一页，尤其是下一章
-        # 强制换页时形成大面积空白。紧凑版不再反向绑定前文，避免
-        # “模块标题—唯一子项—总结”形成过长连续链后把模块标题留在页尾；
-        # 其他既有版本维持原分页逻辑。
-        previous_count = 0 if tight_layout else 4
-        for previous in document.paragraphs[-previous_count:]:
-            previous.paragraph_format.keep_with_next = True
+    # 扩容项和总结段只约束自身不拆段，不再反向给前文设置 keep-with-next。
+    # 反向绑定会把“末尾若干采分点—多个扩容段—总结”串成长链，Word 为了
+    # 整链同页会在上一页留下大块空白。父模块标题仍通过 module_intro 与
+    # 首个子项同页，单个采分点内的定义、扩容和名解标签本来就在同一段中。
     paragraph = document.add_paragraph()
     plain_content = content.replace("**", "")
     if tight_layout and plain_content in ACTIVE_MEASUREMENT_PAGE_BREAK_BODY:
