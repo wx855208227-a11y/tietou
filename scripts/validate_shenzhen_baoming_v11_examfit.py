@@ -32,6 +32,7 @@ EXPECTED = {
     EXPERIMENT_OUTPUT: {"subject": "实验心理学", "chapters": 4, "units": 25, "questions": 25},
     MEASUREMENT_OUTPUT: {"subject": "心理与教育测量", "chapters": 13, "units": 39, "questions": 45},
 }
+EXPECTED_DEFINITION_CALLS = 360
 
 
 FORBIDDEN_TITLE_SNIPPETS = (
@@ -260,7 +261,7 @@ def main() -> None:
     joined = "\n".join(builds.values())
     assert all(title in joined for title in EXPECTED_NATURAL_TITLES)
     assert len(definitions) == 329, len(definitions)
-    assert joined.count("【名词解释：") == 360
+    assert joined.count("【名词解释：") == EXPECTED_DEFINITION_CALLS
     semantic_assertions(builds[GENERAL_OUTPUT], builds[EXPERIMENT_OUTPUT], builds[MEASUREMENT_OUTPUT])
 
     with LEDGER.open("w", encoding="utf-8", newline="") as file:
