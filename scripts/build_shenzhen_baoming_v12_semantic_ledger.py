@@ -47,6 +47,10 @@ def count_items(value: str) -> int:
     return len([item for item in value.split("；") if item.strip()])
 
 
+def semantic_compact(value: str) -> str:
+    return re.sub(r"\s+", "", value)
+
+
 def main() -> None:
     with SOURCE_LEDGER.open(encoding="utf-8", newline="") as file:
         source_rows = {
@@ -81,7 +85,8 @@ def main() -> None:
                     "名解调用": str(definition_count),
                     "处理结果": (
                         "实质重编"
-                        if clean(heading) != clean(previous_block[0]) or answer != previous_block[2]
+                        if semantic_compact(clean(heading)) != semantic_compact(clean(previous_block[0]))
+                        or semantic_compact(answer) != semantic_compact(previous_block[2])
                         else "逐题复核后保留"
                     ),
                 }
@@ -89,7 +94,12 @@ def main() -> None:
 
     assert len(rows) == 160
     with OUTPUT.open("w", encoding="utf-8", newline="") as file:
-        writer = csv.DictWriter(file, fieldnames=list(rows[0]), delimiter="\t")
+        writer = csv.DictWriter(
+            file,
+            fieldnames=list(rows[0]),
+            delimiter="\t",
+            lineterminator="\n",
+        )
         writer.writeheader()
         writer.writerows(rows)
     revised = sum(row["处理结果"] == "实质重编" for row in rows)
