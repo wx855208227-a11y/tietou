@@ -21,6 +21,34 @@ from render_baoming_docx import (
 )
 
 
+# These source-backed answers otherwise leave only a short conclusion or final
+# scoring point on the last page immediately before a mandatory chapter break.
+# A slightly tighter paragraph rhythm is applied to the whole unit; font size,
+# wording and scoring-point hierarchy remain unchanged.
+DENSE_UNIT_PREFIXES = (
+    "六、心理学的主要流派",
+    "六、决策理论与启发式偏差",
+    "五、动机的一般理论",
+    "五、情绪智力与情绪调节",
+    "六、埃里克森心理社会性发展理论",
+    "十一、实验效度",
+    "三、测验结果的报告",
+    "三、组内常模与标准分数",
+)
+
+
+def tighten_dense_paragraph(paragraph) -> None:
+    spacing = paragraph.paragraph_format.line_spacing
+    if isinstance(spacing, (int, float)):
+        paragraph.paragraph_format.line_spacing = min(spacing, 1.1)
+    paragraph.paragraph_format.space_before = min(
+        paragraph.paragraph_format.space_before or Pt(0), Pt(2)
+    )
+    paragraph.paragraph_format.space_after = min(
+        paragraph.paragraph_format.space_after or Pt(0), Pt(0.5)
+    )
+
+
 def add_student_guide(document: Document) -> None:
     title = document.add_paragraph()
     title.alignment = 1
@@ -92,6 +120,7 @@ def render(
     *,
     subject_label: str = "普通心理学",
     header_text: str | None = None,
+    compact_answers: bool = False,
 ) -> None:
     lines = markdown_path.read_text(encoding="utf-8").splitlines()
     title = lines[0].removeprefix("# ").strip()
@@ -131,6 +160,7 @@ def render(
     )
 
     first_body_chapter = True
+    dense_unit = False
     for raw_line in lines[first_chapter:]:
         stripped = raw_line.strip()
         if not stripped or stripped == "---":
@@ -138,19 +168,27 @@ def render(
         if stripped.startswith("# "):
             add_heading(document, 1, stripped[2:].strip(), page_break_before=not first_body_chapter)
             first_body_chapter = False
+            dense_unit = False
         elif stripped.startswith("## "):
-            heading = add_heading(document, 2, stripped[3:].strip())
-            heading.paragraph_format.space_before = Pt(13)
-            heading.paragraph_format.space_after = Pt(7)
+            heading_text = stripped[3:].strip()
+            dense_unit = compact_answers and heading_text.startswith(DENSE_UNIT_PREFIXES)
+            heading = add_heading(document, 2, heading_text)
+            heading.paragraph_format.space_before = Pt(9 if compact_answers else 13)
+            heading.paragraph_format.space_after = Pt(5 if compact_answers else 7)
+            if dense_unit:
+                tighten_dense_paragraph(heading)
         elif stripped.startswith("### "):
-            inline.add_question_heading(
+            paragraph = inline.add_question_heading(
                 document,
                 stripped[4:].strip(),
                 monochrome=True,
                 large_between_question_gap=True,
                 comfortable=True,
                 bare_expansions=True,
+                tight_layout=compact_answers,
             )
+            if dense_unit:
+                tighten_dense_paragraph(paragraph)
         elif re.match(r"^\d+\.\s", stripped):
             inline.add_list_paragraph(
                 document,
@@ -160,7 +198,10 @@ def render(
                 monochrome=True,
                 comfortable=True,
                 bare_expansions=True,
+                tight_layout=compact_answers,
             )
+            if dense_unit:
+                tighten_dense_paragraph(document.paragraphs[-1])
         elif re.match(r"^（\d+）", stripped):
             inline.add_secondary_list_paragraph(
                 document,
@@ -170,7 +211,10 @@ def render(
                 monochrome=True,
                 comfortable=True,
                 bare_expansions=True,
+                tight_layout=compact_answers,
             )
+            if dense_unit:
+                tighten_dense_paragraph(document.paragraphs[-1])
         elif re.match(r"^[①②③④⑤⑥⑦⑧⑨⑩]", stripped):
             inline.add_deep_list_paragraph(
                 document,
@@ -181,7 +225,10 @@ def render(
                 monochrome=True,
                 comfortable=True,
                 bare_expansions=True,
+                tight_layout=compact_answers,
             )
+            if dense_unit:
+                tighten_dense_paragraph(document.paragraphs[-1])
         elif re.match(r"^[a-z]\.\s", stripped):
             inline.add_deep_list_paragraph(
                 document,
@@ -192,7 +239,10 @@ def render(
                 monochrome=True,
                 comfortable=True,
                 bare_expansions=True,
+                tight_layout=compact_answers,
             )
+            if dense_unit:
+                tighten_dense_paragraph(document.paragraphs[-1])
         else:
             inline.add_body_paragraph(
                 document,
@@ -201,7 +251,10 @@ def render(
                 monochrome=True,
                 comfortable=True,
                 bare_expansions=True,
+                tight_layout=compact_answers,
             )
+            if dense_unit:
+                tighten_dense_paragraph(document.paragraphs[-1])
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     document.save(output_path)
@@ -214,6 +267,7 @@ def main() -> None:
     parser.add_argument("--page-map", type=Path)
     parser.add_argument("--subject-label", default="普通心理学")
     parser.add_argument("--header-text")
+    parser.add_argument("--compact-answers", action="store_true")
     arguments = parser.parse_args()
     render(
         arguments.input,
@@ -221,6 +275,7 @@ def main() -> None:
         arguments.page_map,
         subject_label=arguments.subject_label,
         header_text=arguments.header_text,
+        compact_answers=arguments.compact_answers,
     )
 
 

@@ -742,7 +742,9 @@ def add_question_heading(
         )
         return paragraph
     paragraph.paragraph_format.space_before = Pt(
-        16 if comfortable and match.group(1) != "押题1"
+        11 if tight_layout and match.group(1) != "押题1"
+        else 6 if tight_layout
+        else 16 if comfortable and match.group(1) != "押题1"
         else 9 if comfortable
         else 10 if large_between_question_gap and match.group(1) != "押题1"
         else 5
@@ -777,10 +779,10 @@ def add_list_paragraph(
     paragraph.paragraph_format.left_indent = Cm(0.75)
     paragraph.paragraph_format.first_line_indent = Cm(-0.48)
     paragraph.paragraph_format.line_spacing = (
-        1.4 if tight_layout else 1.48 if comfortable else 1.2 if compact else 1.35
+        1.36 if tight_layout else 1.48 if comfortable else 1.2 if compact else 1.35
     )
     paragraph.paragraph_format.space_after = Pt(
-        2 if tight_layout else 4.5 if comfortable else 0 if answer_mode else 1
+        1.5 if tight_layout else 4.5 if comfortable else 0 if answer_mode else 1
     )
     paragraph.paragraph_format.widow_control = True
     plain_stripped = stripped.replace("**", "")
@@ -823,10 +825,10 @@ def add_secondary_list_paragraph(
     paragraph.paragraph_format.left_indent = Cm(1.22)
     paragraph.paragraph_format.first_line_indent = Cm(-0.47)
     paragraph.paragraph_format.line_spacing = (
-        1.4 if tight_layout else 1.46 if comfortable else 1.2 if compact else 1.3
+        1.36 if tight_layout else 1.46 if comfortable else 1.2 if compact else 1.3
     )
     paragraph.paragraph_format.space_after = Pt(
-        2 if tight_layout else 4 if comfortable else 0 if answer_mode else 1
+        1.5 if tight_layout else 4 if comfortable else 0 if answer_mode else 1
     )
     paragraph.paragraph_format.widow_control = True
     paragraph.paragraph_format.keep_with_next = stripped.endswith("：")
@@ -865,10 +867,10 @@ def add_deep_list_paragraph(
     paragraph.paragraph_format.left_indent = Cm(1.68 if level == 3 else 2.12)
     paragraph.paragraph_format.first_line_indent = Cm(-0.43)
     paragraph.paragraph_format.line_spacing = (
-        1.4 if tight_layout else 1.46 if comfortable else 1.2 if compact else 1.3
+        1.36 if tight_layout else 1.46 if comfortable else 1.2 if compact else 1.3
     )
     paragraph.paragraph_format.space_after = Pt(
-        2 if tight_layout else 4 if comfortable else 0 if answer_mode else 1
+        1.5 if tight_layout else 4 if comfortable else 0 if answer_mode else 1
     )
     paragraph.paragraph_format.widow_control = True
     if (
@@ -910,8 +912,8 @@ def add_body_paragraph(
     if tight_layout and plain_content in ACTIVE_MEASUREMENT_PAGE_BREAK_BODY:
         paragraph.paragraph_format.page_break_before = True
     paragraph.paragraph_format.line_spacing = (
-        1.32 if tight_layout and optional
-        else 1.42 if tight_layout
+        1.28 if tight_layout and optional
+        else 1.38 if tight_layout
         else 1.36 if comfortable and optional
         else 1.5 if comfortable
         else 1.18 if optional
@@ -919,7 +921,7 @@ def add_body_paragraph(
         else 1.4
     )
     paragraph.paragraph_format.space_after = Pt(
-        2.5 if tight_layout else 5 if comfortable else 1
+        1.5 if tight_layout else 5 if comfortable else 1
     )
     paragraph.paragraph_format.widow_control = True
     if (
@@ -933,10 +935,10 @@ def add_body_paragraph(
         paragraph.paragraph_format.keep_together = True
     if summary:
         paragraph.paragraph_format.space_before = Pt(
-            3 if tight_layout else 4 if comfortable else 0
+            2 if tight_layout else 4 if comfortable else 0
         )
         paragraph.paragraph_format.space_after = Pt(
-            4 if tight_layout else 6 if comfortable else 1
+            3 if tight_layout else 6 if comfortable else 1
         )
         paragraph.paragraph_format.keep_together = True
     if module_intro:
