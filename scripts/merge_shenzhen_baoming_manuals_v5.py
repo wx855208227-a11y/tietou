@@ -64,7 +64,7 @@ def add_guide(document) -> None:
     heading.paragraph_format.space_after = Pt(6)
     base.set_run_font(heading.add_run("怎么用"), size=14, bold=True)
     for text in (
-        "1. 圆括号外是背诵主体，写全可以拿到主要分数。",
+        "1. 圆括号外是背诵主体，写全可以拿到主要分数；正文加粗处为需要优先记忆的关键词。",
         "2. （）内是扩容项，选背；既可补充其他采分点，也可补充相关概念、解释或例子。例子可以根据题目灵活替换。",
     ):
         paragraph = document.add_paragraph()

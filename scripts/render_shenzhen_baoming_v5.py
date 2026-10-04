@@ -50,7 +50,7 @@ def add_student_guide(document: Document) -> None:
     use_heading.paragraph_format.space_after = Pt(7)
     base.set_run_font(use_heading.add_run("怎么用"), "宋体", 14, True)
     uses = (
-        "1. 圆括号外是背诵主体，写全可以拿到主要分数。",
+        "1. 圆括号外是背诵主体，写全可以拿到主要分数；正文加粗处为需要优先记忆的关键词。",
         "2. （）内是扩容项，选背；既可补充其他采分点，也可补充相关概念、解释或例子。例子可以根据题目灵活替换。",
     )
     for value in uses:
