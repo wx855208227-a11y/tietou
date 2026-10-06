@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from difflib import SequenceMatcher
 from pathlib import Path
 import re
+import statistics
 import sys
 
 
@@ -177,6 +178,7 @@ def capacity_judgment(subject: str, index: int, title: str, answer: str) -> tupl
 def main() -> None:
     baseline = keyword_baseline()
     totals = {"questions": 0, "simple": 0, "essay": 0, "name_tags": 0}
+    name_entry_lengths: list[int] = []
     capacities: list[tuple[str, int, str, int, int, str]] = []
     candidate_rows: list[dict[str, str]] = []
     subject_summary: list[tuple[str, int, int, int]] = []
@@ -188,6 +190,19 @@ def main() -> None:
         assert "【扩容" not in text and "扩容（选用）" not in text
         assert not re.search(r"【\s+名词解释|名\s+词\s+解\s+释", text)
         assert text.count("**") % 2 == 0
+        for line_number, line in enumerate(text.splitlines(), start=1):
+            tags = re.findall(r"【名词解释：([^】]+)】", line)
+            if not tags:
+                continue
+            assert re.search(r"(?:【名词解释：[^】]+】)+$", line), (
+                subject, line_number, "名解标签不在条目末尾", line,
+            )
+            assert line.rfind("【名词解释：") > line.rfind("）"), (
+                subject, line_number, "名解标签未置于扩容之后", line,
+            )
+            length = plain_count(line)
+            assert length >= 40, (subject, line_number, "名解条目容量过低", length, line)
+            name_entry_lengths.extend([length] * len(tags))
         for heading in re.findall(r"^## (.+)$", text, flags=re.MULTILINE):
             if re.match(r"^[一二三四五六七八九十]+、", heading):
                 assert re.search(r"【★{1,3}】$", heading), (subject, "星级格式", heading)
@@ -233,6 +248,7 @@ def main() -> None:
         "",
         f"- 三科共{totals['questions']}题：简答{totals['simple']}题、论述{totals['essay']}题。",
         f"- 名词解释标注共{totals['name_tags']}处。",
+        f"- 名解标签均位于对应定义／扩容之后且处于条目末尾；条目有效字符中位数为{statistics.median(name_entry_lengths):g}，最短为{min(name_entry_lengths)}。",
         "- 星级格式、题型标记、Markdown加粗、序号层级和旧扩容标记检查均通过。",
         "- 所有题目的主体／含扩容容量均处于参考带或已在例外说明中给出题型依据。",
         f"- 速背Word关键词精确重合自动复核剩余{len(candidate_rows)}条未决候选；已逐条人工排除{len(MANUAL_KEYWORD_EXCLUSIONS)}类假阳性。",
