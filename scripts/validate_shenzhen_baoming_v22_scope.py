@@ -5,6 +5,7 @@ import re
 
 
 ROOT = Path(__file__).resolve().parents[1]
+SOURCE_ROOT = ROOT.parent / "work/shenzhen_baoming_sources"
 
 FILES = {
     "普通心理学": (
@@ -17,7 +18,7 @@ FILES = {
     ),
     "心理与教育测量": (
         ROOT / "deliverables/深圳大学347心理与教育测量保命手册_全范围复核版V22.md",
-        45,
+        48,
     ),
 }
 
@@ -73,8 +74,35 @@ def main() -> None:
         ("绪论", "实验研究的基本问题", "如何读和写心理学实验报告", "反应时", "心理物理学", "注意", "知觉", "记忆与学习", "思维", "情绪"),
     ):
         assert f"# 第{number}章 {name}" in experiment
-    assert total == 174
-    print("PASS total questions=174 and experiment chapters=10")
+    measurement = FILES["心理与教育测量"][0].read_text(encoding="utf-8")
+    for title in (
+        "# 第二章 心理与教育测量简史",
+        "# 第十二章 能力测验（下）",
+        "# 第十五章 测量应用实务",
+    ):
+        assert title in measurement
+    measurement_source = (
+        SOURCE_ROOT / "心理与教育测量/一本通.md"
+    ).read_text(encoding="utf-8")
+    for term in (
+        "高尔顿",
+        "首次提出“心理测验",
+        "比内—西蒙智力量表",
+        "预测目的",
+        "能力剖面图",
+        "流畅性、变通性、独特性",
+        "无领导小组讨论",
+        "文件筐测试",
+        "职业决策自我效能量表",
+        "品德测量",
+    ):
+        assert term in measurement_source, ("测量一本通缺少新增依据", term)
+        assert term.replace("首次提出“心理测验", "首次提出“心理测验**") in measurement or term in measurement, (
+            "测量新增内容未保留来源点",
+            term,
+        )
+    assert total == 177
+    print("PASS total questions=177, experiment chapters=10, measurement restored chapters=3")
 
 
 if __name__ == "__main__":

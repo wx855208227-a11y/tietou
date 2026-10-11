@@ -36,6 +36,41 @@ DENSE_UNIT_PREFIXES = (
     "三、组内常模与标准分数",
 )
 
+# These units were found by page-level PDF QA to leave only a short tail of
+# scoring points or a conclusion on the page immediately before the next
+# mandatory chapter break.  Apply single-line rhythm only inside these units;
+# this avoids a nearly empty continuation page without shrinking the 12 pt
+# body text or changing answer content.
+EXTRA_DENSE_UNIT_PREFIXES = (
+    "六、心理学的主要流派",
+    "二、语言的神经基础",
+    "五、情绪智力与情绪调节",
+    "七、认知学习与动作技能学习",
+    "十一、实验效度",
+    "四、序列反应时与内隐联想测验",
+    "三、内隐学习",
+    "四、多重选择题项目分析",
+    "三、组内常模与标准分数",
+    "三、瑞文测验",
+)
+
+# A few source-heavy chapters still produced a short chapter-end continuation
+# page after the final unit was tightened.  Using the normal 1.1 compact rhythm
+# across the whole chapter lets the content flow naturally onto the preceding
+# pages while retaining 12 pt text and all scoring points.
+DENSE_CHAPTER_PREFIXES = (
+    "第五章 意识",
+    "第二章 实验研究的基本问题",
+    "第八章 记忆与学习",
+    "第八章 常模参照测验",
+    "第十一章 能力测验",
+    "第十六章 测量理论与应用的新发展",
+)
+
+TIGHTER_CHAPTER_PREFIXES = (
+    "第二章 实验研究的基本问题",
+)
+
 
 def tighten_dense_paragraph(paragraph) -> None:
     spacing = paragraph.paragraph_format.line_spacing
@@ -47,6 +82,27 @@ def tighten_dense_paragraph(paragraph) -> None:
     paragraph.paragraph_format.space_after = min(
         paragraph.paragraph_format.space_after or Pt(0), Pt(0.5)
     )
+
+
+def tighten_extra_dense_paragraph(paragraph) -> None:
+    tighten_dense_paragraph(paragraph)
+    paragraph.paragraph_format.line_spacing = 0.96
+    paragraph.paragraph_format.space_before = Pt(0)
+    paragraph.paragraph_format.space_after = Pt(0)
+    if paragraph.paragraph_format.left_indent is not None:
+        paragraph.paragraph_format.left_indent = max(
+            paragraph.paragraph_format.left_indent - Cm(0.12),
+            Cm(0),
+        )
+
+
+def tighten_chapter_paragraph(paragraph) -> None:
+    tighten_dense_paragraph(paragraph)
+    paragraph.paragraph_format.line_spacing = 1.06
+    paragraph.paragraph_format.space_before = min(
+        paragraph.paragraph_format.space_before or Pt(0), Pt(1)
+    )
+    paragraph.paragraph_format.space_after = Pt(0)
 
 
 def add_student_guide(document: Document) -> None:
@@ -160,22 +216,42 @@ def render(
     )
 
     first_body_chapter = True
+    dense_chapter = False
+    tighter_chapter = False
     dense_unit = False
+    extra_dense_unit = False
     for raw_line in lines[first_chapter:]:
         stripped = raw_line.strip()
         if not stripped or stripped == "---":
             continue
         if stripped.startswith("# "):
-            add_heading(document, 1, stripped[2:].strip(), page_break_before=not first_body_chapter)
+            chapter_text = stripped[2:].strip()
+            add_heading(document, 1, chapter_text, page_break_before=not first_body_chapter)
             first_body_chapter = False
+            dense_chapter = compact_answers and chapter_text.startswith(
+                DENSE_CHAPTER_PREFIXES
+            )
+            tighter_chapter = compact_answers and chapter_text.startswith(
+                TIGHTER_CHAPTER_PREFIXES
+            )
             dense_unit = False
+            extra_dense_unit = False
         elif stripped.startswith("## "):
             heading_text = stripped[3:].strip()
-            dense_unit = compact_answers and heading_text.startswith(DENSE_UNIT_PREFIXES)
+            dense_unit = compact_answers and (
+                dense_chapter or heading_text.startswith(DENSE_UNIT_PREFIXES)
+            )
+            extra_dense_unit = compact_answers and heading_text.startswith(
+                EXTRA_DENSE_UNIT_PREFIXES
+            )
             heading = add_heading(document, 2, heading_text)
             heading.paragraph_format.space_before = Pt(9 if compact_answers else 13)
             heading.paragraph_format.space_after = Pt(5 if compact_answers else 7)
-            if dense_unit:
+            if extra_dense_unit:
+                tighten_extra_dense_paragraph(heading)
+            elif tighter_chapter:
+                tighten_chapter_paragraph(heading)
+            elif dense_unit:
                 tighten_dense_paragraph(heading)
         elif stripped.startswith("### "):
             paragraph = inline.add_question_heading(
@@ -187,7 +263,11 @@ def render(
                 bare_expansions=True,
                 tight_layout=compact_answers,
             )
-            if dense_unit:
+            if extra_dense_unit:
+                tighten_extra_dense_paragraph(paragraph)
+            elif tighter_chapter:
+                tighten_chapter_paragraph(paragraph)
+            elif dense_unit:
                 tighten_dense_paragraph(paragraph)
         elif re.match(r"^\d+\.\s", stripped):
             inline.add_list_paragraph(
@@ -200,7 +280,11 @@ def render(
                 bare_expansions=True,
                 tight_layout=compact_answers,
             )
-            if dense_unit:
+            if extra_dense_unit:
+                tighten_extra_dense_paragraph(document.paragraphs[-1])
+            elif tighter_chapter:
+                tighten_chapter_paragraph(document.paragraphs[-1])
+            elif dense_unit:
                 tighten_dense_paragraph(document.paragraphs[-1])
         elif re.match(r"^（\d+）", stripped):
             inline.add_secondary_list_paragraph(
@@ -213,7 +297,11 @@ def render(
                 bare_expansions=True,
                 tight_layout=compact_answers,
             )
-            if dense_unit:
+            if extra_dense_unit:
+                tighten_extra_dense_paragraph(document.paragraphs[-1])
+            elif tighter_chapter:
+                tighten_chapter_paragraph(document.paragraphs[-1])
+            elif dense_unit:
                 tighten_dense_paragraph(document.paragraphs[-1])
         elif re.match(r"^[①②③④⑤⑥⑦⑧⑨⑩]", stripped):
             inline.add_deep_list_paragraph(
@@ -227,7 +315,11 @@ def render(
                 bare_expansions=True,
                 tight_layout=compact_answers,
             )
-            if dense_unit:
+            if extra_dense_unit:
+                tighten_extra_dense_paragraph(document.paragraphs[-1])
+            elif tighter_chapter:
+                tighten_chapter_paragraph(document.paragraphs[-1])
+            elif dense_unit:
                 tighten_dense_paragraph(document.paragraphs[-1])
         elif re.match(r"^[a-z]\.\s", stripped):
             inline.add_deep_list_paragraph(
@@ -241,7 +333,11 @@ def render(
                 bare_expansions=True,
                 tight_layout=compact_answers,
             )
-            if dense_unit:
+            if extra_dense_unit:
+                tighten_extra_dense_paragraph(document.paragraphs[-1])
+            elif tighter_chapter:
+                tighten_chapter_paragraph(document.paragraphs[-1])
+            elif dense_unit:
                 tighten_dense_paragraph(document.paragraphs[-1])
         else:
             inline.add_body_paragraph(
@@ -253,7 +349,11 @@ def render(
                 bare_expansions=True,
                 tight_layout=compact_answers,
             )
-            if dense_unit:
+            if extra_dense_unit:
+                tighten_extra_dense_paragraph(document.paragraphs[-1])
+            elif tighter_chapter:
+                tighten_chapter_paragraph(document.paragraphs[-1])
+            elif dense_unit:
                 tighten_dense_paragraph(document.paragraphs[-1])
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
