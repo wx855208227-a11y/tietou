@@ -129,7 +129,31 @@ def replace_star_guide(text: str) -> str:
 
 
 def build_general() -> str:
-    return replace_star_guide(GENERAL_SOURCE.read_text(encoding="utf-8")).rstrip() + "\n"
+    text = replace_star_guide(GENERAL_SOURCE.read_text(encoding="utf-8"))
+    text = text.replace(
+        "1. 埃里克森心理社会性发展的八个阶段如下：",
+        "埃里克森心理社会性发展的八个阶段如下：",
+        1,
+    )
+    erikson_start = text.index("埃里克森心理社会性发展的八个阶段如下：")
+    erikson_stop = text.index("综上，埃里克森把人格发展扩展到生命全程", erikson_start)
+    erikson = text[erikson_start:erikson_stop]
+    for number in range(1, 9):
+        erikson = erikson.replace(f"（{number}）", f"{number}. ", 1)
+    text = text[:erikson_start] + erikson + text[erikson_stop:]
+
+    text = text.replace(
+        "1. **科温顿**划分的学生类型如下：",
+        "**科温顿**划分的学生类型如下：",
+        1,
+    )
+    covington_start = text.index("**科温顿**划分的学生类型如下：")
+    covington_stop = text.index("综上，追求成功与避免失败两个维度", covington_start)
+    covington = text[covington_start:covington_stop]
+    for number in range(1, 5):
+        covington = covington.replace(f"（{number}）", f"{number}. ", 1)
+    text = text[:covington_start] + covington + text[covington_stop:]
+    return text.rstrip() + "\n"
 
 
 def build_experiment() -> str:
@@ -156,6 +180,29 @@ def build_measurement() -> str:
         "## 二、心理测量的含义与特点【★】",
         1,
     )
+    text = text.replace(
+        "1. 四种测量水平及其性质分别如下：",
+        "四种测量水平及其性质分别如下：",
+        1,
+    )
+    scale_start = text.index("四种测量水平及其性质分别如下：")
+    scale_stop = text.index("综上，四种量表由低到高依次增加", scale_start)
+    scale = text[scale_start:scale_stop]
+    for number in range(1, 5):
+        scale = scale.replace(f"（{number}）", f"{number}. ", 1)
+    text = text[:scale_start] + scale + text[scale_stop:]
+
+    text = text.replace(
+        "1. 认知诊断的核心概念包括以下几点：",
+        "认知诊断的核心概念包括以下几点：",
+        1,
+    )
+    diagnosis_start = text.index("认知诊断的核心概念包括以下几点：")
+    diagnosis_stop = text.index("综上，认知诊断通过认知属性", diagnosis_start)
+    diagnosis = text[diagnosis_start:diagnosis_stop]
+    for number in range(1, 8):
+        diagnosis = diagnosis.replace(f"（{number}）", f"{number}. ", 1)
+    text = text[:diagnosis_start] + diagnosis + text[diagnosis_stop:]
     return text.rstrip() + "\n"
 
 
