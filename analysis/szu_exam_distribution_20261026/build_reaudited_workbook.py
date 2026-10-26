@@ -197,7 +197,15 @@ def write_uncertainty_sheet(wb: Workbook, questions: list[dict[str, str]]) -> in
         "当前判断依据",
     ]
     ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=len(headers))
-    ws.cell(1, 1, "以下仅列仍存在跨章或题面信息不足的纳入项；教材外题目按要求不展示")
+    ws.cell(
+        1,
+        1,
+        (
+            "以下仅列仍存在跨章或题面信息不足的纳入项；教材外题目按要求不展示"
+            if uncertain
+            else "用户已确认剩余归属；当前无待确认项"
+        ),
+    )
     ws.cell(1, 1).font = Font(name="等线", size=11, bold=True)
     ws.cell(1, 1).alignment = Alignment(horizontal="left", vertical="center")
     style_header(ws, 2, headers)

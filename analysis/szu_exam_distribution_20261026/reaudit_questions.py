@@ -19,6 +19,15 @@ EP = "实验心理学（第2版）"
 MEAS = "心理与教育测量（第4版）"
 STAT = "现代心理与教育统计学（第5版）"
 OFFICIAL_SUBJECTS = {GP, EP, MEAS, STAT}
+USER_CONFIRMED_IDS = {
+    "2019-单选题-032",
+    "2019-单选题-042",
+    "2020-论述题-005",
+    "2024-名词解释-001",
+    "2024-论述题-003",
+    "2026-简答题-006",
+    "2026-案例分析题-002",
+}
 
 
 OVERRIDES: dict[str, dict[str, object]] = {
@@ -267,6 +276,12 @@ def review_row(row: dict[str, str]) -> dict[str, str]:
             f"逐题复核：核心作答对象“{topic}”属于{subject}，"
             "四本指定教材没有可直接支撑完整作答的对应条目，不纳入分章统计。"
         )
+
+    if row["题目ID"] in USER_CONFIRMED_IDS:
+        confidence = "高"
+        uncertainty = ""
+        evidence = f"{evidence} 用户已确认当前科目与章节定位正确。"
+        note = f"{note} 用户确认归属。".strip()
 
     original_include = row["主科目"] in OFFICIAL_SUBJECTS
     changed = (
