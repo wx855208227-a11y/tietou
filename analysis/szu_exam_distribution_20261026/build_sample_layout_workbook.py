@@ -13,25 +13,26 @@ from collections import Counter
 from pathlib import Path
 
 from openpyxl import Workbook, load_workbook
-from openpyxl.styles import Alignment, Font
+from openpyxl.styles import Alignment, Font, PatternFill
 
 
 GP = "普通心理学（第6版）"
 EP = "实验心理学（第2版）"
 MEAS = "心理与教育测量（第4版）"
 STAT = "现代心理与教育统计学（第5版）"
-SOC = "社会心理学（跨教材拓展）"
-ABN = "变态与咨询心理学（跨教材拓展）"
-ORG = "管理与组织心理学（跨教材拓展）"
-MIX = "跨科目综合"
-
 SHEET_GROUPS = [
     ("统计", [STAT]),
     ("实验", [EP]),
     ("测量", [MEAS]),
     ("普心", [GP]),
-    ("拓展（旧题）", [SOC, ABN, ORG, MIX]),
 ]
+OFFICIAL_SUBJECTS = {subject for _, subjects in SHEET_GROUPS for subject in subjects}
+SUBJECT_LABELS = {
+    STAT: "统计",
+    EP: "实验",
+    MEAS: "测量",
+    GP: "普心",
+}
 
 TYPE_GROUPS = [
     ("选择/判断/填空", {"单选题", "判断题", "填空题"}),
@@ -52,7 +53,7 @@ def read_tsv(path: Path) -> list[dict[str, str]]:
 
 
 def chapter_rows(
-    catalog: list[dict[str, str]], subjects: list[str], *, extension: bool
+    catalog: list[dict[str, str]], subjects: list[str]
 ) -> list[tuple[str, str, str]]:
     selected = [row for row in catalog if row["科目"] in subjects]
 
@@ -65,12 +66,7 @@ def chapter_rows(
     selected.sort(key=key)
     rows: list[tuple[str, str, str]] = []
     for row in selected:
-        if extension:
-            short_subject = row["科目"].replace("心理学（跨教材拓展）", "")
-            label = f"{short_subject}｜{row['章节名称']}"
-        else:
-            label = row["章节名称"]
-        rows.append((row["科目"], row["章节名称"], label))
+        rows.append((row["科目"], row["章节名称"], row["章节名称"]))
     return rows
 
 
@@ -160,15 +156,91 @@ def write_subject_sheet(
         )
 
 
+def write_detail_sheet(
+    wb: Workbook,
+    questions: list[dict[str, str]],
+    catalog: list[dict[str, str]],
+) -> None:
+    """Add a filterable question-level sheet for year × subject × chapter drill-down."""
+    ws = wb.create_sheet("真题明细")
+    headers = ["年份", "科目", "教材章节", "核心考点", "题型", "题号", "真题原文"]
+    ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=len(headers))
+    ws.cell(1, 1, "筛选“年份＋科目＋教材章节”，即可查看对应真题")
+    ws.cell(1, 1).font = Font(name="等线", size=11, bold=True)
+    ws.cell(1, 1).alignment = Alignment(horizontal="left", vertical="center")
+
+    for column, value in enumerate(headers, start=1):
+        cell = ws.cell(2, column, value)
+        cell.font = Font(name="等线", size=11, bold=True)
+        cell.fill = PatternFill("solid", fgColor="D9EAF7")
+        cell.alignment = Alignment(horizontal="center", vertical="center")
+
+    chapter_order = {
+        (row["科目"], row["章节名称"]): int(row["章节序号"])
+        for row in catalog
+        if row["科目"] in OFFICIAL_SUBJECTS and row["章节序号"].isdigit()
+    }
+    subject_order = {subject: index for index, (_, subjects) in enumerate(SHEET_GROUPS) for subject in subjects}
+
+    def question_number_key(value: str) -> tuple[int, str]:
+        return (int(value), value) if value.isdigit() else (999, value)
+
+    ordered = sorted(
+        questions,
+        key=lambda row: (
+            -int(row["年份"]),
+            subject_order[row["主科目"]],
+            chapter_order[(row["主科目"], row["教材主章节"])],
+            row["题型"],
+            question_number_key(row["题号"]),
+        ),
+    )
+    for row_number, row in enumerate(ordered, start=3):
+        values = [
+            int(row["年份"]),
+            SUBJECT_LABELS[row["主科目"]],
+            row["教材主章节"],
+            row["核心考点"],
+            row["题型"],
+            row["题号"],
+            row["题目全文"].strip(),
+        ]
+        for column, value in enumerate(values, start=1):
+            cell = ws.cell(row_number, column, value)
+            cell.font = Font(name="等线", size=10)
+            cell.alignment = Alignment(
+                horizontal="left" if column in {3, 4, 7} else "center",
+                vertical="top",
+                wrap_text=column in {3, 4, 7},
+            )
+        ws.row_dimensions[row_number].height = 34
+
+    ws.auto_filter.ref = f"A2:G{2 + len(ordered)}"
+    ws.freeze_panes = "A3"
+    ws.sheet_view.showGridLines = True
+    for column, width in {
+        "A": 9,
+        "B": 9,
+        "C": 38,
+        "D": 24,
+        "E": 12,
+        "F": 9,
+        "G": 75,
+    }.items():
+        ws.column_dimensions[column].width = width
+    ws.row_dimensions[1].height = 24
+    ws.row_dimensions[2].height = 24
+
+
 def validate_output(output: Path, expected_questions: int, years: list[int]) -> None:
     wb = load_workbook(output, data_only=True)
-    expected_sheets = [name for name, _ in SHEET_GROUPS]
+    expected_sheets = [name for name, _ in SHEET_GROUPS] + ["真题明细"]
     if wb.sheetnames != expected_sheets:
         raise AssertionError(f"工作表不一致：{wb.sheetnames}")
 
     workbook_total = 0
     year_totals = Counter()
-    for ws in wb.worksheets:
+    for ws in wb.worksheets[:-1]:
         sheet_total = 0
         for row in range(4, ws.max_row + 1):
             if ws.cell(row, 1).value:
@@ -184,6 +256,14 @@ def validate_output(output: Path, expected_questions: int, years: list[int]) -> 
     if sum(year_totals.values()) != expected_questions:
         raise AssertionError(f"年度合计{sum(year_totals.values())}，应为{expected_questions}")
 
+    detail = wb["真题明细"]
+    detail_count = sum(1 for row in range(3, detail.max_row + 1) if detail.cell(row, 1).value)
+    if detail_count != expected_questions:
+        raise AssertionError(f"真题明细共{detail_count}道，应为{expected_questions}")
+    detail_subjects = {detail.cell(row, 2).value for row in range(3, detail.max_row + 1)}
+    if detail_subjects != set(SUBJECT_LABELS.values()):
+        raise AssertionError(f"真题明细科目异常：{sorted(detail_subjects)}")
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
@@ -192,20 +272,14 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
-    questions = read_tsv(args.questions)
+    all_questions = read_tsv(args.questions)
+    questions = [row for row in all_questions if row["主科目"] in OFFICIAL_SUBJECTS]
     catalog = read_tsv(args.catalog)
     years = sorted({int(row["年份"]) for row in questions})
 
     unknown_types = sorted({row["题型"] for row in questions} - set(TYPE_TO_GROUP))
     if unknown_types:
         raise ValueError(f"存在未映射题型：{unknown_types}")
-    unknown_subjects = sorted(
-        {row["主科目"] for row in questions}
-        - {subject for _, subjects in SHEET_GROUPS for subject in subjects}
-    )
-    if unknown_subjects:
-        raise ValueError(f"存在未映射科目：{unknown_subjects}")
-
     wb = Workbook()
     wb.remove(wb.active)
     wb.properties.title = "深圳大学2019—2026历年真题分布表（简明版）"
@@ -213,8 +287,9 @@ def main() -> None:
     wb.properties.creator = "tietou_review"
 
     for sheet_name, subjects in SHEET_GROUPS:
-        chapters = chapter_rows(catalog, subjects, extension=len(subjects) > 1)
+        chapters = chapter_rows(catalog, subjects)
         write_subject_sheet(wb, sheet_name, subjects, chapters, questions, years)
+    write_detail_sheet(wb, questions, catalog)
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     wb.save(args.output)
@@ -223,8 +298,9 @@ def main() -> None:
     year_counts = Counter(int(row["年份"]) for row in questions)
     print(f"output={args.output}")
     print(f"questions={len(questions)}")
+    print(f"excluded_questions={len(all_questions) - len(questions)}")
     print("year_counts=" + ",".join(f"{year}:{year_counts[year]}" for year in years))
-    print("sheets=" + ",".join(name for name, _ in SHEET_GROUPS))
+    print("sheets=" + ",".join([name for name, _ in SHEET_GROUPS] + ["真题明细"]))
 
 
 if __name__ == "__main__":
