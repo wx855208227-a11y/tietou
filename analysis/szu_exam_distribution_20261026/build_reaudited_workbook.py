@@ -1,0 +1,293 @@
+#!/usr/bin/env python3
+"""Build the user-facing workbook from the 255-row re-audit trail."""
+
+from __future__ import annotations
+
+import argparse
+import csv
+from collections import Counter
+from pathlib import Path
+
+from openpyxl import Workbook, load_workbook
+from openpyxl.styles import Alignment, Font, PatternFill
+
+from build_sample_layout_workbook import (
+    OFFICIAL_SUBJECTS,
+    SHEET_GROUPS,
+    SUBJECT_LABELS,
+    chapter_rows,
+    read_tsv,
+    write_subject_sheet,
+)
+
+
+def canonical_rows(reviewed: list[dict[str, str]]) -> list[dict[str, str]]:
+    result = []
+    for row in reviewed:
+        if row["是否纳入四本教材统计"] != "是":
+            continue
+        copied = dict(row)
+        copied["主科目"] = row["复核科目"]
+        copied["教材主章节"] = row["复核章节"]
+        copied["核心考点"] = row["复核核心考点"]
+        result.append(copied)
+    return result
+
+
+def question_number_key(value: str) -> tuple[int, str]:
+    return (int(value), value) if value.isdigit() else (999, value)
+
+
+def ordered_questions(
+    questions: list[dict[str, str]], catalog: list[dict[str, str]]
+) -> list[dict[str, str]]:
+    chapter_order = {
+        (row["科目"], row["章节名称"]): int(row["章节序号"])
+        for row in catalog
+        if row["科目"] in OFFICIAL_SUBJECTS and row["章节序号"].isdigit()
+    }
+    subject_order = {
+        subject: index
+        for index, (_, subjects) in enumerate(SHEET_GROUPS)
+        for subject in subjects
+    }
+    return sorted(
+        questions,
+        key=lambda row: (
+            -int(row["年份"]),
+            subject_order[row["主科目"]],
+            chapter_order[(row["主科目"], row["教材主章节"])],
+            row["题型"],
+            question_number_key(row["题号"]),
+        ),
+    )
+
+
+def style_header(ws, row_number: int, values: list[str]) -> None:
+    for column, value in enumerate(values, start=1):
+        cell = ws.cell(row_number, column, value)
+        cell.font = Font(name="等线", size=10, bold=True)
+        cell.fill = PatternFill("solid", fgColor="D9EAF7")
+        cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+
+
+def write_detail_sheet(
+    wb: Workbook,
+    questions: list[dict[str, str]],
+    catalog: list[dict[str, str]],
+) -> None:
+    ws = wb.create_sheet("真题明细")
+    headers = [
+        "题目ID",
+        "年份",
+        "科目",
+        "教材章节",
+        "核心考点",
+        "题型",
+        "题号",
+        "真题原文",
+        "置信度",
+        "跨章/不确定说明",
+        "复核依据",
+    ]
+    ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=len(headers))
+    ws.cell(1, 1, "已按核心理论在教材中的实际讲授位置逐题复核；可筛选“年份＋科目＋教材章节”查看原题")
+    ws.cell(1, 1).font = Font(name="等线", size=11, bold=True)
+    ws.cell(1, 1).alignment = Alignment(horizontal="left", vertical="center")
+    style_header(ws, 2, headers)
+
+    for row_number, row in enumerate(ordered_questions(questions, catalog), start=3):
+        values = [
+            row["题目ID"],
+            int(row["年份"]),
+            SUBJECT_LABELS[row["主科目"]],
+            row["教材主章节"],
+            row["核心考点"],
+            row["题型"],
+            row["题号"],
+            row["题目全文"].strip(),
+            row["置信度"],
+            row["不确定说明"] or row["次要考点或跨章节"],
+            row["复核依据"],
+        ]
+        for column, value in enumerate(values, start=1):
+            cell = ws.cell(row_number, column, value)
+            cell.font = Font(name="等线", size=9)
+            cell.alignment = Alignment(
+                horizontal="left" if column in {1, 4, 5, 8, 10, 11} else "center",
+                vertical="top",
+                wrap_text=column in {1, 4, 5, 8, 10, 11},
+            )
+        if row["置信度"] != "高":
+            ws.cell(row_number, 9).fill = PatternFill("solid", fgColor="FFF2CC")
+        ws.row_dimensions[row_number].height = 44
+
+    ws.auto_filter.ref = f"A2:K{2 + len(questions)}"
+    ws.freeze_panes = "A3"
+    ws.sheet_view.showGridLines = True
+    for column, width in {
+        "A": 24,
+        "B": 8,
+        "C": 8,
+        "D": 34,
+        "E": 26,
+        "F": 12,
+        "G": 8,
+        "H": 66,
+        "I": 9,
+        "J": 50,
+        "K": 72,
+    }.items():
+        ws.column_dimensions[column].width = width
+    ws.row_dimensions[1].height = 24
+    ws.row_dimensions[2].height = 30
+
+
+def write_uncertainty_sheet(wb: Workbook, questions: list[dict[str, str]]) -> int:
+    uncertain = [row for row in questions if row["置信度"] != "高"]
+    uncertain.sort(key=lambda row: (-int(row["年份"]), row["题型"], question_number_key(row["题号"])))
+    ws = wb.create_sheet("不确定项")
+    headers = [
+        "题目ID",
+        "年份",
+        "题型",
+        "题干",
+        "暂定科目",
+        "暂定章节",
+        "置信度",
+        "争议点/可能的另一归属",
+        "当前判断依据",
+    ]
+    ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=len(headers))
+    ws.cell(1, 1, "以下仅列仍存在跨章或题面信息不足的纳入项；教材外题目按要求不展示")
+    ws.cell(1, 1).font = Font(name="等线", size=11, bold=True)
+    ws.cell(1, 1).alignment = Alignment(horizontal="left", vertical="center")
+    style_header(ws, 2, headers)
+
+    for row_number, row in enumerate(uncertain, start=3):
+        values = [
+            row["题目ID"],
+            int(row["年份"]),
+            row["题型"],
+            row["题干"],
+            SUBJECT_LABELS[row["主科目"]],
+            row["教材主章节"],
+            row["置信度"],
+            row["不确定说明"] or row["次要考点或跨章节"],
+            row["复核依据"],
+        ]
+        for column, value in enumerate(values, start=1):
+            cell = ws.cell(row_number, column, value)
+            cell.font = Font(name="等线", size=9)
+            cell.alignment = Alignment(
+                horizontal="left" if column in {1, 4, 6, 8, 9} else "center",
+                vertical="top",
+                wrap_text=column in {1, 4, 6, 8, 9},
+            )
+        ws.cell(row_number, 7).fill = PatternFill("solid", fgColor="FFF2CC")
+        ws.row_dimensions[row_number].height = 54
+
+    ws.auto_filter.ref = f"A2:I{2 + len(uncertain)}"
+    ws.freeze_panes = "A3"
+    for column, width in {
+        "A": 24,
+        "B": 8,
+        "C": 12,
+        "D": 62,
+        "E": 10,
+        "F": 34,
+        "G": 9,
+        "H": 64,
+        "I": 70,
+    }.items():
+        ws.column_dimensions[column].width = width
+    return len(uncertain)
+
+
+def validate_output(
+    output: Path,
+    questions: list[dict[str, str]],
+    expected_uncertain: int,
+    years: list[int],
+) -> None:
+    wb = load_workbook(output, data_only=True)
+    expected_sheets = [name for name, _ in SHEET_GROUPS] + ["真题明细", "不确定项"]
+    if wb.sheetnames != expected_sheets:
+        raise AssertionError(f"工作表不一致：{wb.sheetnames}")
+
+    summary_total = 0
+    year_totals = Counter()
+    for ws in wb.worksheets[:4]:
+        for row_number in range(4, ws.max_row + 1):
+            if ws.cell(row_number, 1).value:
+                summary_total += ws.cell(row_number, 6).value or 0
+        for offset, year in enumerate(years, start=4):
+            if ws.cell(offset, 8).value != year:
+                raise AssertionError(f"{ws.title}年份行错位：{ws.cell(offset, 8).value}")
+            year_totals[year] += ws.cell(offset, 13).value or 0
+    if summary_total != len(questions) or sum(year_totals.values()) != len(questions):
+        raise AssertionError(
+            f"汇总不一致：章节={summary_total}，年份={sum(year_totals.values())}，逐题={len(questions)}"
+        )
+
+    detail = wb["真题明细"]
+    detail_ids = [detail.cell(row, 1).value for row in range(3, detail.max_row + 1) if detail.cell(row, 1).value]
+    if len(detail_ids) != len(questions) or len(detail_ids) != len(set(detail_ids)):
+        raise AssertionError("真题明细数量或题目ID唯一性异常")
+
+    uncertainty = wb["不确定项"]
+    uncertainty_count = sum(
+        1 for row in range(3, uncertainty.max_row + 1) if uncertainty.cell(row, 1).value
+    )
+    if uncertainty_count != expected_uncertain:
+        raise AssertionError(f"不确定项共{uncertainty_count}道，应为{expected_uncertain}")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--questions", type=Path, required=True)
+    parser.add_argument("--catalog", type=Path, required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+
+    reviewed = read_tsv(args.questions)
+    questions = canonical_rows(reviewed)
+    catalog = read_tsv(args.catalog)
+    years = sorted({int(row["年份"]) for row in questions})
+
+    valid_chapters = {
+        (row["科目"], row["章节名称"])
+        for row in catalog
+        if row["科目"] in OFFICIAL_SUBJECTS
+    }
+    invalid = [
+        row["题目ID"]
+        for row in questions
+        if (row["主科目"], row["教材主章节"]) not in valid_chapters
+    ]
+    if invalid:
+        raise AssertionError(f"纳入题使用了目录外章节：{invalid}")
+
+    wb = Workbook()
+    wb.remove(wb.active)
+    wb.properties.title = "深圳大学2019—2026历年真题分布表（逐题复核版）"
+    wb.properties.subject = "按四本指定教材的实际讲授位置复核科目与章节"
+    wb.properties.creator = "tietou_review"
+    for sheet_name, subjects in SHEET_GROUPS:
+        chapters = chapter_rows(catalog, subjects)
+        write_subject_sheet(wb, sheet_name, subjects, chapters, questions, years)
+    write_detail_sheet(wb, questions, catalog)
+    uncertain_count = write_uncertainty_sheet(wb, questions)
+
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    wb.save(args.output)
+    validate_output(args.output, questions, uncertain_count, years)
+
+    print(f"output={args.output}")
+    print(f"included_questions={len(questions)}")
+    print(f"excluded_questions={len(reviewed) - len(questions)}")
+    print(f"uncertain_questions={uncertain_count}")
+
+
+if __name__ == "__main__":
+    main()
