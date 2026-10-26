@@ -153,6 +153,11 @@ OVERRIDES: dict[str, dict[str, object]] = {
         "evidence": "核心作答对象是学习动机的强化取向与人本取向，主归普心第九章动机理论。",
         "uncertainty": "强化机制也与第十三章学习交叉；按“学习动机理论”的中心问题主归第九章。",
     },
+    "2025-名词解释-008": {
+        "confidence": "低",
+        "evidence": "暂按题库将“期望理论”作为《普通心理学》第6版第九章“期待价值理论”的简称处理。",
+        "uncertainty": "若原题特指弗鲁姆的期望理论，则属于管理与组织心理学、应从四本教材统计中删除；现有真题记录只有术语，需原题答案或命题口径确认。",
+    },
     "2026-简答题-001": {
         "subject": GP,
         "chapter": "第十一章 智力",
@@ -296,7 +301,9 @@ def main() -> None:
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=FIELDNAMES, delimiter="\t")
+        writer = csv.DictWriter(
+            stream, fieldnames=FIELDNAMES, delimiter="\t", lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(reviewed)
 
