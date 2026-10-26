@@ -14,6 +14,7 @@ from openpyxl.styles import Alignment, Font, PatternFill
 from build_sample_layout_workbook import (
     OFFICIAL_SUBJECTS,
     SHEET_GROUPS,
+    STAT,
     SUBJECT_LABELS,
     chapter_rows,
     read_tsv,
@@ -25,6 +26,43 @@ def canonical_rows(reviewed: list[dict[str, str]]) -> list[dict[str, str]]:
     result = []
     for row in reviewed:
         if row["是否纳入四本教材统计"] != "是":
+            continue
+        if row["题目ID"] == "2023-综合应用题-001":
+            split_units = [
+                (
+                    "A",
+                    "第八章 假设检验",
+                    "独立样本t检验：比较两个性别群体的幸福感差异",
+                ),
+                (
+                    "B",
+                    "第九章 方差分析",
+                    "方差分析：比较不同年龄或不同城市人群的幸福感差异",
+                ),
+                (
+                    "C",
+                    "第五章 相关关系",
+                    "相关分析：检验幸福感与人均收入、亲子关系之间的相关",
+                ),
+                (
+                    "D",
+                    "第十二章 线性回归",
+                    "线性回归：用人均收入、亲子关系等变量预测幸福感",
+                ),
+            ]
+            for suffix, chapter, topic in split_units:
+                copied = dict(row)
+                copied["题目ID"] = f"{row['题目ID']}-{suffix}"
+                copied["主科目"] = STAT
+                copied["教材主章节"] = chapter
+                copied["核心考点"] = topic
+                copied["次要考点或跨章节"] = "同一综合应用题按四种统计方法拆分；源题数量仍为1道"
+                copied["题目全文"] = f"【拆分统计单元：{topic}】原题：{row['题目全文'].strip()}"
+                copied["复核依据"] = (
+                    f"依据用户确认，本统计单元对应{chapter}；"
+                    "同一源题另拆为t检验、方差分析、相关和线性回归共4个统计单元。"
+                )
+                result.append(copied)
             continue
         copied = dict(row)
         copied["主科目"] = row["复核科目"]
@@ -91,7 +129,7 @@ def write_detail_sheet(
         "复核依据",
     ]
     ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=len(headers))
-    ws.cell(1, 1, "已按核心理论在教材中的实际讲授位置逐题复核；可筛选“年份＋科目＋教材章节”查看原题")
+    ws.cell(1, 1, "已按核心理论在教材中的实际讲授位置逐题复核；2023年综合应用题①按4种统计方法拆分为4个归类单元")
     ws.cell(1, 1).font = Font(name="等线", size=11, bold=True)
     ws.cell(1, 1).alignment = Alignment(horizontal="left", vertical="center")
     style_header(ws, 2, headers)
@@ -284,8 +322,12 @@ def main() -> None:
     validate_output(args.output, questions, uncertain_count, years)
 
     print(f"output={args.output}")
-    print(f"included_questions={len(questions)}")
-    print(f"excluded_questions={len(reviewed) - len(questions)}")
+    included_source_questions = sum(
+        row["是否纳入四本教材统计"] == "是" for row in reviewed
+    )
+    print(f"included_source_questions={included_source_questions}")
+    print(f"classification_units={len(questions)}")
+    print(f"excluded_source_questions={len(reviewed) - included_source_questions}")
     print(f"uncertain_questions={uncertain_count}")
 
 
