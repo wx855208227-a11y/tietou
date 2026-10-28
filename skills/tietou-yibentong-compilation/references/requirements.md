@@ -10,10 +10,12 @@ Source PDF: `docs/yibentong/一本通编制要求及细则.pdf` in the `agiamaso
 - 辅助材料: official/electronic reference textbook, target院校官方考纲, target院校历年真题, optional 312历年真题, optional 泛347历年真题库, and leader-provided published textbook/academic literature sources. Online文库、咨询号、无出处网络总结, and unsourced notes cannot be used as authoritative supplementary sources.
 - Use external material for comparison, not blind copying. Use the textbook as the authority for wording, definitions, structure, and source verification.
 - Evidence priority for 347 school-specific work: target-school true questions > target-school official outline > assigned textbook structure and wording > auxiliary 312/泛347 true-question evidence > other external materials.
+- When revising an already usable target-school 一本通, treat it as a calibration draft rather than waste or authority. Audit each item as `保留/微调/重写/合并/移动/补充/删除`; preserve verified good content and formatting, but resolve correctness, coverage, level, wording, and supplement placement against the authoritative sources above.
 
 ## Compilation Process
 
 1. Compare主体材料 with external materials and classify importance.
+   - For an existing usable 一本通, record an item-level treatment decision before editing so the revision does not rewrite correct material merely for novelty.
    - 条目一致: keep主体材料 content and its existing importance level.
    - 主体材料 has an item but external material does not: if 一级, keep but downgrade to 二级; if 二级, keep but downgrade to 三级; if 三级, delete. If no level is marked, judge from the parent item.
    - External material has an item but主体材料 does not: locate it in the textbook. If present, rewrite the textbook content by these content rules and add it. If not present, add it as `补充内容` only after verifying it in published textbooks or academic literature. Cite the source textbook/literature and page when available, or mark that no traceable source was found.
@@ -29,8 +31,8 @@ Source PDF: `docs/yibentong/一本通编制要求及细则.pdf` in the `agiamaso
    - Find all knowledge points touched by target院校历年真题.
    - Record each relevant question's year, type, score if available, subject, textbook chapter, and tested knowledge point.
    - Add true-question markers at the matching title or location.
-   - If a true-question point is missing, locate it in the textbook, add it as正文, and mark it 一级.
-   - All true-question knowledge points are 一级.
+   - If a true-question point is missing, locate it in the textbook or a traceable published supplement and add it.
+   - A target-school subjective question normally makes the exact answer point 一级. A target-school objective question normally makes it at least 二级; upgrade only when repeated evidence, textbook/outline centrality, and subjective-question transfer justify 强二级 or 一级.
    - Use 312 and 泛347真题 only as auxiliary evidence for examability, common question forms, and 强二级 review; they do not create target-school真题 markers.
 5. Final format and typo pass.
 
@@ -77,7 +79,7 @@ For a textbook chapter such as `心理测量和测验的历史回顾`, the expec
 
 Remove or heavily compress long accounts of social context, institutional history, broad reflections, and policy discussion unless the user explicitly asks for a detailed history version.
 
-For psychology考研 materials, `中国/中国古代/我国历史发展` content is non-core by default when there is no target-school true-question evidence. Process it conservatively: mark as 二级/三级, compress to high-level clues, or delete low-yield details according to examability. In student-facing wording, use expressions such as `了解即可`; avoid wording like `不展开背诵` or other process-oriented editorial notes. If the target school has tested the exact point, mark that point 一级 and add the true-question marker.
+For psychology考研 materials, `中国/中国古代/我国历史发展` content is non-core by default when there is no target-school subjective-question evidence. Mark it as 二级/三级 and compress it to high-level clues. If it is explicitly outline-covered, retain minimum substantive coverage. Do not add redundant student-facing notes such as `了解即可` because the 三级 marker already carries that meaning.
 
 ## Importance Levels
 
@@ -85,16 +87,16 @@ For psychology考研 materials, `中国/中国古代/我国历史发展` content
 - Prefer marking importance on second-level titles.
 - Determine an upper-level item's importance from its lower-level content. For example, if most lower items are 一级, the parent should be 一级.
 - If a third-level title has the same importance as its second-level parent, omit the repeated third-level mark.
-- True-question knowledge points must be 一级.
+- Subjective true-question answer points must be 一级. Objective true-question points are normally 二级 and may be upgraded only with stated evidence.
 - Summary principle: only mark exceptions when lower-level importance differs from the parent.
 
 ### Importance Evidence For 347 School-Specific Work
 
-- 一级: high-frequency points that are very likely to appear in real exams, including points directly tested in target-school true questions and concrete core knowledge points inside the official outline scope, especially definitions, core classifications, major theories, representative scales/tests, procedures, formulas, reliability/validity indexes, and high-yield comparisons.
-- 二级: medium-frequency points that are reasonably likely to appear in real exams, including important textbook content that supports 一级 clusters or has clear examinability, but is not directly true-question-covered and is less central than core definitions/classifications/theories.
+- 一级: output-level points that students must prepare as complete subjective answers. Typical evidence is a target-school subjective question, or the combination of outline/textbook centrality, stable scoring-point structure, target-school style fit, and strong auxiliary subjective-question evidence.
+- 二级: recognition-level points mainly prepared for the target school's observed objective forms. This includes target-school objective-question points that do not need a complete subjective answer, supporting details, secondary classifications, boundaries, people/years, and important but lower-output-demand outline content.
 - 强二级: a manual-review subset inside 二级. Use this label in the manager review file, not in the finished正文 title; in the finished product it remains marked 二级 unless the leader confirms upgrade. Typical cases include: official-outline-covered points with a stable question form but no direct true-question hit; textbook major subpoints that strongly support a 一级 cluster; points adjacent to repeated true-question themes; and points that could plausibly be upgraded to 一级 based on the leader's school-specific judgment.
 - 三级: low-frequency points that can still be tested but would usually be偏、怪、难, or near the edge of the normal scope, including background, low-frequency history, broad development overview, minor scale descriptions, or content mainly for understanding.
-- 中国/中国古代/我国历史发展类内容在没有目标院校真题支撑时，默认不作为重点。可按教材地位和可考性压缩为二级或三级；弱可考的细节可删除。正文表述用“了解即可”等学生视角措辞，不写“不展开背诵”等编制过程话术。只有被目标院校真题实质考过的具体点才升为一级。
+- 中国/中国古代/我国历史发展类内容在没有目标院校主观题支撑时，默认不作为重点。可按教材地位和可考性压缩为二级或三级；考纲明确覆盖时不得整项删除。正文不再重复写“了解即可”等提示。
 - Official outline evidence identifies important clusters. Do not automatically mark every subpoint under an outline-covered chapter as 一级.
 - Official-outline-covered content should be at least 二级 by default. The main exception is 中国/中国古代/我国发展史等中国背景类内容: when there is no target-school true-question evidence, these can be marked 三级 or compressed according to examability.
 - True-question evidence must be substantive. Only mark `【xx年真题】` when that exact knowledge point or its answer substance was tested; do not mark because the same person, school, or general topic appeared in another context.
@@ -105,7 +107,7 @@ For psychology考研 materials, `中国/中国古代/我国历史发展` content
 
 Official outline coverage means the knowledge cluster is important, but the outline is usually broad and does not make every subpoint 一级. For each outline-covered cluster, split textbook content into three rings before assigning levels:
 
-- Core ring -> usually 一级: the cluster's definitions, core classifications, basic principles, important theories, formulas/indexes, procedures, representative tests/scales, high-yield comparisons, and any point that can independently form a stable exam question.
+- Core ring -> 一级 or 强二级: definitions, core classifications, basic principles, important theories, formulas/indexes, procedures, representative tests/scales, and high-yield comparisons. Upgrade to 一级 only when the point should be prepared as a complete subjective answer.
 - Support ring -> 二级 or 强二级: important textbook subpoints that support the core ring, can appear as smaller short-answer/choice/judgment points, or sit close to repeated true-question themes but lack direct target-school evidence.
 - Background ring -> usually 二级 if it is clearly inside the official outline, but heavily compressed. Mark 三级 only for 中国/中国古代/我国发展史等中国背景类内容 without target-school true-question support, or for content that is not truly covered by the outline after substantive mapping.
 
@@ -119,7 +121,7 @@ Before judging importance for a school-specific 一本通, build a compact quest
 - Mark cross-subject questions by dominant answer source. For example, a question using statistics to evaluate reliability can belong to 心理测量 if the scoring focus is reliability interpretation; a general hypothesis-testing calculation belongs to 统计心理学.
 - Record question type: choice, judgment, term explanation, short answer, essay, case/material analysis, experiment design, calculation/application, or other observed forms.
 - Map each relevant question to the smallest textbook knowledge point that supplies the answer. Use substantive match, not shared words.
-- Use target-school true-question hits as decisive 一级 evidence and true-question markers. Do not create target-school true-question markers from 312 or other-school 347 questions.
+- Use target-school subjective-question hits as decisive 一级 evidence. Treat objective-question hits as decisive evidence of at least 二级, then assess repetition and subjective transfer. Do not create target-school true-question markers from 312 or other-school 347 questions.
 
 ### Chapter Evidence Table Before Drafting
 
@@ -169,6 +171,7 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 ## Content Rewriting
 
 - Avoid large unbroken paragraphs. Each paragraph should be no more than two lines; split and layer anything longer.
+- Treat the two-line rule as a semantic-structure check, not mechanical line wrapping: identify the natural answer dimensions, add concise category labels, and split one scoring idea per point.
 - Preserve textbook keywords and key sentences while reorganizing the expression into concise points.
 - For textbook adaptation, reduce verbosity, keep the core meaning, and avoid adding unsupported claims.
 - Do not treat external materials as authoritative when they conflict with the textbook.
@@ -264,8 +267,8 @@ Use 312 and 泛347真题库 to improve examability and question-type judgment, e
 - Mark second- and third-level title page references to the textbook where applicable.
 - True-question marker format: `【xx年真题】`.
 - Put question-type hints in separate brackets after the true-question marker or after the level marker when there is no true-question marker. Example: `【20、23年真题】【选择/名词解释】`.
-- Finished products should retain question-type hints for all 一级 knowledge points. If the point has target-school true-question evidence, use the actual true-question type. If the 一级 point has no target-school true-question evidence, use the judged likely question type according to examability and school style.
-- 二级/三级 likely question types should not appear in the finished正文 by default; keep them in the manager review file.
+- Every knowledge item should have a local level marker. If it has target-school true-question evidence, use the verified year and actual type.
+- Retain the established `选择题考点` marker for points that should only be prepared for the target school's observed objective form. Do not add objective forms the school has not used.
 - If the same knowledge point appears in multiple years, list the years in order.
 
 ## Overall Formatting
@@ -314,9 +317,9 @@ Include these sections:
 Run these checks before sending files:
 
 - Source check: every retained substantive point can be traced to the target textbook, target-school true question, official outline, or cited supplementary source.
-- Evidence check: target-school true-question points are 一级 and accurately marked; official-outline-covered content is at least 二级 except eligible 中国背景类 content.
+- Evidence check: subjective true-question answer points are 一级; objective true-question points are at least 二级 and upgraded only with stated evidence; all true-question markers are accurate; every official-outline item is substantively covered and is at least 二级 except eligible 中国背景类 content.
 - Subject check: mixed-paper true questions are assigned by answer substance, not superficial keywords.
-- Level check: 一级/二级/三级 reflect exam probability; all 强二级 points are listed for leader review.
+- Level check: 一级 supports complete subjective output, 二级 supports recognition/objective preparation, and 三级 retains only low-probability recognition; all 强二级 points are listed for leader review.
 - Structure check: textbook chapter order is preserved, but low-yield prose is compressed or deleted.
 - Core正文 quality check: confirm the正文 has been compiled to the best attainable quality under the current materials and rules, not merely made compliant. Re-read each section for four failure modes: deletable content left in, splittable content not layered, awkward textbook language not rewritten, and answerable scoring points not made clear enough. Also check whether any 一级/二级 point would benefit from a better comparison, Tips, table, or visual, and whether any current expansion overstates a low-yield point.
 - Writing check: paragraphs are short, layered, answer-like, and not simply cleaned textbook prose.
@@ -334,7 +337,7 @@ Run these checks before sending files:
 - Textbook keywords and key sentences are preserved.
 - The正文 is judged as the best attainable compiled version under current materials: screening, hierarchy, rewrite quality, memorisability, answer usability, and compression have all been actively optimized.
 - Long paragraphs are split into layered points.
-- True-question knowledge points are present, marked, and 一级.
+- True-question knowledge points are present and accurately marked; subjective answer points are 一级, while objective-only points are not mechanically inflated.
 - Importance levels follow parent/child rules and repeated lower-level marks are omitted when appropriate.
 - Official-outline-covered content is at least 二级 unless it is eligible 中国背景类 content without target-school true-question support.
 - All 强二级 candidates are separately listed for leader review.
