@@ -37,8 +37,8 @@
 
 - `exam_profile.tsv`：2019—2026年题型变化及普心命中概况。
 - `outline_coverage.tsv`：67个考纲终端条目的教材定位、覆盖状态和等级下限。
-- `question_evidence.tsv`：逐题/逐知识点的深大普心真题证据。
-- `level_decisions.tsv`：知识点层级、依据和正文准备方式。
+- `question_evidence.tsv`：逐题/逐知识点的深大普心真题证据；主归普心的交叉题同样收录，避免逐题表漏项。
+- `cross_subject_evidence.tsv`：人格测评/心理测量等交叉题的主归、次归、理由和去重标注策略；它是跨科归属与成品标注的权威记录。
+- `level_decisions.tsv`：证据层复审通过后生成，用于记录知识点层级、依据和正文准备方式。
 - `strong_secondary_review.tsv`：仅列需要主管升降级判断的强二级。
 - `baseline_audit.md`：教材与现有一本通的结构差异、代表性问题及逐条校订边界。
-
