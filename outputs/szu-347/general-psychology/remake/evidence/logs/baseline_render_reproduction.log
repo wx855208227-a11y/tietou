@@ -1,0 +1,44 @@
+深圳大学普通心理学一本通底稿渲染复现日志
+生成时间（UTC）：2026-10-28
+
+[输入]
+HF相对路径：院校资料库/347应用心理专硕/深圳大学/一本通/普通心理学/深大普通心理学一本通.docx
+本次实际读取路径：/home/yileiyang/multi_agent/.work/workspaces/github.com/agiamason/tietou/agents/tietou_manager/analysis/hf_tietou_repo/院校资料库/347应用心理专硕/深圳大学/一本通/普通心理学/深大普通心理学一本通.docx
+文件类型：Microsoft Word 2007+
+SHA-256：506b7bc5e92bb0c067ec308d70e6c796646c0dc2ccdb533fa50b29dda5e6258f
+
+[工具]
+LibreOffice 24.2.7.2 420(Build:2)
+PyMuPDF 1.28.2
+
+[复现命令]
+INPUT='/home/yileiyang/multi_agent/.work/workspaces/github.com/agiamason/tietou/agents/tietou_manager/analysis/hf_tietou_repo/院校资料库/347应用心理专硕/深圳大学/一本通/普通心理学/深大普通心理学一本通.docx'
+OUT_DIR=$(mktemp -d /tmp/szu_baseline_render.XXXXXX)
+libreoffice --headless --convert-to pdf --outdir "$OUT_DIR" "$INPUT"
+sha256sum "$INPUT" "$OUT_DIR/深大普通心理学一本通.pdf"
+python - "$OUT_DIR/深大普通心理学一本通.pdf" <<'PY'
+import hashlib
+import sys
+from pathlib import Path
+
+import fitz
+
+path = Path(sys.argv[1])
+document = fitz.open(path)
+print("PAGE_COUNT", document.page_count)
+print("PDF_SHA256", hashlib.sha256(path.read_bytes()).hexdigest())
+PY
+
+[LibreOffice输出]
+Warning: failed to launch javaldx - java may not function correctly
+convert /home/yileiyang/multi_agent/.work/workspaces/github.com/agiamason/tietou/agents/tietou_manager/analysis/hf_tietou_repo/院校资料库/347应用心理专硕/深圳大学/一本通/普通心理学/深大普通心理学一本通.docx as a Writer document -> /tmp/szu_baseline_render.xaUOXg/深大普通心理学一本通.pdf using filter : writer_pdf_Export
+退出码：0
+
+[结果]
+实际临时输出：/tmp/szu_baseline_render.xaUOXg/深大普通心理学一本通.pdf
+PAGE_COUNT 255
+PDF_SHA256 0964c27c9417fc4edb31e81be67c2c4b4d926b52e57808a731bb82b0616d7b69
+
+[边界]
+临时PDF未提交；本日志用于锁定输入版本、工具版本、渲染命令、页数和输出哈希。
+不同LibreOffice版本或字体环境可能生成不同PDF哈希，复核时应首先确认页数和版式，再解释哈希差异。
