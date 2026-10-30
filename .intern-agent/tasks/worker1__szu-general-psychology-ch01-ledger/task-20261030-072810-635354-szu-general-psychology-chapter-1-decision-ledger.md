@@ -34,3 +34,4 @@ Task task-20261028-083259-728941-task-20261028-083259: based on approved origin/
 ## Steps
 - 2026-10-30T07:28:10Z: task created
 - 2026-10-30T07:50:43Z: Build chapter 1 decision ledger from source evidence
+  - pushed_commit: bb2e565
